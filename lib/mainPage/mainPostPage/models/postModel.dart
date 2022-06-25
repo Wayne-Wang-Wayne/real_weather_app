@@ -7,6 +7,7 @@ class PostModel {
   final int rainLevel;
   final String posterUserId;
   final List<ReplyModel> replyList;
+  final String postLocation;
   PostModel(
       {required this.postId,
       required this.imageUrl,
@@ -15,7 +16,8 @@ class PostModel {
       required this.likeAmount,
       required this.rainLevel,
       required this.posterUserId,
-      required this.replyList});
+      required this.replyList,
+      required this.postLocation});
 }
 
 class ReplyModel {

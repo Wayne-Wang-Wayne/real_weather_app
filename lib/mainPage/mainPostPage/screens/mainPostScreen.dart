@@ -12,13 +12,13 @@ class MainPostScreen extends StatelessWidget {
     final _postList = [
       PostModel(
           postId: "1",
-          imageUrl:
-              "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/wolfgang-hasselmann-br-gllg7bs-unsplash-2_ver_1.jpg",
-          postText: "天氣真好！！",
+          imageUrl: "https://cdn2.ettoday.net/images/4887/d4887809.jpg",
+          postText: "天氣真差！！請大家備好雨傘！",
           postDate: DateTime.now(),
           likeAmount: 0,
-          rainLevel: 0,
+          rainLevel: 2,
           posterUserId: "XXX",
+          postLocation: "台北",
           replyList: [
             ReplyModel(
                 postId: "1",
@@ -44,6 +44,7 @@ class MainPostScreen extends StatelessWidget {
           likeAmount: 0,
           rainLevel: 0,
           posterUserId: "XXX",
+          postLocation: "彰化",
           replyList: [
             ReplyModel(
                 postId: "2",

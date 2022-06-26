@@ -12,66 +12,76 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Spacer(),
-            FlutterLogo(
-              size: 120,
-            ),
-            Spacer(),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Hi! \n歡迎回來！",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 120,
               ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "登入以繼續",
-                style: TextStyle(fontSize: 16),
+              FlutterLogo(
+                size: 120,
               ),
-            ),
-            Spacer(),
-            ElevatedButton.icon(
-              onPressed: () {
-                final provider =
-                    Provider.of<GoogleSignInProvider>(context, listen: false);
-                provider.googleLogin();
-              },
-              label: Text("Sign Up with Google"),
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  onPrimary: Colors.black,
-                  minimumSize: Size(double.infinity, 50)),
-              icon: FaIcon(
-                FontAwesomeIcons.google,
-                color: Colors.red,
+              SizedBox(
+                height: 100,
               ),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            RichText(
-                text: TextSpan(
-                    text: "已經擁有帳號?",
-                    style: TextStyle(color: Colors.black),
-                    children: [
-                  TextSpan(
-                      text: "登入",
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Colors.black))
-                ])),
-            Spacer()
-          ],
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Hi! \n歡迎回來！",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "登入以繼續",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              SizedBox(
+                height: 100,
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  provider.googleLogin();
+                },
+                label: Text("Sign Up with Google"),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.black,
+                    minimumSize: Size(double.infinity, 50)),
+                icon: FaIcon(
+                  FontAwesomeIcons.google,
+                  color: Colors.red,
+                ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              RichText(
+                  text: TextSpan(
+                      text: "已經擁有帳號?",
+                      style: TextStyle(color: Colors.black),
+                      children: [
+                    TextSpan(
+                        text: "登入",
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.black))
+                  ])),
+              SizedBox(
+                height: 100,
+              )
+            ],
+          ),
         ),
       ),
     );

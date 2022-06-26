@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:real_weather_shared_app/mainPage/%08authPage/screens/authScreen.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
 
 import 'firebase_options.dart';
-import 'mainPage/authPage/provider/googleSignInProvider.dart';
+import 'mainPage/authPage/provider/googleSignInProvider.dart';
+import 'mainPage/authPage/screens/authScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,9 +37,7 @@ class MyApp extends StatelessWidget {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasData) {
                   return MainScreen();
                 } else if (snapshot.hasError) {

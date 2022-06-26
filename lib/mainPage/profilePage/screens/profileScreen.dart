@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/mainPage/%08authPage/provider/googleSignInProvider.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/myAchievementWidget.dart';
 
 import '../widgets/dailyMissionWidget.dart';
@@ -65,7 +67,18 @@ class ProfileScreen extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          LevelUpRule()
+          LevelUpRule(),
+          SizedBox(
+            height: 5,
+          ),
+          TextButton.icon(
+              onPressed: () {
+                final provider =
+                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.logout();
+              },
+              icon: Icon(Icons.logout),
+              label: Text("登出"))
         ],
       ),
     );

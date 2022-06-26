@@ -33,7 +33,7 @@ class LevelUpRule extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Text('升級說明', style: TextStyle(fontSize: 18)),
+              Text('等級說明', style: TextStyle(fontSize: 18)),
               Icon(Icons.arrow_forward_ios_outlined)
             ],
           ),

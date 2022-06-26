@@ -29,6 +29,13 @@
             {
               "client_id": "285819753618-4s44hrlnmf5tpc0qlf4q22gqeh9q1hfr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "285819753618-mm4lvgusbinmd9mb50fvk092ls8onrgc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wayne.realWeatherSharedApp"
+              }
             }
           ]
         }

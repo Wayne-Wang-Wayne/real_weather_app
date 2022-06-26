@@ -1,8 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/mainPage/%08authPage/screens/authScreen.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
 
 import 'firebase_options.dart';
+import 'mainPage/authPage/provider/googleSignInProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,12 +22,36 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
-              .copyWith(secondary: Colors.white)),
-      home: MainScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GoogleSignInProvider>(
+            create: (_) => GoogleSignInProvider())
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
+                .copyWith(secondary: Colors.white)),
+        home: Scaffold(
+          body: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData) {
+                  return MainScreen();
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text("Oops!有東西出錯了。"),
+                  );
+                } else {
+                  return AuthScreen();
+                }
+              }),
+        ),
+      ),
     );
   }
 }

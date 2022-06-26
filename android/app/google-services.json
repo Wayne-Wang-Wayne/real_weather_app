@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "285819753618",
+    "project_id": "flutter-real-weather-app",
+    "storage_bucket": "flutter-real-weather-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285819753618:android:ccd45dbbc1f27eca44824b",
+        "android_client_info": {
+          "package_name": "com.example.real_weather_shared_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "285819753618-4s44hrlnmf5tpc0qlf4q22gqeh9q1hfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG-hv0dWhBNJWUJxPVSlg4bL8ND6J2wL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "285819753618-4s44hrlnmf5tpc0qlf4q22gqeh9q1hfr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

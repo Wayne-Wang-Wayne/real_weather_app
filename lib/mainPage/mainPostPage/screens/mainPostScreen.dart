@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:real_weather_shared_app/mainPage/mainPostPage/models/postModel.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.dart';
+
+import '../../models/postModel.dart';
 
 class MainPostScreen extends StatelessWidget {
   const MainPostScreen({Key? key}) : super(key: key);
@@ -19,7 +20,8 @@ class MainPostScreen extends StatelessWidget {
           likeAmount: 0,
           rainLevel: 2,
           posterUserId: "XXX",
-          postLocation: "台北",
+          postCity: "台北市",
+          postTown: "松山區",
           replyList: [
             ReplyModel(
                 postId: "1",
@@ -45,7 +47,8 @@ class MainPostScreen extends StatelessWidget {
           likeAmount: 0,
           rainLevel: 0,
           posterUserId: "XXX",
-          postLocation: "彰化",
+          postCity: "彰化縣",
+          postTown: "彰化市",
           replyList: [
             ReplyModel(
                 postId: "2",

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:real_weather_shared_app/mainPage/mainPostPage/models/postModel.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/locDateWidget.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postLabel.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postLikeButton.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/posterInfoWidget.dart';
+
+import '../../models/postModel.dart';
 
 class PostItem extends StatelessWidget {
   final Key key;
@@ -28,8 +29,7 @@ class PostItem extends StatelessWidget {
           children: [
             PostLabel(rainLevel: postModel.rainLevel),
             LocDateWidget(
-                postLocation: postModel.postLocation,
-                postDate: postModel.postDate)
+                postLocation: postModel.postCity, postDate: postModel.postDate)
           ],
         ),
         SizedBox(

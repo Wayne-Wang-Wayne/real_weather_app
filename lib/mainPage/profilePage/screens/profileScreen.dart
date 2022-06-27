@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/myAchievementWidget.dart';
 
-import '../../authPage/provider/googleSignInProvider.dart';
+import '../../authPage/providers/googleSignInProvider.dart';
 import '../widgets/dailyMissionWidget.dart';
 import '../widgets/levelUpRuleWidget.dart';
 

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.dart';
 
 import '../../models/postModel.dart';
@@ -80,7 +81,9 @@ class MainPostScreen extends StatelessWidget {
           ),
           actions: [
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CreatePostScreen.routeName);
+                },
                 child: Text(
                   "發佈",
                   style: TextStyle(color: Colors.blue, fontSize: 20),

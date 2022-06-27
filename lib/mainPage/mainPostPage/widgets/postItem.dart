@@ -37,11 +37,13 @@ class PostItem extends StatelessWidget {
         ),
         Container(
           width: double.infinity,
+          height: 250,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(postModel.imageUrl)),
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(postModel.imageUrl, fit: BoxFit.cover),
+            ),
           ),
         ),
         SizedBox(

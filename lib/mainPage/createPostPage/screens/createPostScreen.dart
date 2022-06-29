@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/pictureWidget.dart';
+import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/postTextField.dart';
 
 import '../widgets/locAndWeatherPicker.dart';
 
@@ -27,7 +28,7 @@ class CreatePostScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [AddPictureWidget(), LocWeatherPicker()],
+            children: [AddPictureWidget(), LocWeatherPicker(), PostTextField()],
           ),
         ),
       ),

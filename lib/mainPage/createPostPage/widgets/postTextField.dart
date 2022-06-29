@@ -31,7 +31,8 @@ class _PostTextFieldState extends State<PostTextField> {
             keyboardType: TextInputType.multiline,
             maxLines: null,
             controller: _controller,
-            decoration: InputDecoration.collapsed(hintText: "請寫下你的想法！"),
+            decoration: InputDecoration.collapsed(
+                hintText: "請寫下你的想法！", hintStyle: TextStyle(color: Colors.grey)),
             onChanged: (value) {
               setState(() {
                 postText = value;

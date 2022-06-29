@@ -3,7 +3,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class PostTextField extends StatefulWidget {
-  const PostTextField({Key? key}) : super(key: key);
+  Function(String) postTextCallBack;
+  PostTextField({Key? key, required this.postTextCallBack}) : super(key: key);
 
   @override
   State<PostTextField> createState() => _PostTextFieldState();
@@ -19,6 +20,7 @@ class _PostTextFieldState extends State<PostTextField> {
       padding: const EdgeInsets.all(15.0),
       child: Container(
         height: 250,
+        width: double.infinity,
         decoration: BoxDecoration(
             border: Border.all(width: 1, color: Colors.grey),
             borderRadius: BorderRadius.all(Radius.circular(8))),
@@ -33,6 +35,7 @@ class _PostTextFieldState extends State<PostTextField> {
             onChanged: (value) {
               setState(() {
                 postText = value;
+                widget.postTextCallBack(postText);
               });
             },
           ),

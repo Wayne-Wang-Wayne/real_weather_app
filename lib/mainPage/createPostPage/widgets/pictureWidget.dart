@@ -6,7 +6,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddPictureWidget extends StatefulWidget {
-  const AddPictureWidget({Key? key}) : super(key: key);
+  Function(File) imageFileCallBack;
+  AddPictureWidget({Key? key, required this.imageFileCallBack})
+      : super(key: key);
 
   @override
   State<AddPictureWidget> createState() => _AddPictureWidgetState();
@@ -34,6 +36,7 @@ class _AddPictureWidgetState extends State<AddPictureWidget> {
     }
     setState(() {
       _storedImage = File(imageFile.path);
+      widget.imageFileCallBack(_storedImage!);
     });
   }
 

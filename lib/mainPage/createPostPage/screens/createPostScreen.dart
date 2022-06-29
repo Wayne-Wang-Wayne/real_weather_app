@@ -8,18 +8,28 @@ import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/postText
 
 import '../widgets/locAndWeatherPicker.dart';
 
-class CreatePostScreen extends StatelessWidget {
+class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({Key? key}) : super(key: key);
   static const routeName = "/create-post";
+
+  @override
+  State<CreatePostScreen> createState() => _CreatePostScreenState();
+}
+
+class _CreatePostScreenState extends State<CreatePostScreen> {
   File? _imageFile;
+
   int? _rainLevel = 0;
+
   String? _pickedCity;
+
   String? _pickedTown;
+
   String? _postText;
-  bool isInfoComplete = false;
 
   void _getImageFile(File imageFile) {
     this._imageFile = imageFile;
+    setState(() {});
   }
 
   void _getLocAndRainLevel(
@@ -27,10 +37,12 @@ class CreatePostScreen extends StatelessWidget {
     this._rainLevel = rainLevel;
     this._pickedCity = pickedCity;
     this._pickedTown = pickedTown;
+    setState(() {});
   }
 
   void _getPostText(String postText) {
     this._postText = postText;
+    setState(() {});
   }
 
   Future<void> createPost(BuildContext context) async {
@@ -57,11 +69,25 @@ class CreatePostScreen extends StatelessWidget {
         actions: [
           TextButton(
               onPressed: () {
-                createPost(context);
+                if (_imageFile != null &&
+                    _pickedCity != null &&
+                    _pickedTown != null &&
+                    _postText != null &&
+                    _postText != "") {
+                  createPost(context);
+                }
               },
               child: Text(
                 "完成",
-                style: TextStyle(color: Colors.blueAccent, fontSize: 20),
+                style: TextStyle(
+                    color: (_imageFile != null &&
+                            _pickedCity != null &&
+                            _pickedTown != null &&
+                            _postText != null &&
+                            _postText != "")
+                        ? Colors.blueAccent
+                        : Colors.grey,
+                    fontSize: 20),
               ))
         ],
       ),

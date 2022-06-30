@@ -5,14 +5,15 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import '../../mainPostPage/widgets/postLabel.dart';
 
-class LocWeatherPicker extends StatefulWidget {
-  const LocWeatherPicker({Key? key}) : super(key: key);
+class WeatherPicker extends StatefulWidget {
+  Function(int) rainLevelCallBack;
+  WeatherPicker({Key? key, required this.rainLevelCallBack}) : super(key: key);
 
   @override
-  State<LocWeatherPicker> createState() => _LocWeatherPickerState();
+  State<WeatherPicker> createState() => _WeatherPickerState();
 }
 
-class _LocWeatherPickerState extends State<LocWeatherPicker> {
+class _WeatherPickerState extends State<WeatherPicker> {
   late FixedExtentScrollController weatehrScrollController;
   final _weatherOptions = ["太陽", "陰天", "下雨"];
   int _weatherIndex = 0;
@@ -46,7 +47,7 @@ class _LocWeatherPickerState extends State<LocWeatherPicker> {
                         actions: [buildWeatherPicker()],
                         cancelButton: CupertinoActionSheetAction(
                             onPressed: () => Navigator.pop(context),
-                            child: Text("取消")),
+                            child: Text("完成")),
                       ));
             },
             child: Text("選擇天氣"))
@@ -67,6 +68,7 @@ class _LocWeatherPickerState extends State<LocWeatherPicker> {
             setState(() {
               _weatherIndex = index;
             });
+            widget.rainLevelCallBack(index);
           },
           children: [
             for (final item in _weatherOptions)

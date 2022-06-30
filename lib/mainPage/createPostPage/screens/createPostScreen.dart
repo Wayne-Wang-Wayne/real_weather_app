@@ -6,7 +6,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/pictureWidget.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/postTextField.dart';
 
-import '../widgets/locAndWeatherPicker.dart';
+import '../widgets/areaPicker.dart';
+import '../widgets/weatherPicker.dart';
 
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({Key? key}) : super(key: key);
@@ -32,9 +33,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     setState(() {});
   }
 
-  void _getLocAndRainLevel(
-      int rainLevel, String pickedCity, String pickedTown) {
+  void _getRainLevel(int rainLevel) {
     this._rainLevel = rainLevel;
+    setState(() {});
+  }
+
+  void _getArea(String pickedCity, String pickedTown) {
     this._pickedCity = pickedCity;
     this._pickedTown = pickedTown;
     setState(() {});
@@ -100,7 +104,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 AddPictureWidget(imageFileCallBack: _getImageFile),
-                LocWeatherPicker(),
+                WeatherPicker(rainLevelCallBack: _getRainLevel),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AreaPicker(
+                      areaCallBack: _getArea,
+                    ),
+                  ],
+                ),
                 PostTextField(postTextCallBack: _getPostText),
               ],
             ),

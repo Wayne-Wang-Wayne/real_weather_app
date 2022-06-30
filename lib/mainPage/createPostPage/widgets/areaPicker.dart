@@ -85,6 +85,7 @@ class _AreaPickerState extends State<AreaPicker> {
           onSelectedItemChanged: (index) {
             setState(() {
               _cityIndex = index;
+              _townIndex = 0;
               String city = areaData.keys.toList()[index];
               String town = areaData.values.toList()[index][_townIndex];
               widget.areaCallBack(city, town);

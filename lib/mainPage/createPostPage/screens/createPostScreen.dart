@@ -22,9 +22,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   int? _rainLevel = 0;
 
-  String? _pickedCity;
+  String? _pickedCity = "臺北市";
 
-  String? _pickedTown;
+  String? _pickedTown = "中正區";
 
   String? _postText;
 

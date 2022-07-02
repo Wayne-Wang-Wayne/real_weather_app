@@ -27,9 +27,10 @@ class PostItem extends StatelessWidget {
         ),
         Row(
           children: [
-            PostLabel(rainLevel: postModel.rainLevel),
+            PostLabel(rainLevel: postModel.rainLevel!),
             LocDateWidget(
-                postLocation: postModel.postCity, postDate: postModel.postDate)
+                postLocation: postModel.postCity!,
+                postDate: postModel.postDate!)
           ],
         ),
         SizedBox(
@@ -42,7 +43,7 @@ class PostItem extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(postModel.imageUrl, fit: BoxFit.cover),
+              child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
             ),
           ),
         ),
@@ -53,7 +54,7 @@ class PostItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           width: double.infinity,
           child: Text(
-            postModel.postText,
+            postModel.postText!,
             style: TextStyle(fontSize: 20),
           ),
         ),

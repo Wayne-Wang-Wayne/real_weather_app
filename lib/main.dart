@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/mainPage/createPostPage/providers/createPostProvider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
 
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<GoogleSignInProvider>(
-            create: (_) => GoogleSignInProvider())
+            create: (_) => GoogleSignInProvider()),
+        ChangeNotifierProvider<CreatePostProvider>(
+            create: (_) => CreatePostProvider())
       ],
       child: MaterialApp(
           title: 'Flutter Demo',

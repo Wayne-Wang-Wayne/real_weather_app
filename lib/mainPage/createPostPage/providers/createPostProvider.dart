@@ -45,7 +45,6 @@ class CreatePostProvider extends ChangeNotifier {
             likeAmount: likeAmount,
             rainLevel: rainLevel,
             posterUserId: FirebaseAuth.instance.currentUser!.uid,
-            replyList: [],
             postCity: postCity,
             postTown: postTown));
         isLoading = false;

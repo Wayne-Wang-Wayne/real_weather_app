@@ -14,58 +14,28 @@ class MainPostScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _postList = [
       PostModel(
-          postId: "1",
-          imageUrl: "https://cdn2.ettoday.net/images/4887/d4887809.jpg",
-          postText: "天氣真差！！請大家備好雨傘！",
-          postDate: DateTime.now(),
-          likeAmount: 0,
-          rainLevel: 2,
-          posterUserId: "XXX",
-          postCity: "台北市",
-          postTown: "松山區",
-          replyList: [
-            ReplyModel(
-                postId: "1",
-                replyId: "1",
-                replyContent: "天氣真的很好耶！",
-                replyDate: DateTime.now(),
-                replyLikeAmount: 0,
-                replierUserId: "XXX"),
-            ReplyModel(
-                postId: "1",
-                replyId: "2",
-                replyContent: "對啊！真的很不錯！",
-                replyDate: DateTime.now(),
-                replyLikeAmount: 0,
-                replierUserId: "XXX")
-          ]),
+        postId: "1",
+        imageUrl: "https://cdn2.ettoday.net/images/4887/d4887809.jpg",
+        postText: "天氣真差！！請大家備好雨傘！",
+        postDate: DateTime.now(),
+        likeAmount: 0,
+        rainLevel: 2,
+        posterUserId: "XXX",
+        postCity: "台北市",
+        postTown: "松山區",
+      ),
       PostModel(
-          postId: "1",
-          imageUrl:
-              "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/wolfgang-hasselmann-br-gllg7bs-unsplash-2_ver_1.jpg",
-          postText: "天氣真好！！",
-          postDate: DateTime.now(),
-          likeAmount: 0,
-          rainLevel: 0,
-          posterUserId: "XXX",
-          postCity: "彰化縣",
-          postTown: "彰化市",
-          replyList: [
-            ReplyModel(
-                postId: "2",
-                replyId: "1",
-                replyContent: "天氣真的很好耶！",
-                replyDate: DateTime.now(),
-                replyLikeAmount: 0,
-                replierUserId: "XXX"),
-            ReplyModel(
-                postId: "2",
-                replyId: "2",
-                replyContent: "對啊！真的很不錯！",
-                replyDate: DateTime.now(),
-                replyLikeAmount: 0,
-                replierUserId: "XXX")
-          ])
+        postId: "1",
+        imageUrl:
+            "https://images.twinkl.co.uk/tw1n/image/private/t_630/u/ux/wolfgang-hasselmann-br-gllg7bs-unsplash-2_ver_1.jpg",
+        postText: "天氣真好！！",
+        postDate: DateTime.now(),
+        likeAmount: 0,
+        rainLevel: 0,
+        posterUserId: "XXX",
+        postCity: "彰化縣",
+        postTown: "彰化市",
+      )
     ];
 
     return Scaffold(

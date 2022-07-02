@@ -5,13 +5,15 @@ import 'package:intl/intl.dart';
 
 class LocDateWidget extends StatelessWidget {
   final String postLocation;
-  final DateTime postDate;
+  final int postDate;
   const LocDateWidget(
       {Key? key, required this.postLocation, required this.postDate})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var dt = DateTime.fromMillisecondsSinceEpoch(postDate);
+    var readableTime = DateFormat('yyyy/MM/dd, HH:mm').format(dt);
     return Row(
       children: [
         SizedBox(
@@ -24,8 +26,7 @@ class LocDateWidget extends StatelessWidget {
         SizedBox(
           width: 5,
         ),
-        Text(DateFormat('yyyy-MM-dd    HH:mm').format(postDate),
-            style: TextStyle(fontSize: 15))
+        Text(readableTime, style: TextStyle(fontSize: 15))
       ],
     );
   }

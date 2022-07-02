@@ -30,7 +30,7 @@ class PostItem extends StatelessWidget {
             PostLabel(rainLevel: postModel.rainLevel!),
             LocDateWidget(
                 postLocation: postModel.postCity!,
-                postDate: postModel.postDate!)
+                postDate: postModel.postDateTimeStamp!)
           ],
         ),
         SizedBox(

@@ -54,6 +54,22 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     setState(() {});
   }
 
+  void _showErrorDialog() {
+    showDialog<Null>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text("無法上傳"),
+              content: Text("請檢查網路。"),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Text("確認"))
+              ],
+            ));
+  }
+
   Future<void> createPost(BuildContext context) async {
     if (_imageFile == null) {
       return;
@@ -64,23 +80,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     try {
       Provider.of<CreatePostProvider>(context, listen: false)
           .createPost(_imageFile!, _postText!, DateTime.now(), 0, _rainLevel!,
-              _pickedCity!, _pickedTown!)
+              _pickedCity!, _pickedTown!, _showErrorDialog)
           .then((value) => Navigator.of(context).pop());
-    } catch (error) {
-      await showDialog<Null>(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                title: Text("無法上傳"),
-                content: Text("請檢查網路。"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                      child: Text("確認"))
-                ],
-              ));
-    }
+    } catch (error) {}
   }
 
   @override

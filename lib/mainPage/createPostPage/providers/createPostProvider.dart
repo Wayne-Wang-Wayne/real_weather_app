@@ -10,8 +10,15 @@ import '../../models/postModel.dart';
 
 class CreatePostProvider extends ChangeNotifier {
   bool isLoading = false;
-  Future<void> createPost(File imageFile, String postText, DateTime postDate,
-      int likeAmount, int rainLevel, String postCity, String postTown) async {
+  Future<void> createPost(
+      File imageFile,
+      String postText,
+      DateTime postDate,
+      int likeAmount,
+      int rainLevel,
+      String postCity,
+      String postTown,
+      Function showErrorDialog) async {
     isLoading = true;
     notifyListeners();
     final postUid = Uuid().v4();
@@ -45,9 +52,10 @@ class CreatePostProvider extends ChangeNotifier {
         notifyListeners();
       });
     } catch (error) {
+      showErrorDialog();
       isLoading = false;
       notifyListeners();
-      throw Exception;
+      throw error;
     }
   }
 }

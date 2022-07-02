@@ -77,6 +77,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (_postText == null || _postText == "") {
       return;
     }
+    FocusManager.instance.primaryFocus?.unfocus();
     try {
       Provider.of<CreatePostProvider>(context, listen: false)
           .createPost(_imageFile!, _postText!, DateTime.now(), 0, _rainLevel!,
@@ -90,6 +91,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     final isLoading = Provider.of<CreatePostProvider>(context).isLoading;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: isLoading ? false : true,
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here

@@ -29,7 +29,8 @@ class PostItem extends StatelessWidget {
           children: [
             PostLabel(rainLevel: postModel.rainLevel!),
             LocDateWidget(
-                postLocation: postModel.postCity!,
+                postCity: postModel.postCity!,
+                postTown: postModel.postTown!,
                 postDate: postModel.postDateTimeStamp!)
           ],
         ),

@@ -4,10 +4,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 
 class LocDateWidget extends StatelessWidget {
-  final String postLocation;
+  final String postCity;
+  final String postTown;
   final int postDate;
   const LocDateWidget(
-      {Key? key, required this.postLocation, required this.postDate})
+      {Key? key,
+      required this.postCity,
+      required this.postTown,
+      required this.postDate})
       : super(key: key);
 
   @override
@@ -20,7 +24,14 @@ class LocDateWidget extends StatelessWidget {
           width: 13,
         ),
         Text(
-          postLocation,
+          postCity,
+          style: TextStyle(fontSize: 15),
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Text(
+          postTown,
           style: TextStyle(fontSize: 15),
         ),
         SizedBox(

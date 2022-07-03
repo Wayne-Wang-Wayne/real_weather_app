@@ -21,7 +21,9 @@ class PostItem extends StatelessWidget {
         SizedBox(
           height: 5,
         ),
-        PosterInfoWidget(),
+        PosterInfoWidget(
+          posterUserId: postModel.posterUserId!,
+        ),
         SizedBox(
           height: 5,
         ),

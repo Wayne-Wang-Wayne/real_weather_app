@@ -7,9 +7,10 @@ class UserModel {
   final String? userImageUrl;
   final int? userExp;
   final int? userLevel;
+  final String? userTitle;
   final int? postTime;
   final int? likedTime;
-  final List<String>? postList;
+  final List<dynamic>? postList;
 
   UserModel(
       {this.userId,
@@ -17,6 +18,7 @@ class UserModel {
       this.userImageUrl,
       this.userExp,
       this.userLevel,
+      this.userTitle,
       this.postTime,
       this.likedTime,
       this.postList});
@@ -31,6 +33,7 @@ class UserModel {
         userImageUrl: data?["userImageUrl"],
         userExp: data?["userExp"],
         userLevel: data?["userLevel"],
+        userTitle: data?["userTitle"],
         postTime: data?["postTime"],
         likedTime: data?["likedTime"],
         postList: data?["postList"]);

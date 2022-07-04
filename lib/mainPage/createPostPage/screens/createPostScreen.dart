@@ -88,67 +88,74 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final canPop =
+        Provider.of<CreatePostProvider>(context, listen: false).canPop;
     final isLoading = Provider.of<CreatePostProvider>(context).isLoading;
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: isLoading ? false : true,
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+    return WillPopScope(
+      onWillPop: () async {
+        return canPop;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: isLoading ? false : true,
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(
+            color: Colors.black, //change your color here
+          ),
+          title: Text(
+            "發佈貼文",
+            style: TextStyle(color: Colors.black),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  if (_imageFile != null &&
+                      _pickedCity != null &&
+                      _pickedTown != null &&
+                      _postText != null &&
+                      _postText != "") {
+                    createPost(context);
+                  }
+                },
+                child: isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Text(
+                        "完成",
+                        style: TextStyle(
+                            color: (_imageFile != null &&
+                                    _pickedCity != null &&
+                                    _pickedTown != null &&
+                                    _postText != null &&
+                                    _postText != "")
+                                ? Colors.blueAccent
+                                : Colors.grey,
+                            fontSize: 20),
+                      ))
+          ],
         ),
-        title: Text(
-          "發佈貼文",
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          TextButton(
-              onPressed: () {
-                if (_imageFile != null &&
-                    _pickedCity != null &&
-                    _pickedTown != null &&
-                    _postText != null &&
-                    _postText != "") {
-                  createPost(context);
-                }
-              },
-              child: isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Text(
-                      "完成",
-                      style: TextStyle(
-                          color: (_imageFile != null &&
-                                  _pickedCity != null &&
-                                  _pickedTown != null &&
-                                  _postText != null &&
-                                  _postText != "")
-                              ? Colors.blueAccent
-                              : Colors.grey,
-                          fontSize: 20),
-                    ))
-        ],
-      ),
-      body: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Container(
-          width: double.infinity,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AddPictureWidget(imageFileCallBack: _getImageFile),
-                WeatherPicker(rainLevelCallBack: _getRainLevel),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AreaPicker(
-                      areaCallBack: _getArea,
-                    ),
-                  ],
-                ),
-                PostTextField(postTextCallBack: _getPostText),
-              ],
+        body: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Container(
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AddPictureWidget(imageFileCallBack: _getImageFile),
+                  WeatherPicker(rainLevelCallBack: _getRainLevel),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AreaPicker(
+                        areaCallBack: _getArea,
+                      ),
+                    ],
+                  ),
+                  PostTextField(postTextCallBack: _getPostText),
+                ],
+              ),
             ),
           ),
         ),

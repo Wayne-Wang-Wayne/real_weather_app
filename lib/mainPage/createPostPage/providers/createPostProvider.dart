@@ -10,6 +10,7 @@ import '../../models/postModel.dart';
 
 class CreatePostProvider extends ChangeNotifier {
   bool isLoading = false;
+  bool canPop = true;
   Future<void> createPost(
       File imageFile,
       String postText,
@@ -19,6 +20,7 @@ class CreatePostProvider extends ChangeNotifier {
       String postCity,
       String postTown,
       Function showErrorDialog) async {
+    canPop = false;
     isLoading = true;
     notifyListeners();
     final postUid = Uuid().v4();
@@ -47,11 +49,13 @@ class CreatePostProvider extends ChangeNotifier {
             posterUserId: FirebaseAuth.instance.currentUser!.uid,
             postCity: postCity,
             postTown: postTown));
+        canPop = true;
         isLoading = false;
         notifyListeners();
       });
     } catch (error) {
       showErrorDialog();
+      canPop = true;
       isLoading = false;
       notifyListeners();
       throw error;

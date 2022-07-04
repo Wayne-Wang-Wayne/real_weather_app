@@ -22,6 +22,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
   var _showedList = [];
   bool isFirstLoading = false;
   bool isMoreLoading = false;
+  bool canLoadMore = true;
 
   @override
   void initState() {
@@ -37,7 +38,8 @@ class _MainPostScreenState extends State<MainPostScreen> {
   }
 
   void _scrollListener() {
-    if (controller!.position.extentAfter < _showedList.length) {
+    if (controller!.position.extentAfter < _showedList.length && canLoadMore) {
+      canLoadMore = false;
       loadMore();
     }
   }
@@ -73,6 +75,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
     setState(() {
       isFirstLoading = false;
     });
+    canLoadMore = true;
   }
 
   Future<void> loadMore() async {
@@ -86,6 +89,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
     setState(() {
       isMoreLoading = false;
     });
+    canLoadMore = true;
   }
 
   Future<void> prepareShowedList() async {
@@ -154,14 +158,25 @@ class _MainPostScreenState extends State<MainPostScreen> {
                 : RefreshIndicator(
                     onRefresh: loadFirstData,
                     child: ListView.builder(
+                      shrinkWrap: true,
                       controller: controller,
                       itemBuilder: ((context, index) {
+                        if (index == _showedList.length && isMoreLoading) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20.0),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
                         return PostItem(
                           key: ValueKey(DateTime.now().toString()),
                           postModel: _showedList[index],
                         );
                       }),
-                      itemCount: _showedList.length,
+                      itemCount: isMoreLoading
+                          ? _showedList.length + 1
+                          : _showedList.length,
                     ),
                   ));
   }

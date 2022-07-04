@@ -10,6 +10,9 @@ class PostModel {
   final String? posterUserId;
   final String? postCity;
   final String? postTown;
+  String? posterName = "";
+  String? posterImageUrl = "";
+  String? posterTitle = "";
   PostModel(
       {required this.postId,
       required this.imageUrl,
@@ -19,7 +22,10 @@ class PostModel {
       required this.rainLevel,
       required this.posterUserId,
       required this.postCity,
-      required this.postTown});
+      required this.postTown,
+      this.posterName,
+      this.posterImageUrl,
+      this.posterTitle});
 
   factory PostModel.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,

@@ -7,6 +7,7 @@ import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPo
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.dart';
 
 import '../../models/postModel.dart';
+import '../../models/userModel.dart';
 
 class MainPostScreen extends StatefulWidget {
   const MainPostScreen({Key? key}) : super(key: key);
@@ -16,18 +17,37 @@ class MainPostScreen extends StatefulWidget {
 }
 
 class _MainPostScreenState extends State<MainPostScreen> {
-  var _postList = [];
-  bool isLoading = false;
+  ScrollController? controller;
+  var _notYetShowedList = [];
+  var _showedList = [];
+  bool isFirstLoading = false;
+  bool isMoreLoading = false;
+
   @override
   void initState() {
     super.initState();
-    loadData();
+    controller = ScrollController()..addListener(_scrollListener);
+    loadFirstData();
   }
 
-  Future<void> loadData() async {
+  @override
+  void dispose() {
+    controller!.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (controller!.position.extentAfter < _showedList.length) {
+      loadMore();
+    }
+  }
+
+  Future<void> loadFirstData() async {
     setState(() {
-      isLoading = true;
+      isFirstLoading = true;
     });
+    _notYetShowedList = [];
+    _showedList = [];
     final originData = await FirebaseFirestore.instance
         .collection("posts")
         .withConverter(
@@ -38,19 +58,60 @@ class _MainPostScreenState extends State<MainPostScreen> {
         .get();
     if (originData.size <= 0) {
       setState(() {
-        isLoading = false;
+        isFirstLoading = false;
       });
       return;
     }
-
-    final postList = [];
+    final tempPostList = [];
     originData.docs.asMap().forEach((index, post) {
-      postList.add(post.data());
+      tempPostList.add(post.data());
     });
+    _notYetShowedList = tempPostList;
+
+    //準備放到_showedList裡開始show
+    await prepareShowedList();
     setState(() {
-      isLoading = false;
-      _postList = postList;
+      isFirstLoading = false;
     });
+  }
+
+  Future<void> loadMore() async {
+    if (_notYetShowedList.length <= 0) {
+      return;
+    }
+    setState(() {
+      isMoreLoading = true;
+    });
+    await prepareShowedList();
+    setState(() {
+      isMoreLoading = false;
+    });
+  }
+
+  Future<void> prepareShowedList() async {
+    var preparedToShowedList = [];
+    if (_notYetShowedList.length < 5) {
+      preparedToShowedList = _notYetShowedList.sublist(0);
+      _notYetShowedList = [];
+    } else {
+      preparedToShowedList = _notYetShowedList.sublist(0, 5);
+      _notYetShowedList = _notYetShowedList.sublist(5);
+    }
+
+    for (final item in preparedToShowedList) {
+      final docRef = FirebaseFirestore.instance
+          .collection('users')
+          .withConverter(
+              fromFirestore: UserModel.fromFirestore,
+              toFirestore: (UserModel userModel, options) =>
+                  userModel.toFirestore())
+          .doc((item as PostModel).posterUserId);
+      final userModel = await docRef.get().then((value) => value.data());
+      item.posterImageUrl = userModel!.userImageUrl;
+      item.posterName = userModel.userName;
+      item.posterTitle = userModel.userTitle;
+      _showedList.add(item);
+    }
   }
 
   @override
@@ -71,7 +132,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(CreatePostScreen.routeName)
-                      .then((value) => loadData());
+                      .then((value) => loadFirstData());
                 },
                 child: Text(
                   "發佈",
@@ -82,24 +143,25 @@ class _MainPostScreenState extends State<MainPostScreen> {
             )
           ],
         ),
-        body: isLoading
+        body: isFirstLoading
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : _postList == null
+            : _notYetShowedList.isEmpty && _showedList.isEmpty
                 ? Center(
                     child: Text("不好意思，目前沒有相關資料！"),
                   )
                 : RefreshIndicator(
-                    onRefresh: loadData,
+                    onRefresh: loadFirstData,
                     child: ListView.builder(
+                      controller: controller,
                       itemBuilder: ((context, index) {
                         return PostItem(
                           key: ValueKey(DateTime.now().toString()),
-                          postModel: _postList[index],
+                          postModel: _showedList[index],
                         );
                       }),
-                      itemCount: _postList.length,
+                      itemCount: _showedList.length,
                     ),
                   ));
   }

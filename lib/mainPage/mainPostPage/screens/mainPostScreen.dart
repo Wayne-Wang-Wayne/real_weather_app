@@ -161,33 +161,40 @@ class _MainPostScreenState extends State<MainPostScreen> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : _showedList.isEmpty
-                ? Center(
-                    child: Text("不好意思，目前沒有相關資料！"),
-                  )
-                : RefreshIndicator(
-                    onRefresh: loadFirstData,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      controller: controller,
-                      itemBuilder: ((context, index) {
-                        if (index == _showedList.length && isMoreLoading) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
+            : RefreshIndicator(
+                onRefresh: loadFirstData,
+                child: _showedList.isEmpty
+                    ? SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        child: Container(
+                          child: Center(
+                            child: Text('不好意思，目前沒有相關資料！'),
+                          ),
+                          height: MediaQuery.of(context).size.height,
+                        ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        controller: controller,
+                        itemBuilder: ((context, index) {
+                          if (index == _showedList.length && isMoreLoading) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 20.0),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+                          return PostItem(
+                            key: ValueKey(DateTime.now().toString()),
+                            postModel: _showedList[index],
                           );
-                        }
-                        return PostItem(
-                          key: ValueKey(DateTime.now().toString()),
-                          postModel: _showedList[index],
-                        );
-                      }),
-                      itemCount: isMoreLoading
-                          ? _showedList.length + 1
-                          : _showedList.length,
-                    ),
-                  ));
+                        }),
+                        itemCount: isMoreLoading
+                            ? _showedList.length + 1
+                            : _showedList.length,
+                      ),
+              ));
   }
 }

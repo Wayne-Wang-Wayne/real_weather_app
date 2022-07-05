@@ -95,7 +95,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
       });
       return;
     }
-    if (tempPostList.isEmpty) hasReachedBottom = true;
+    if (tempPostList.length < 5) hasReachedBottom = true;
     await fetchUserData(tempPostList);
   }
 

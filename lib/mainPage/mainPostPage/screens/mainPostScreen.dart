@@ -18,8 +18,9 @@ class MainPostScreen extends StatefulWidget {
 
 class _MainPostScreenState extends State<MainPostScreen> {
   ScrollController? controller;
-  var _notYetShowedList = [];
   var _showedList = [];
+  QuerySnapshot? collectionState;
+  bool hasReachedBottom = false;
   bool isFirstLoading = false;
   bool isMoreLoading = false;
   bool canLoadMore = true;
@@ -45,64 +46,61 @@ class _MainPostScreenState extends State<MainPostScreen> {
   }
 
   Future<void> loadFirstData() async {
+    _showedList = [];
+    hasReachedBottom = false;
+    collectionState = null;
     setState(() {
       isFirstLoading = true;
     });
-    _notYetShowedList = [];
-    _showedList = [];
-    final originData = await FirebaseFirestore.instance
-        .collection("posts")
-        .withConverter(
-            fromFirestore: PostModel.fromFirestore,
-            toFirestore: (PostModel postModel, options) =>
-                postModel.toFirestore())
-        .orderBy("postDateTimeStamp", descending: true)
-        .get();
-    if (originData.size <= 0) {
-      setState(() {
-        isFirstLoading = false;
-      });
-      return;
-    }
-    final tempPostList = [];
+    await fetchPostData();
+
+    setState(() {
+      isFirstLoading = false;
+      canLoadMore = true;
+    });
+  }
+
+  Future<void> fetchPostData() async {
+    var tempPostList = [];
+    final originData = collectionState == null
+        ? await FirebaseFirestore.instance
+            .collection("posts")
+            .withConverter(
+                fromFirestore: PostModel.fromFirestore,
+                toFirestore: (PostModel postModel, options) =>
+                    postModel.toFirestore())
+            .orderBy("postDateTimeStamp", descending: true)
+            .limit(5)
+            .get()
+        : await FirebaseFirestore.instance
+            .collection("posts")
+            .withConverter(
+                fromFirestore: PostModel.fromFirestore,
+                toFirestore: (PostModel postModel, options) =>
+                    postModel.toFirestore())
+            .orderBy("postDateTimeStamp", descending: true)
+            .startAfterDocument(
+                collectionState!.docs[collectionState!.docs.length - 1])
+            .limit(5)
+            .get();
+    collectionState = originData;
     originData.docs.asMap().forEach((index, post) {
       tempPostList.add(post.data());
     });
-    _notYetShowedList = tempPostList;
-
-    //準備放到_showedList裡開始show
-    await prepareShowedList();
-    setState(() {
-      isFirstLoading = false;
-    });
-    canLoadMore = true;
-  }
-
-  Future<void> loadMore() async {
-    if (_notYetShowedList.length <= 0) {
+    if (tempPostList.isEmpty) {
+      setState(() {
+        isFirstLoading = false;
+        isMoreLoading = false;
+        hasReachedBottom = true;
+      });
       return;
     }
-    setState(() {
-      isMoreLoading = true;
-    });
-    await prepareShowedList();
-    setState(() {
-      isMoreLoading = false;
-    });
-    canLoadMore = true;
+    if (tempPostList.isEmpty) hasReachedBottom = true;
+    await fetchUserData(tempPostList);
   }
 
-  Future<void> prepareShowedList() async {
-    var preparedToShowedList = [];
-    if (_notYetShowedList.length < 5) {
-      preparedToShowedList = _notYetShowedList.sublist(0);
-      _notYetShowedList = [];
-    } else {
-      preparedToShowedList = _notYetShowedList.sublist(0, 5);
-      _notYetShowedList = _notYetShowedList.sublist(5);
-    }
-
-    for (final item in preparedToShowedList) {
+  Future<void> fetchUserData(List<dynamic> tempPostList) async {
+    for (final item in tempPostList) {
       final docRef = FirebaseFirestore.instance
           .collection('users')
           .withConverter(
@@ -116,6 +114,18 @@ class _MainPostScreenState extends State<MainPostScreen> {
       item.posterTitle = userModel.userTitle;
       _showedList.add(item);
     }
+  }
+
+  Future<void> loadMore() async {
+    if (hasReachedBottom) return;
+    setState(() {
+      isMoreLoading = true;
+    });
+    await fetchPostData();
+    setState(() {
+      isMoreLoading = false;
+      canLoadMore = true;
+    });
   }
 
   @override
@@ -151,7 +161,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
             ? Center(
                 child: CircularProgressIndicator(),
               )
-            : _notYetShowedList.isEmpty && _showedList.isEmpty
+            : _showedList.isEmpty
                 ? Center(
                     child: Text("不好意思，目前沒有相關資料！"),
                   )

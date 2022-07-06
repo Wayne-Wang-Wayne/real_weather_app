@@ -55,7 +55,8 @@ class GoogleSignInProvider extends ChangeNotifier {
         userLevel: 0,
         postTime: 0,
         likedTime: 0,
-        postList: []);
+        postList: [],
+        lastSingInTimestamp: DateTime.now().millisecondsSinceEpoch);
 
     final docRef = FirebaseFirestore.instance
         .collection('users')

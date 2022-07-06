@@ -82,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 5,
                 ),
-                DailyMission(),
+                DailyMission(userModel: userModel),
                 SizedBox(
                   height: 5,
                 ),

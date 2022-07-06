@@ -1,87 +1,112 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/myAchievementWidget.dart';
+import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileAvatarWidget.dart';
 
 import '../../authPage/providers/googleSignInProvider.dart';
 import '../widgets/dailyMissionWidget.dart';
 import '../widgets/levelUpRuleWidget.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  Future<UserModel> getUserProfile() async {
+    final docRef = FirebaseFirestore.instance
+        .collection('users')
+        .withConverter(
+            fromFirestore: UserModel.fromFirestore,
+            toFirestore: (UserModel userModel, options) =>
+                userModel.toFirestore())
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    final userModel = await docRef.get().then((value) => value.data());
+    return Future.value(userModel);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 80,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: FutureBuilder<UserModel>(
+        future: getUserProfile(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Column(children: [
+                Text("讀取個人資料發生問題"),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    child: Text("重試"))
+              ]),
+            );
+          }
+          final userModel = snapshot.data!;
+          return SingleChildScrollView(
+            child: Column(
               children: [
-                Container(
-                  height: 120,
-                  width: 120,
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(
-                        "https://scontent.ftpe7-4.fna.fbcdn.net/v/t1.6435-9/48369165_1912940112137595_5358895407491448832_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=h0UpyEBN-RsAX_VBj7E&_nc_ht=scontent.ftpe7-4.fna&oh=00_AT9trOZEUA1NFEVjJSiP38_rTO0FcSbL3cTGO3M7lCLTLQ&oe=62DB7C22"),
-                    backgroundColor: Colors.transparent,
-                  ),
+                SizedBox(
+                  height: 80,
                 ),
+                ProfileAvatarWidget(userModel: userModel),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      userModel.userName!,
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    Icon(
+                      Icons.edit,
+                      size: 15,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                DailyMission(),
+                SizedBox(
+                  height: 5,
+                ),
+                MyAchievement(userModel: userModel),
+                SizedBox(
+                  height: 5,
+                ),
+                LevelUpRule(),
+                SizedBox(
+                  height: 5,
+                ),
+                TextButton.icon(
+                    onPressed: () {
+                      final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false);
+                      provider.logout();
+                    },
+                    icon: Icon(Icons.logout),
+                    label: Text("登出"))
               ],
             ),
-            TextButton(
-                onPressed: () {},
-                child: Text(
-                  "更換大頭貼",
-                  style: TextStyle(color: Colors.blue),
-                )),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "王翊瑋",
-                  style: TextStyle(fontSize: 25),
-                ),
-                Icon(
-                  Icons.edit,
-                  size: 15,
-                )
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            DailyMission(),
-            SizedBox(
-              height: 5,
-            ),
-            MyAchievement(),
-            SizedBox(
-              height: 5,
-            ),
-            LevelUpRule(),
-            SizedBox(
-              height: 5,
-            ),
-            TextButton.icon(
-                onPressed: () {
-                  final provider =
-                      Provider.of<GoogleSignInProvider>(context, listen: false);
-                  provider.logout();
-                },
-                icon: Icon(Icons.logout),
-                label: Text("登出"))
-          ],
-        ),
+          );
+        },
       ),
     );
   }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 
 class MyAchievement extends StatelessWidget {
-  const MyAchievement({Key? key}) : super(key: key);
+  final UserModel userModel;
+  MyAchievement({Key? key, required this.userModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,8 @@ class MyAchievement extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text('Po文次數: 2 次', style: TextStyle(fontSize: 18)),
+                  Text('Po文次數: ${userModel.postTime} 次',
+                      style: TextStyle(fontSize: 18)),
                 ],
               ),
               Container(
@@ -44,7 +47,10 @@ class MyAchievement extends StatelessWidget {
                 color: Colors.grey,
               ),
               Row(
-                children: [Text('被讚次數: 1 次', style: TextStyle(fontSize: 18))],
+                children: [
+                  Text('被讚次數: ${userModel.likedTime} 次',
+                      style: TextStyle(fontSize: 18))
+                ],
               ),
               SizedBox(
                 height: 10,

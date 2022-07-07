@@ -44,7 +44,7 @@ class CreatePostProvider extends ChangeNotifier {
             imageUrl: imageUrl,
             postText: postText,
             postDateTimeStamp: DateTime.now().millisecondsSinceEpoch,
-            likeAmount: likeAmount,
+            likedPeopleList: [],
             rainLevel: rainLevel,
             posterUserId: FirebaseAuth.instance.currentUser!.uid,
             postCity: postCity,

@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.dart';
 
 import '../../models/postModel.dart';
@@ -61,7 +63,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
   }
 
   Future<void> fetchPostData() async {
-    var tempPostList = [];
+    List<PostModel> tempPostList = [];
     final originData = collectionState == null
         ? await FirebaseFirestore.instance
             .collection("posts")
@@ -174,6 +176,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
                         ),
                       )
                     : ListView.builder(
+                        addAutomaticKeepAlives: true,
                         shrinkWrap: true,
                         controller: controller,
                         itemBuilder: ((context, index) {
@@ -186,9 +189,58 @@ class _MainPostScreenState extends State<MainPostScreen> {
                               ),
                             );
                           }
-                          return PostItem(
-                            key: ValueKey(DateTime.now().toString()),
-                            postModel: _showedList[index],
+                          return Card(
+                            child: Column(
+                              children: [
+                                PostItem(
+                                  key: ValueKey(DateTime.now().toString()),
+                                  postModel: _showedList[index],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton.icon(
+                                      icon: Icon(
+                                          (_showedList[index] as PostModel)
+                                                  .likedPeopleList!
+                                                  .contains(FirebaseAuth
+                                                      .instance
+                                                      .currentUser!
+                                                      .uid)
+                                              ? Icons.favorite
+                                              : Icons.favorite_border),
+                                      onPressed: () {
+                                        if ((_showedList[index] as PostModel)
+                                            .likedPeopleList!
+                                            .contains(FirebaseAuth
+                                                .instance.currentUser!.uid)) {
+                                          (_showedList[index] as PostModel)
+                                              .likedPeopleList!
+                                              .remove(FirebaseAuth
+                                                  .instance.currentUser!.uid);
+                                        } else {
+                                          (_showedList[index] as PostModel)
+                                              .likedPeopleList!
+                                              .add(FirebaseAuth
+                                                  .instance.currentUser!.uid);
+                                        }
+                                        setState(() {});
+                                        Provider.of<MainPostProvider>(context,
+                                                listen: false)
+                                            .likePost(_showedList[index]);
+                                      },
+                                      label: Text(
+                                          "${(_showedList[index] as PostModel).likedPeopleList!.length} 讚"),
+                                    ),
+                                    TextButton.icon(
+                                        onPressed: () {},
+                                        icon: Icon(Icons.message_outlined),
+                                        label: Text("留言"))
+                                  ],
+                                )
+                              ],
+                            ),
                           );
                         }),
                         itemCount: isMoreLoading

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/providers/createPostProvider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
 
 import 'firebase_options.dart';
@@ -29,7 +30,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<GoogleSignInProvider>(
             create: (_) => GoogleSignInProvider()),
         ChangeNotifierProvider<CreatePostProvider>(
-            create: (_) => CreatePostProvider())
+            create: (_) => CreatePostProvider()),
+        ChangeNotifierProvider<MainPostProvider>(
+            create: (_) => MainPostProvider())
       ],
       child: MaterialApp(
           title: 'Flutter Demo',

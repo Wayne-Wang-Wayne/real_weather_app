@@ -17,15 +17,14 @@ class PosterInfoWidget extends StatelessWidget {
   Widget getPosterInfoWidget() {
     return Row(children: [
       SizedBox(
-        width: 10,
+        width: 8,
       ),
       Container(
-        height: 55,
-        width: 55,
-        child: CircleAvatar(
-          radius: 30,
-          backgroundImage: NetworkImage(postModel.posterImageUrl!),
-          backgroundColor: Colors.transparent,
+        height: 58,
+        width: 58,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(40),
+          child: Image.network(postModel.posterImageUrl!, fit: BoxFit.cover),
         ),
       ),
       SizedBox(

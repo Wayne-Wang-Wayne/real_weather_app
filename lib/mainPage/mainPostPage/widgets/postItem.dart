@@ -7,18 +7,11 @@ import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/posterInfo
 
 import '../../models/postModel.dart';
 
-class PostItem extends StatefulWidget {
+class PostItem extends StatelessWidget {
   final Key key;
   final PostModel postModel;
   const PostItem({required this.key, required this.postModel})
       : super(key: key);
-
-  @override
-  State<PostItem> createState() => _PostItemState();
-}
-
-class _PostItemState extends State<PostItem>
-    with AutomaticKeepAliveClientMixin<PostItem> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -26,18 +19,18 @@ class _PostItemState extends State<PostItem>
         height: 5,
       ),
       PosterInfoWidget(
-        postModel: widget.postModel,
+        postModel: postModel,
       ),
       SizedBox(
         height: 5,
       ),
       Row(
         children: [
-          PostLabel(rainLevel: widget.postModel.rainLevel!),
+          PostLabel(rainLevel: postModel.rainLevel!),
           LocDateWidget(
-              postCity: widget.postModel.postCity!,
-              postTown: widget.postModel.postTown!,
-              postDate: widget.postModel.postDateTimeStamp!)
+              postCity: postModel.postCity!,
+              postTown: postModel.postTown!,
+              postDate: postModel.postDateTimeStamp!)
         ],
       ),
       SizedBox(
@@ -50,7 +43,7 @@ class _PostItemState extends State<PostItem>
           padding: const EdgeInsets.all(8.0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(widget.postModel.imageUrl!, fit: BoxFit.cover),
+            child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
           ),
         ),
       ),
@@ -61,7 +54,7 @@ class _PostItemState extends State<PostItem>
         padding: const EdgeInsets.symmetric(horizontal: 15),
         width: double.infinity,
         child: Text(
-          widget.postModel.postText!,
+          postModel.postText!,
           style: TextStyle(fontSize: 20),
         ),
       ),
@@ -79,7 +72,4 @@ class _PostItemState extends State<PostItem>
       )
     ]);
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

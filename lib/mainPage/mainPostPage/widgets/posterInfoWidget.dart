@@ -20,8 +20,8 @@ class PosterInfoWidget extends StatelessWidget {
         width: 8,
       ),
       Container(
-        height: 58,
-        width: 58,
+        height: 55,
+        width: 55,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(40),
           child: Image.network(postModel.posterImageUrl!, fit: BoxFit.cover),

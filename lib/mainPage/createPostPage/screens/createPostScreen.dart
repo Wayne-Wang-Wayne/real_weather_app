@@ -82,7 +82,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       Provider.of<CreatePostProvider>(context, listen: false)
           .createPost(_imageFile!, _postText!, DateTime.now(), 0, _rainLevel!,
               _pickedCity!, _pickedTown!, _showErrorDialog)
-          .then((value) => Navigator.of(context).pop());
+          .then((value) => Navigator.of(context).pop(true));
     } catch (error) {}
   }
 

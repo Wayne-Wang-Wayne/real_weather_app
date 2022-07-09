@@ -8,6 +8,26 @@ class PostMessageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Icon(
+            Icons.expand_more_outlined,
+            color: Colors.black,
+            size: 40,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        title: Row(
+          children: [
+            Text(
+              "留言",
+              style: TextStyle(color: Colors.black),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

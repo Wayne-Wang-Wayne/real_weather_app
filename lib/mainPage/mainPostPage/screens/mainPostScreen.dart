@@ -150,7 +150,11 @@ class _MainPostScreenState extends State<MainPostScreen> {
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(CreatePostScreen.routeName)
-                      .then((value) => loadFirstData());
+                      .then((needToLoad) {
+                    if (needToLoad != null) {
+                      if (needToLoad as bool) loadFirstData();
+                    }
+                  });
                 },
                 child: Text(
                   "發佈",

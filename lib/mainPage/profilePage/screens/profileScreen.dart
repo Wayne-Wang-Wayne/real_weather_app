@@ -28,8 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             toFirestore: (UserModel userModel, options) =>
                 userModel.toFirestore())
         .doc(FirebaseAuth.instance.currentUser!.uid);
-    final userModel =
-        await docRef.get().then((value) => value.data()).catchError(() {});
+    final userModel = await docRef.get().then((value) => value.data());
     return Future.value(userModel);
   }
 

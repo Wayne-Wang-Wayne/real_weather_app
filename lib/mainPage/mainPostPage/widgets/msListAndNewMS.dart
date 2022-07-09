@@ -32,7 +32,7 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
                 replyListModel.toFirestore())
         .doc(widget.postModel.postId);
     final replyListModel =
-        await replyDocRef.get().then((value) => value.data()).catchError(() {});
+        await replyDocRef.get().then((value) => value.data());
 
     return Future.value(replyListModel);
   }

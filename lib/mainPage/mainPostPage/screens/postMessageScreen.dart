@@ -54,7 +54,9 @@ class PostMessageScreen extends StatelessWidget {
                 itemCount: 1,
               ),
             ),
-            NewMessageWidget()
+            NewMessageWidget(
+              postModel: postModel,
+            )
           ],
         ),
       ),

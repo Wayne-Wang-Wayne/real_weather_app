@@ -58,39 +58,19 @@ class PostModel {
   }
 }
 
-class ReplyModel {
-  final String? postId;
-  final String? replyContent;
-  final int? replyDateTimeStamp;
-  final int? replyLikeAmount;
-  final String? replierUserId;
-  ReplyModel(
-      {required this.postId,
-      required this.replyContent,
-      required this.replyDateTimeStamp,
-      required this.replyLikeAmount,
-      required this.replierUserId});
+class ReplyListModel {
+  final List<Map<String, dynamic>>? replyList;
 
-  factory ReplyModel.fromFirestore(
+  ReplyListModel({required this.replyList});
+
+  factory ReplyListModel.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
       SnapshotOptions? options) {
     final data = snapshot.data();
-    return ReplyModel(
-      postId: data?["postId"],
-      replyContent: data?["replyContent"],
-      replyDateTimeStamp: data?["replyDateTimeStamp"],
-      replyLikeAmount: data?["replyLikeAmount"],
-      replierUserId: data?["replierUserId"],
-    );
+    return ReplyListModel(replyList: data?["replyList"]);
   }
 
   Map<String, dynamic> toFirestore() {
-    return {
-      if (postId != null) "postId": postId,
-      if (replyContent != null) "replyContent": replyContent,
-      if (replyDateTimeStamp != null) "replyDateTimeStamp": replyDateTimeStamp,
-      if (replyLikeAmount != null) "replyLikeAmount": replyLikeAmount,
-      if (replierUserId != null) "replierUserId": replierUserId,
-    };
+    return {if (replyList != null) "replyList": replyList};
   }
 }

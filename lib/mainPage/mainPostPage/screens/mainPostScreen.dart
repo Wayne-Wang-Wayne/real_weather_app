@@ -246,7 +246,11 @@ class _MainPostScreenState extends State<MainPostScreen> {
                                           //         child: PostMessageScreen(),
                                           //         direction: AxisDirection.up));
                                           Navigator.of(context).pushNamed(
-                                              PostMessageScreen.routeName);
+                                              PostMessageScreen.routeName,
+                                              arguments: {
+                                                "postModel": _showedList[index]
+                                                    as PostModel
+                                              });
                                         },
                                         icon: Icon(Icons.message_outlined),
                                         label: Text("留言"))

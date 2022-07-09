@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
+import 'package:real_weather_shared_app/utils/someTools.dart';
 
 class LocDateWidget extends StatelessWidget {
   final String postCity;
@@ -13,28 +14,6 @@ class LocDateWidget extends StatelessWidget {
       required this.postTown,
       required this.postDate})
       : super(key: key);
-
-  String getReadableTime() {
-    var dt = DateTime.fromMillisecondsSinceEpoch(postDate);
-    var duration = DateTime.now().difference(dt);
-    var readableTime = DateFormat('yyyy/MM/dd HH:mm').format(dt);
-    if (duration.inDays == 1) {
-      readableTime = "昨天 ${DateFormat('HH:mm').format(dt)}";
-    }
-    if (duration.inDays == 2) {
-      readableTime = "前天 ${DateFormat('HH:mm').format(dt)}";
-    }
-    if (duration.inHours < 24) {
-      readableTime = "${duration.inHours}小時前";
-    }
-    if (duration.inMinutes < 60) {
-      readableTime = "${duration.inMinutes}分鐘前";
-    }
-    if (duration.inSeconds < 60) {
-      readableTime = "${duration.inSeconds}秒鐘前";
-    }
-    return readableTime;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +36,7 @@ class LocDateWidget extends StatelessWidget {
         SizedBox(
           width: 20,
         ),
-        Text(getReadableTime(),
+        Text(MyTools.getReadableTime(postDate),
             style: TextStyle(fontSize: 15, color: Colors.grey))
       ],
     );

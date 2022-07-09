@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/messageMainInfoWidget.dart';
+import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 
 class PostMessageScreen extends StatelessWidget {
   const PostMessageScreen({Key? key}) : super(key: key);
@@ -8,6 +10,9 @@ class PostMessageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Object> rcvdData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, Object>;
+    final postModel = rcvdData["postModel"] as PostModel;
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -25,6 +30,21 @@ class PostMessageScreen extends StatelessWidget {
               "留言",
               style: TextStyle(color: Colors.black),
             ),
+          ],
+        ),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(8),
+        width: double.infinity,
+        child: Column(
+          children: [
+            MessageMainInfoWidget(postModel: postModel),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              width: double.infinity,
+              height: 1,
+              color: Colors.grey.shade400,
+            )
           ],
         ),
       ),

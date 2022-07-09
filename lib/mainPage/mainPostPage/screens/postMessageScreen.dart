@@ -5,6 +5,8 @@ import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/messageIte
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/messageMainInfoWidget.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 
+import '../widgets/newMessageWisget.dart';
+
 class PostMessageScreen extends StatelessWidget {
   const PostMessageScreen({Key? key}) : super(key: key);
   static const routeName = "/post-message";
@@ -51,7 +53,8 @@ class PostMessageScreen extends StatelessWidget {
                 itemBuilder: ((context, index) => MessageItem()),
                 itemCount: 1,
               ),
-            )
+            ),
+            NewMessageWidget()
           ],
         ),
       ),

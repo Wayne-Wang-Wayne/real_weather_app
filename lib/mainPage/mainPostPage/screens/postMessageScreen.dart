@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/messageItem.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/messageMainInfoWidget.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 
@@ -44,6 +45,12 @@ class PostMessageScreen extends StatelessWidget {
               width: double.infinity,
               height: 1,
               color: Colors.grey.shade400,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: ((context, index) => MessageItem()),
+                itemCount: 1,
+              ),
             )
           ],
         ),

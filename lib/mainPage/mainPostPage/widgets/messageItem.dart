@@ -5,7 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import '../../../utils/someTools.dart';
 
 class MessageItem extends StatelessWidget {
-  const MessageItem({Key? key}) : super(key: key);
+  final Map<String, dynamic> reply;
+  MessageItem({Key? key, required this.reply}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

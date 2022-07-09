@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/messageItem.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/messageMainInfoWidget.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/msListAndNewMS.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 
 import '../widgets/newMessageWisget.dart';
@@ -16,6 +18,7 @@ class PostMessageScreen extends StatelessWidget {
     final Map<String, Object> rcvdData =
         ModalRoute.of(context)!.settings.arguments as Map<String, Object>;
     final postModel = rcvdData["postModel"] as PostModel;
+
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -48,13 +51,7 @@ class PostMessageScreen extends StatelessWidget {
               height: 1,
               color: Colors.grey.shade400,
             ),
-            Expanded(
-              child: ListView.builder(
-                itemBuilder: ((context, index) => MessageItem()),
-                itemCount: 1,
-              ),
-            ),
-            NewMessageWidget(
+            MsListAndNewMS(
               postModel: postModel,
             )
           ],

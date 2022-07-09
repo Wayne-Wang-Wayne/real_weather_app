@@ -59,7 +59,7 @@ class PostModel {
 }
 
 class ReplyListModel {
-  final List<Map<String, dynamic>>? replyList;
+  final List<dynamic>? replyList;
 
   ReplyListModel({required this.replyList});
 

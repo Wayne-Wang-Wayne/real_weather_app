@@ -41,7 +41,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
       FirebaseFirestore.instance.runTransaction((transaction) async {
         DocumentSnapshot userSnapshot = await transaction.get(userDocRef);
         DocumentSnapshot replySnapshot = await transaction.get(replyDocRef);
-        List<Map<String, dynamic>> tempReplyList = [];
+        List<dynamic> tempReplyList = [];
         if (!userSnapshot.exists) {
           throw Exception("User does not exist!");
         }
@@ -58,8 +58,8 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
         if (!replySnapshot.exists) {
           tempReplyList = [newReplierData];
         } else {
-          final oldReplyList = (replySnapshot.data() as Map)["replyList"]
-              as List<Map<String, dynamic>>;
+          final oldReplyList = (replySnapshot.data() as Map)["replyList"];
+          print("");
           oldReplyList.add(newReplierData);
           tempReplyList = oldReplyList;
         }

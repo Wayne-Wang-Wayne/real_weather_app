@@ -6,7 +6,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/screens/postMessageScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.dart';
+import 'package:real_weather_shared_app/utils/customPageRoute.dart';
 
 import '../../models/postModel.dart';
 import '../../models/userModel.dart';
@@ -234,7 +236,14 @@ class _MainPostScreenState extends State<MainPostScreen> {
                                           "${(_showedList[index] as PostModel).likedPeopleList!.length} 讚"),
                                     ),
                                     TextButton.icon(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          // Navigator.of(context).push(
+                                          //     CustomPageRoute(
+                                          //         child: PostMessageScreen(),
+                                          //         direction: AxisDirection.up));
+                                          Navigator.of(context).pushNamed(
+                                              PostMessageScreen.routeName);
+                                        },
                                         icon: Icon(Icons.message_outlined),
                                         label: Text("留言"))
                                   ],

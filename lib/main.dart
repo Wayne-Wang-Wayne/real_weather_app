@@ -6,10 +6,12 @@ import 'package:real_weather_shared_app/mainPage/createPostPage/providers/create
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
+import 'package:real_weather_shared_app/utils/customPageRoute.dart';
 
 import 'firebase_options.dart';
 import 'mainPage/authPage/providers/googleSignInProvider.dart';
 import 'mainPage/authPage/screens/authScreen.dart';
+import 'mainPage/mainPostPage/screens/postMessageScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,31 +37,46 @@ class MyApp extends StatelessWidget {
             create: (_) => MainPostProvider())
       ],
       child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-              colorScheme:
-                  ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
-                      .copyWith(secondary: Colors.white)),
-          home: Scaffold(
-            body: StreamBuilder(
-                stream: FirebaseAuth.instance.authStateChanges(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasData) {
-                    return MainScreen();
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text("Oops!有東西出錯了。"),
-                    );
-                  } else {
-                    return AuthScreen();
-                  }
-                }),
-          ),
-          routes: {
-            CreatePostScreen.routeName: (context) => CreatePostScreen(),
-          }),
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
+                .copyWith(secondary: Colors.white)),
+        home: Scaffold(
+          body: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasData) {
+                  return MainScreen();
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text("Oops!有東西出錯了。"),
+                  );
+                } else {
+                  return AuthScreen();
+                }
+              }),
+        ),
+        onGenerateRoute: (route) => onGenerateRoute(route),
+      ),
     );
+  }
+
+  static Route onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case CreatePostScreen.routeName:
+        return CustomPageRoute(
+            child: CreatePostScreen(),
+            settings: settings,
+            direction: AxisDirection.right);
+      case PostMessageScreen.routeName:
+        return CustomPageRoute(
+            child: PostMessageScreen(),
+            settings: settings,
+            direction: AxisDirection.up);
+      default:
+        return CustomPageRoute(child: CreatePostScreen(), settings: settings);
+    }
   }
 }

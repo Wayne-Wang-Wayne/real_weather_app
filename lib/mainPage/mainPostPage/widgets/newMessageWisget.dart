@@ -9,8 +9,11 @@ import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 import '../../models/userModel.dart';
 
 class NewMessageWidget extends StatefulWidget {
+  final Function messageSentCallBack;
   final PostModel postModel;
-  NewMessageWidget({Key? key, required this.postModel}) : super(key: key);
+  NewMessageWidget(
+      {Key? key, required this.postModel, required this.messageSentCallBack})
+      : super(key: key);
 
   @override
   State<NewMessageWidget> createState() => _NewMessageWidgetState();
@@ -19,10 +22,14 @@ class NewMessageWidget extends StatefulWidget {
 class _NewMessageWidgetState extends State<NewMessageWidget> {
   final _controller = TextEditingController();
   var _enterMessage = "";
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     Future<void> _leaveMessage() async {
+      setState(() {
+        _isLoading = true;
+      });
       final userDocRef = FirebaseFirestore.instance
           .collection('users')
           .withConverter(
@@ -66,9 +73,16 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
         transaction.set(replyDocRef, ReplyListModel(replyList: tempReplyList));
         return tempReplyList;
       }).then((value) {
-        print("object");
+        _enterMessage = "";
+        _controller.clear();
+        widget.messageSentCallBack();
+        setState(() {
+          _isLoading = false;
+        });
       }).catchError((error) {
-        print("object");
+        setState(() {
+          _isLoading = false;
+        });
       });
     }
 
@@ -88,18 +102,21 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             },
           ),
         ),
-        TextButton(
-            onPressed: _enterMessage.trim().isEmpty
-                ? null
-                : () {
-                    _leaveMessage();
-                    FocusScope.of(context).unfocus();
-                    _controller.clear();
-                  },
-            child: Text(
-              "留言",
-              style: TextStyle(color: Colors.blue, fontSize: 18),
-            ))
+        _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : TextButton(
+                onPressed: _enterMessage.trim().isEmpty
+                    ? null
+                    : () {
+                        _leaveMessage();
+                        FocusScope.of(context).unfocus();
+                      },
+                child: Text(
+                  "留言",
+                  style: TextStyle(color: Colors.blue, fontSize: 18),
+                ))
       ]),
     );
   }

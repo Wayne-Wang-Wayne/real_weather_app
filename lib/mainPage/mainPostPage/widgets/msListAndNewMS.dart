@@ -23,6 +23,10 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
     _getMessage();
   }
 
+  void messageSentCallBack() {
+    setState(() {});
+  }
+
   Future<ReplyListModel> _getMessage() async {
     final replyDocRef = FirebaseFirestore.instance
         .collection('replies')
@@ -77,8 +81,8 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
           ),
         ),
         NewMessageWidget(
-          postModel: widget.postModel,
-        )
+            postModel: widget.postModel,
+            messageSentCallBack: messageSentCallBack)
       ]),
     );
   }

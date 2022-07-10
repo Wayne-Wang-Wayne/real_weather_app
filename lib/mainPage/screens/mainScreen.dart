@@ -12,21 +12,38 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
+  int? _currentIndex;
   final _screens = [MainPostScreen(), ProfileScreen()];
+  PageController? _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = 0;
+    _pageController = PageController(initialPage: _currentIndex!);
+  }
+
+  @override
+  void dispose() {
+    _pageController?.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
+      body: PageView(
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
         children: _screens,
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,
-        currentIndex: _currentIndex,
+        currentIndex: _currentIndex!,
         onTap: (index) => setState(() {
           _currentIndex = index;
+          _pageController?.jumpToPage(index);
         }),
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.post_add), label: "看天氣"),

@@ -20,7 +20,8 @@ class MainPostScreen extends StatefulWidget {
   State<MainPostScreen> createState() => _MainPostScreenState();
 }
 
-class _MainPostScreenState extends State<MainPostScreen> {
+class _MainPostScreenState extends State<MainPostScreen>
+    with AutomaticKeepAliveClientMixin<MainPostScreen> {
   ScrollController? controller;
   var _showedList = [];
   QuerySnapshot? collectionState;
@@ -266,4 +267,7 @@ class _MainPostScreenState extends State<MainPostScreen> {
                       ),
               ));
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

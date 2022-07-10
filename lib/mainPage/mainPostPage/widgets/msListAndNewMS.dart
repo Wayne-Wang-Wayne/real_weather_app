@@ -98,7 +98,10 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
           child: Center(
             child: Text('目前沒有留言'),
           ),
-          height: MediaQuery.of(context).size.height),
+          height: MediaQuery.of(context).size.height -
+              kBottomNavigationBarHeight -
+              AppBar().preferredSize.height -
+              120),
     );
   }
 }

@@ -202,7 +202,9 @@ class _MainPostScreenState extends State<MainPostScreen>
                           child: Center(
                             child: Text('不好意思，目前沒有相關資料！'),
                           ),
-                          height: MediaQuery.of(context).size.height,
+                          height: MediaQuery.of(context).size.height -
+                              kBottomNavigationBarHeight -
+                              AppBar().preferredSize.height,
                         ),
                       )
                     : Stack(

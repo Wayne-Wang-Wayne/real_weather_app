@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/myAchievementWidget.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileAvatarWidget.dart';
+import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileShimmer.dart';
 
 import '../../authPage/providers/googleSignInProvider.dart';
 import '../widgets/dailyMissionWidget.dart';
@@ -39,8 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         future: getUserProfile(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return SingleChildScrollView(
+              child: ProfileShimmer(),
             );
           }
           if (snapshot.hasError) {

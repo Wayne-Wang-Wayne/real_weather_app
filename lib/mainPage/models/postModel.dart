@@ -74,3 +74,29 @@ class ReplyListModel {
     return {if (replyList != null) "replyList": replyList};
   }
 }
+
+class ReplyItemModel {
+  final String postId;
+  final String replyContent;
+  final int replyDateTimestamp;
+  final String replierName;
+  final int replierExp;
+  final String replierAvatarUrl;
+  ReplyItemModel(
+      {required this.postId,
+      required this.replyContent,
+      required this.replyDateTimestamp,
+      required this.replierName,
+      required this.replierExp,
+      required this.replierAvatarUrl});
+
+  static ReplyItemModel convertToModel(Map<String, dynamic> reply) {
+    return ReplyItemModel(
+        postId: reply["postId"],
+        replyContent: reply["replyContent"],
+        replyDateTimestamp: reply["replyDateTimestamp"],
+        replierName: reply["replierName"],
+        replierExp: reply["replierExp"],
+        replierAvatarUrl: reply["replierAvatarUrl"]);
+  }
+}

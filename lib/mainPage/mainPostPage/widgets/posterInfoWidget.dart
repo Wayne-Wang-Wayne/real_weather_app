@@ -22,12 +22,12 @@ class PosterInfoWidget extends StatelessWidget {
       Container(
         height: 55,
         width: 55,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: Hero(
-              tag: postModel.posterImageUrl! + postModel.postId!,
-              child:
-                  Image.network(postModel.posterImageUrl!, fit: BoxFit.cover)),
+        child: Hero(
+          tag: postModel.posterImageUrl! + postModel.postId!,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(40),
+            child: Image.network(postModel.posterImageUrl!, fit: BoxFit.cover),
+          ),
         ),
       ),
       SizedBox(

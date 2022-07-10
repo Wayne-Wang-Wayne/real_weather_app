@@ -17,7 +17,10 @@ class MessageMainInfoWidget extends StatelessWidget {
           width: 40,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(40),
-            child: Image.network(postModel.posterImageUrl!, fit: BoxFit.cover),
+            child: Hero(
+                tag: postModel.posterImageUrl! + postModel.postId!,
+                child: Image.network(postModel.posterImageUrl!,
+                    fit: BoxFit.cover)),
           ),
         ),
         SizedBox(
@@ -57,7 +60,9 @@ class MessageMainInfoWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
+              child: Hero(
+                  tag: postModel.imageUrl! + postModel.postId!,
+                  child: Image.network(postModel.imageUrl!, fit: BoxFit.cover)),
             ),
           ),
         )

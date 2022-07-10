@@ -12,6 +12,7 @@ import 'package:real_weather_shared_app/utils/customPageRoute.dart';
 
 import '../../models/postModel.dart';
 import '../../models/userModel.dart';
+import '../widgets/mainPostShimmer.dart';
 
 class MainPostScreen extends StatefulWidget {
   const MainPostScreen({Key? key}) : super(key: key);
@@ -191,9 +192,7 @@ class _MainPostScreenState extends State<MainPostScreen>
           ],
         ),
         body: isFirstLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
+            ? SingleChildScrollView(child: MainPostShimmer())
             : RefreshIndicator(
                 onRefresh: loadFirstData,
                 child: _showedList.isEmpty

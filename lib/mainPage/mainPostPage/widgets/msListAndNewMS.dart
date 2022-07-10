@@ -47,6 +47,12 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
     return Expanded(
       child: Column(children: [
         Expanded(
+            child: RefreshIndicator(
+          onRefresh: () {
+            return Future(() {
+              setState(() {});
+            });
+          },
           child: FutureBuilder<ReplyListModel>(
             future: _getMessage(),
             builder: (context, snapshot) {
@@ -54,35 +60,45 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
                 return MessageListShimmer();
               }
               if (snapshot.hasError) {
-                return Center(child: Text("目前沒有留言"));
+                return getNoDataView();
+              }
+              if (snapshot.data == null) {
+                return getNoDataView();
               }
               if (snapshot.data!.replyList == null) {
-                return Center(child: Text("目前沒有留言"));
+                return getNoDataView();
               }
               final reply = snapshot.data!.replyList;
-              if (reply!.isEmpty) {
-                return Center(child: Text("目前沒有留言"));
+              if (reply == null) {
+                return getNoDataView();
+              }
+              if (reply.isEmpty) {
+                return getNoDataView();
               }
 
-              return RefreshIndicator(
-                onRefresh: () {
-                  return Future(() {
-                    setState(() {});
-                  });
-                },
-                child: ListView.builder(
-                  itemBuilder: ((context, index) =>
-                      MessageItem(reply: reply[index])),
-                  itemCount: reply.length,
-                ),
+              return ListView.builder(
+                itemBuilder: ((context, index) =>
+                    MessageItem(reply: reply[index])),
+                itemCount: reply.length,
               );
             },
           ),
-        ),
+        )),
         NewMessageWidget(
             postModel: widget.postModel,
             messageSentCallBack: messageSentCallBack)
       ]),
+    );
+  }
+
+  Widget getNoDataView() {
+    return SingleChildScrollView(
+      physics: AlwaysScrollableScrollPhysics(),
+      child: Container(
+          child: Center(
+            child: Text('目前沒有留言'),
+          ),
+          height: MediaQuery.of(context).size.height),
     );
   }
 }

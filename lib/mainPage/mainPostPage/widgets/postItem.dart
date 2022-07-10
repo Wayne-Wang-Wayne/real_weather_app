@@ -8,10 +8,8 @@ import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/posterInfo
 import '../../models/postModel.dart';
 
 class PostItem extends StatelessWidget {
-  final Key key;
   final PostModel postModel;
-  const PostItem({required this.key, required this.postModel})
-      : super(key: key);
+  const PostItem({Key? key, required this.postModel}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Column(children: [

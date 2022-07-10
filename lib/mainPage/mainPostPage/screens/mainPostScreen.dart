@@ -224,10 +224,11 @@ class _MainPostScreenState extends State<MainPostScreen>
                                 );
                               }
                               return Card(
+                                key: ValueKey(
+                                    (_showedList[index] as PostModel).postId),
                                 child: Column(
                                   children: [
                                     PostItem(
-                                      key: ValueKey(DateTime.now().toString()),
                                       postModel: _showedList[index],
                                     ),
                                     Row(

@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../models/postModel.dart';
 import 'messageItem.dart';
+import 'messageListShimmer.dart';
 import 'newMessageWisget.dart';
 
 class MsListAndNewMS extends StatefulWidget {
@@ -50,9 +51,7 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
             future: _getMessage(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+                return MessageListShimmer();
               }
               if (snapshot.hasError) {
                 return Center(child: Text("目前沒有留言"));

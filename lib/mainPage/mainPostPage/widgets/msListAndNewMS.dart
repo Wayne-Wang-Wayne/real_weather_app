@@ -61,10 +61,17 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
                 return Center(child: Text("目前沒有留言"));
               }
 
-              return ListView.builder(
-                itemBuilder: ((context, index) =>
-                    MessageItem(reply: reply[index])),
-                itemCount: reply.length,
+              return RefreshIndicator(
+                onRefresh: () {
+                  return Future(() {
+                    setState(() {});
+                  });
+                },
+                child: ListView.builder(
+                  itemBuilder: ((context, index) =>
+                      MessageItem(reply: reply[index])),
+                  itemCount: reply.length,
+                ),
               );
             },
           ),

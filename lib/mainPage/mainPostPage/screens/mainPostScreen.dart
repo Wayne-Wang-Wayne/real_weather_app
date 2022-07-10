@@ -21,7 +21,11 @@ class MainPostScreen extends StatefulWidget {
 }
 
 class _MainPostScreenState extends State<MainPostScreen>
-    with AutomaticKeepAliveClientMixin<MainPostScreen> {
+    with
+        AutomaticKeepAliveClientMixin<MainPostScreen>,
+        SingleTickerProviderStateMixin {
+  AnimationController? animationController;
+  Animation<Offset>? offset;
   ScrollController? controller;
   var _showedList = [];
   QuerySnapshot? collectionState;
@@ -29,21 +33,41 @@ class _MainPostScreenState extends State<MainPostScreen>
   bool isFirstLoading = false;
   bool isMoreLoading = false;
   bool canLoadMore = true;
+  bool hasLeftTop = false;
 
   @override
   void initState() {
     super.initState();
     controller = ScrollController()..addListener(_scrollListener);
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+
+    offset = Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero)
+        .animate(animationController!);
     loadFirstData();
   }
 
   @override
   void dispose() {
     controller!.removeListener(_scrollListener);
+    animationController!.dispose();
     super.dispose();
   }
 
   void _scrollListener() {
+    if (controller!.position.atEdge) {
+      final isTop = controller!.position.pixels == 0;
+      if (isTop) {
+        animationController!.reverse();
+        hasLeftTop = false;
+      }
+    } else {
+      if (!hasLeftTop) {
+        animationController!.forward();
+        hasLeftTop = true;
+      }
+    }
+
     if (controller!.position.extentAfter < _showedList.length && canLoadMore) {
       canLoadMore = false;
       loadMore();
@@ -182,90 +206,124 @@ class _MainPostScreenState extends State<MainPostScreen>
                           height: MediaQuery.of(context).size.height,
                         ),
                       )
-                    : ListView.builder(
-                        addAutomaticKeepAlives: true,
-                        shrinkWrap: true,
-                        controller: controller,
-                        itemBuilder: ((context, index) {
-                          if (index == _showedList.length && isMoreLoading) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 20.0),
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          }
-                          return Card(
-                            child: Column(
-                              children: [
-                                PostItem(
-                                  key: ValueKey(DateTime.now().toString()),
-                                  postModel: _showedList[index],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                    : Stack(
+                        children: [
+                          ListView.builder(
+                            addAutomaticKeepAlives: true,
+                            shrinkWrap: true,
+                            controller: controller,
+                            itemBuilder: ((context, index) {
+                              if (index == _showedList.length &&
+                                  isMoreLoading) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 20.0),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+                              return Card(
+                                child: Column(
                                   children: [
-                                    TextButton.icon(
-                                      icon: Icon(
-                                          (_showedList[index] as PostModel)
-                                                  .likedPeopleList!
-                                                  .contains(FirebaseAuth
-                                                      .instance
-                                                      .currentUser!
-                                                      .uid)
-                                              ? Icons.favorite
-                                              : Icons.favorite_border),
-                                      onPressed: () {
-                                        if ((_showedList[index] as PostModel)
-                                            .likedPeopleList!
-                                            .contains(FirebaseAuth
-                                                .instance.currentUser!.uid)) {
-                                          (_showedList[index] as PostModel)
-                                              .likedPeopleList!
-                                              .remove(FirebaseAuth
-                                                  .instance.currentUser!.uid);
-                                        } else {
-                                          (_showedList[index] as PostModel)
-                                              .likedPeopleList!
-                                              .add(FirebaseAuth
-                                                  .instance.currentUser!.uid);
-                                        }
-                                        setState(() {});
-                                        Provider.of<MainPostProvider>(context,
-                                                listen: false)
-                                            .likePost(_showedList[index]);
-                                      },
-                                      label: Text(
-                                          "${(_showedList[index] as PostModel).likedPeopleList!.length} 讚"),
+                                    PostItem(
+                                      key: ValueKey(DateTime.now().toString()),
+                                      postModel: _showedList[index],
                                     ),
-                                    TextButton.icon(
-                                        onPressed: () {
-                                          // Navigator.of(context).push(
-                                          //     CustomPageRoute(
-                                          //         child: PostMessageScreen(),
-                                          //         direction: AxisDirection.up));
-                                          Navigator.of(context).pushNamed(
-                                              PostMessageScreen.routeName,
-                                              arguments: {
-                                                "postModel": _showedList[index]
-                                                    as PostModel
-                                              });
-                                        },
-                                        icon: Icon(Icons.message_outlined),
-                                        label: Text("留言"))
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        TextButton.icon(
+                                          icon: Icon(
+                                              (_showedList[index] as PostModel)
+                                                      .likedPeopleList!
+                                                      .contains(FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid)
+                                                  ? Icons.favorite
+                                                  : Icons.favorite_border),
+                                          onPressed: () {
+                                            if ((_showedList[index]
+                                                    as PostModel)
+                                                .likedPeopleList!
+                                                .contains(FirebaseAuth.instance
+                                                    .currentUser!.uid)) {
+                                              (_showedList[index] as PostModel)
+                                                  .likedPeopleList!
+                                                  .remove(FirebaseAuth.instance
+                                                      .currentUser!.uid);
+                                            } else {
+                                              (_showedList[index] as PostModel)
+                                                  .likedPeopleList!
+                                                  .add(FirebaseAuth.instance
+                                                      .currentUser!.uid);
+                                            }
+                                            setState(() {});
+                                            Provider.of<MainPostProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .likePost(_showedList[index]);
+                                          },
+                                          label: Text(
+                                              "${(_showedList[index] as PostModel).likedPeopleList!.length} 讚"),
+                                        ),
+                                        TextButton.icon(
+                                            onPressed: () {
+                                              // Navigator.of(context).push(
+                                              //     CustomPageRoute(
+                                              //         child: PostMessageScreen(),
+                                              //         direction: AxisDirection.up));
+                                              Navigator.of(context).pushNamed(
+                                                  PostMessageScreen.routeName,
+                                                  arguments: {
+                                                    "postModel":
+                                                        _showedList[index]
+                                                            as PostModel
+                                                  });
+                                            },
+                                            icon: Icon(Icons.message_outlined),
+                                            label: Text("留言"))
+                                      ],
+                                    )
                                   ],
-                                )
-                              ],
+                                ),
+                              );
+                            }),
+                            itemCount: isMoreLoading
+                                ? _showedList.length + 1
+                                : _showedList.length,
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: SlideTransition(
+                              position: offset!,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 50.0, horizontal: 30),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    scrollToTop();
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_upward_rounded,
+                                    size: 50,
+                                    color: Colors.blueGrey,
+                                  ),
+                                ),
+                              ),
                             ),
-                          );
-                        }),
-                        itemCount: isMoreLoading
-                            ? _showedList.length + 1
-                            : _showedList.length,
+                          )
+                        ],
                       ),
               ));
+  }
+
+  void scrollToTop() {
+    final double start = 0;
+    controller!.animateTo(start,
+        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 
   @override

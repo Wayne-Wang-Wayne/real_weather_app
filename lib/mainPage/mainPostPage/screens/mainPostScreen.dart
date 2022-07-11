@@ -142,6 +142,8 @@ class _MainPostScreenState extends State<MainPostScreen>
       item.posterImageUrl = userModel!.userImageUrl;
       item.posterName = userModel.userName;
       item.posterTitle = userModel.userTitle;
+      item.posterLikedTimes = userModel.likedTime;
+      item.posterPostTimes = userModel.postTime;
       _showedList.add(item);
     }
   }

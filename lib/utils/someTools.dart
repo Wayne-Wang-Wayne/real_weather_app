@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:real_weather_shared_app/utils/userInfoWidget.dart';
 
+import '../mainPage/models/postModel.dart';
+
 class MyTools {
   static String getReadableTime(int timeStamp) {
     var dt = DateTime.fromMillisecondsSinceEpoch(timeStamp);
@@ -25,12 +27,12 @@ class MyTools {
     return readableTime;
   }
 
-  static void showUserInfo(BuildContext context) {
+  static void showUserInfo(BuildContext context, PostModel? postModel) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
         isScrollControlled: true,
         context: context,
-        builder: (context) => UserInfoWidget());
+        builder: (context) => UserInfoWidget(postModel: postModel));
   }
 }

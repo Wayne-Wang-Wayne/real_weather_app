@@ -12,15 +12,18 @@ class MessageMainInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(
-          height: 40,
-          width: 40,
-          child: Hero(
-            tag: postModel.posterImageUrl! + postModel.postId!,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(40),
-              child:
-                  Image.network(postModel.posterImageUrl!, fit: BoxFit.cover),
+        GestureDetector(
+          onTap: () => MyTools.showUserInfo(context, postModel),
+          child: Container(
+            height: 40,
+            width: 40,
+            child: Hero(
+              tag: postModel.posterImageUrl! + postModel.postId!,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child:
+                    Image.network(postModel.posterImageUrl!, fit: BoxFit.cover),
+              ),
             ),
           ),
         ),
@@ -31,20 +34,24 @@ class MessageMainInfoWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    postModel.posterName!,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                  ),
-                  SizedBox(
-                    width: 2,
-                  ),
-                  Text(
-                    "(${postModel.posterTitle!})",
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
-                  )
-                ],
+              GestureDetector(
+                onTap: () => MyTools.showUserInfo(context, postModel),
+                child: Row(
+                  children: [
+                    Text(
+                      postModel.posterName!,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    SizedBox(
+                      width: 2,
+                    ),
+                    Text(
+                      "(${postModel.posterTitle!})",
+                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                    )
+                  ],
+                ),
               ),
               Text(postModel.postText!, style: TextStyle(fontSize: 14)),
               Text(MyTools.getReadableTime(postModel.postDateTimeStamp!),

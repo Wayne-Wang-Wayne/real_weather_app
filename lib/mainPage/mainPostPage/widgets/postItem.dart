@@ -18,7 +18,7 @@ class PostItem extends StatelessWidget {
         height: 5,
       ),
       GestureDetector(
-        onTap: () => MyTools.showUserInfo(context),
+        onTap: () => MyTools.showUserInfo(context, postModel),
         child: PosterInfoWidget(
           postModel: postModel,
         ),

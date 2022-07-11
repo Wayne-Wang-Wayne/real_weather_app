@@ -15,13 +15,17 @@ class MessageItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(
-          height: 40,
-          width: 40,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(40),
-            child: Image.network(replyItemModel.replierAvatarUrl,
-                fit: BoxFit.cover),
+        GestureDetector(
+          onTap: () => MyTools.showUserInfo(
+              context: context, userUid: replyItemModel.replierId),
+          child: Container(
+            height: 40,
+            width: 40,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(40),
+              child: Image.network(replyItemModel.replierAvatarUrl,
+                  fit: BoxFit.cover),
+            ),
           ),
         ),
         SizedBox(
@@ -31,20 +35,25 @@ class MessageItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    replyItemModel.replierName,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                  ),
-                  SizedBox(
-                    width: 2,
-                  ),
-                  Text(
-                    "(天氣專家)",
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
-                  )
-                ],
+              GestureDetector(
+                onTap: () => MyTools.showUserInfo(
+                    context: context, userUid: replyItemModel.replierId),
+                child: Row(
+                  children: [
+                    Text(
+                      replyItemModel.replierName,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    SizedBox(
+                      width: 2,
+                    ),
+                    Text(
+                      "(天氣專家)",
+                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                    )
+                  ],
+                ),
               ),
               Text(replyItemModel.replyContent, style: TextStyle(fontSize: 14)),
               Text(MyTools.getReadableTime(replyItemModel.replyDateTimestamp),

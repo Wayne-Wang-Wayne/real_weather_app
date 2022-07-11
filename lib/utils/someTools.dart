@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/fetchUserBottomSheetInfo.dart';
 import 'package:real_weather_shared_app/utils/userInfoWidget.dart';
 
 import '../mainPage/models/postModel.dart';
@@ -27,12 +28,24 @@ class MyTools {
     return readableTime;
   }
 
-  static void showUserInfo(BuildContext context, PostModel? postModel) {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
-        isScrollControlled: true,
-        context: context,
-        builder: (context) => UserInfoWidget(postModel: postModel));
+  static void showUserInfo(
+      {required BuildContext context, PostModel? postModel, String? userUid}) {
+    if (postModel != null && userUid == null) {
+      showModalBottomSheet(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          isScrollControlled: true,
+          context: context,
+          builder: (context) => UserInfoWidget(postModel: postModel));
+    }
+
+    if (postModel == null && userUid != null) {
+      showModalBottomSheet(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+          isScrollControlled: true,
+          context: context,
+          builder: (context) => FetchUserBottomSheet(userUid: userUid));
+    }
   }
 }

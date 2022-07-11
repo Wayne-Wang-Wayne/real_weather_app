@@ -13,7 +13,8 @@ class MessageMainInfoWidget extends StatelessWidget {
     return Container(
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         GestureDetector(
-          onTap: () => MyTools.showUserInfo(context, postModel),
+          onTap: () =>
+              MyTools.showUserInfo(context: context, postModel: postModel),
           child: Container(
             height: 40,
             width: 40,
@@ -35,7 +36,8 @@ class MessageMainInfoWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () => MyTools.showUserInfo(context, postModel),
+                onTap: () => MyTools.showUserInfo(
+                    context: context, postModel: postModel),
                 child: Row(
                   children: [
                     Text(

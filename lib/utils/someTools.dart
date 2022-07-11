@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:real_weather_shared_app/utils/userInfoWidget.dart';
 
 class MyTools {
   static String getReadableTime(int timeStamp) {
@@ -21,5 +23,14 @@ class MyTools {
       readableTime = "${duration.inSeconds}秒鐘前";
     }
     return readableTime;
+  }
+
+  static void showUserInfo(BuildContext context) {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => UserInfoWidget());
   }
 }

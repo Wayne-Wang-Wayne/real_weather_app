@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/locDateWidget.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postLabel.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/posterInfoWidget.dart';
+import 'package:real_weather_shared_app/utils/someTools.dart';
 
 import '../../models/postModel.dart';
 
@@ -16,8 +17,11 @@ class PostItem extends StatelessWidget {
       SizedBox(
         height: 5,
       ),
-      PosterInfoWidget(
-        postModel: postModel,
+      GestureDetector(
+        onTap: () => MyTools.showUserInfo(context),
+        child: PosterInfoWidget(
+          postModel: postModel,
+        ),
       ),
       SizedBox(
         height: 5,

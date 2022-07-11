@@ -54,7 +54,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
         }
         final userModel = userSnapshot.data() as Map;
         final Map<String, dynamic> newReplierData = {
-          "postId": widget.postModel.postId,
+          "replierId": FirebaseAuth.instance.currentUser!.uid,
           "replyContent": _enterMessage,
           "replyDateTimestamp": DateTime.now().millisecondsSinceEpoch,
           "replierName": userModel["userName"],

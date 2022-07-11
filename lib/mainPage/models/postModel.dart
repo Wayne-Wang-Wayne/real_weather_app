@@ -80,14 +80,14 @@ class ReplyListModel {
 }
 
 class ReplyItemModel {
-  final String postId;
+  final String replierId;
   final String replyContent;
   final int replyDateTimestamp;
   final String replierName;
   final int replierExp;
   final String replierAvatarUrl;
   ReplyItemModel(
-      {required this.postId,
+      {required this.replierId,
       required this.replyContent,
       required this.replyDateTimestamp,
       required this.replierName,
@@ -96,7 +96,7 @@ class ReplyItemModel {
 
   static ReplyItemModel convertToModel(Map<String, dynamic> reply) {
     return ReplyItemModel(
-        postId: reply["postId"],
+        replierId: reply["replierId"],
         replyContent: reply["replyContent"],
         replyDateTimestamp: reply["replyDateTimestamp"],
         replierName: reply["replierName"],

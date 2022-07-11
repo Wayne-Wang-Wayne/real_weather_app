@@ -45,11 +45,11 @@ class UserInfoWidget extends StatelessWidget {
           children: [
             Text(
               "貼文次數: 1",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: Colors.blueGrey),
             ),
             Text(
               "被讚次數: 7",
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18, color: Colors.blueGrey),
             )
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/locDateWidget.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItemImageWidget.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postLabel.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/posterInfoWidget.dart';
 import 'package:real_weather_shared_app/utils/pictureDetailPage.dart';
@@ -40,26 +41,8 @@ class PostItem extends StatelessWidget {
       SizedBox(
         height: 5,
       ),
-      GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed(
-            PictureDetailPage.routeName,
-            arguments: {"pictureUrl": postModel.imageUrl!}),
-        child: Hero(
-          tag: postModel.imageUrl!,
-          child: AspectRatio(
-            aspectRatio: 3 / 2,
-            child: Container(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
-                ),
-              ),
-            ),
-          ),
-        ),
+      PostItemImage(
+        imageUrl: postModel.imageUrl!,
       ),
       SizedBox(
         height: 5,

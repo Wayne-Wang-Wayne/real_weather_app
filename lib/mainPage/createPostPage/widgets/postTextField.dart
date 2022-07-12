@@ -16,29 +16,32 @@ class _PostTextFieldState extends State<PostTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Container(
-        height: 250,
-        width: double.infinity,
-        decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.grey),
-            borderRadius: BorderRadius.all(Radius.circular(8))),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: TextField(
-            style: TextStyle(fontSize: 20),
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            controller: _controller,
-            decoration: InputDecoration.collapsed(
-                hintText: "請寫下你的想法！", hintStyle: TextStyle(color: Colors.grey)),
-            onChanged: (value) {
-              setState(() {
-                postText = value;
-                widget.postTextCallBack(postText);
-              });
-            },
+    return AspectRatio(
+      aspectRatio: 4 / 3,
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              border: Border.all(width: 1, color: Colors.grey),
+              borderRadius: BorderRadius.all(Radius.circular(8))),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              style: TextStyle(fontSize: 20),
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              controller: _controller,
+              decoration: InputDecoration.collapsed(
+                  hintText: "請寫下你的想法！",
+                  hintStyle: TextStyle(color: Colors.grey)),
+              onChanged: (value) {
+                setState(() {
+                  postText = value;
+                  widget.postTextCallBack(postText);
+                });
+              },
+            ),
           ),
         ),
       ),

@@ -45,34 +45,38 @@ class _AddPictureWidgetState extends State<AddPictureWidget> {
     return Column(
       children: [
         if (_storedImage != null)
-          Container(
-            width: double.infinity,
-            height: 250,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.file(
-                    _storedImage!,
-                    fit: BoxFit.cover,
-                  )),
+          AspectRatio(
+            aspectRatio: 3 / 2,
+            child: Container(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      _storedImage!,
+                      fit: BoxFit.cover,
+                    )),
+              ),
             ),
           ),
         if (_storedImage == null)
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                alignment: Alignment.center,
-                width: double.infinity,
-                height: 250,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text("請拍張當下美麗的天氣"), Icon(Icons.photo)],
-                ),
-                decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.all(Radius.circular(8))),
-              )),
+          AspectRatio(
+            aspectRatio: 3 / 2,
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text("請拍張當下美麗的天氣"), Icon(Icons.photo)],
+                  ),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.grey),
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                )),
+          ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

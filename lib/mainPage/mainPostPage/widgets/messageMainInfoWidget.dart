@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 import 'package:real_weather_shared_app/utils/someTools.dart';
 
+import '../../../utils/pictureDetailPage.dart';
+
 class MessageMainInfoWidget extends StatelessWidget {
   final PostModel postModel;
   MessageMainInfoWidget({Key? key, required this.postModel}) : super(key: key);
@@ -64,15 +66,20 @@ class MessageMainInfoWidget extends StatelessWidget {
         SizedBox(
           width: 8,
         ),
-        Container(
-          height: 120,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Hero(
-              tag: postModel.imageUrl!,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
+        GestureDetector(
+          onTap: () => Navigator.of(context).pushNamed(
+              PictureDetailPage.routeName,
+              arguments: {"pictureUrl": postModel.imageUrl!}),
+          child: Container(
+            height: 120,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Hero(
+                tag: postModel.imageUrl!,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
+                ),
               ),
             ),
           ),

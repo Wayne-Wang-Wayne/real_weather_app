@@ -44,9 +44,13 @@ class MainPostShimmer extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 8),
-              Padding(
-                  padding: EdgeInsets.all(8),
-                  child: buildShimmerContener(false, 250, double.infinity, 8)),
+              AspectRatio(
+                aspectRatio: 3 / 2,
+                child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: buildShimmerContener(
+                        false, double.infinity, double.infinity, 8)),
+              ),
               SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),

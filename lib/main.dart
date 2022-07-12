@@ -7,6 +7,7 @@ import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPo
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
+import 'package:real_weather_shared_app/utils/pictureDetailPage.dart';
 
 import 'firebase_options.dart';
 import 'mainPage/authPage/providers/googleSignInProvider.dart';
@@ -75,6 +76,11 @@ class MyApp extends StatelessWidget {
             child: PostMessageScreen(),
             settings: settings,
             direction: AxisDirection.up);
+      case PictureDetailPage.routeName:
+        return CustomPageRoute(
+            child: PictureDetailPage(),
+            settings: settings,
+            direction: AxisDirection.down);
       default:
         return CustomPageRoute(child: CreatePostScreen(), settings: settings);
     }

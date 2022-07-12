@@ -39,16 +39,18 @@ class PostItem extends StatelessWidget {
       SizedBox(
         height: 5,
       ),
-      Container(
-        width: double.infinity,
-        height: 250,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Hero(
-            tag: postModel.imageUrl! + postModel.postId!,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
+      AspectRatio(
+        aspectRatio: 3 / 2,
+        child: Container(
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Hero(
+              tag: postModel.imageUrl! + postModel.postId!,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
+              ),
             ),
           ),
         ),

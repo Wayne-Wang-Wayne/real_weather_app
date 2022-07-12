@@ -69,7 +69,7 @@ class MessageMainInfoWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Hero(
-              tag: postModel.imageUrl! + postModel.postId!,
+              tag: postModel.imageUrl!,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),

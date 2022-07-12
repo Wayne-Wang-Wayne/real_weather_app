@@ -7,10 +7,30 @@ class PictureDetailPage extends StatelessWidget {
   static const routeName = "/detail-picture";
   @override
   Widget build(BuildContext context) {
-    String pictureUrl = "";
+    final String pictureUrl =
+        (ModalRoute.of(context)!.settings.arguments as Map)["pictureUrl"];
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Container(),
+      body: Hero(
+        tag: pictureUrl,
+        child: InteractiveViewer(
+          clipBehavior: Clip.none,
+          child: Center(
+            child: AspectRatio(
+              aspectRatio: 3 / 4,
+              child: Container(
+                width: double.infinity,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    child: Image.network(pictureUrl, fit: BoxFit.contain),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

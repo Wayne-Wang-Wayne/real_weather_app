@@ -3,6 +3,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
+import 'package:real_weather_shared_app/utils/pictureDetailPage.dart';
 
 class UserInfoWidget extends StatelessWidget {
   PostModel? postModel;
@@ -17,17 +18,24 @@ class UserInfoWidget extends StatelessWidget {
         SizedBox(
           height: 30,
         ),
-        Container(
-          height: 120,
-          width: 120,
-          child: CircleAvatar(
-            radius: 30,
-            backgroundImage: NetworkImage(postModel == null
-                ? userModel!.userImageUrl!
-                : postModel!.posterImageUrl!),
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+        GestureDetector(
+            onTap: () => Navigator.of(context)
+                    .pushNamed(PictureDetailPage.routeName, arguments: {
+                  "pictureUrl": postModel == null
+                      ? userModel!.userImageUrl!
+                      : postModel!.posterImageUrl!
+                }),
+            child: Container(
+              height: 120,
+              width: 120,
+              child: CircleAvatar(
+                radius: 30,
+                backgroundImage: NetworkImage(postModel == null
+                    ? userModel!.userImageUrl!
+                    : postModel!.posterImageUrl!),
+                backgroundColor: Colors.transparent,
+              ),
+            )),
         SizedBox(
           height: 10,
         ),

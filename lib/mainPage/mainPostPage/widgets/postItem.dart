@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/locDateWidget.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postLabel.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/posterInfoWidget.dart';
+import 'package:real_weather_shared_app/utils/pictureDetailPage.dart';
 import 'package:real_weather_shared_app/utils/someTools.dart';
 
 import '../../models/postModel.dart';
@@ -39,17 +40,22 @@ class PostItem extends StatelessWidget {
       SizedBox(
         height: 5,
       ),
-      AspectRatio(
-        aspectRatio: 3 / 2,
-        child: Container(
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Hero(
-              tag: postModel.imageUrl! + postModel.postId!,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
+      GestureDetector(
+        onTap: () => Navigator.of(context).pushNamed(
+            PictureDetailPage.routeName,
+            arguments: {"pictureUrl": postModel.imageUrl!}),
+        child: Hero(
+          tag: postModel.imageUrl!,
+          child: AspectRatio(
+            aspectRatio: 3 / 2,
+            child: Container(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(postModel.imageUrl!, fit: BoxFit.cover),
+                ),
               ),
             ),
           ),

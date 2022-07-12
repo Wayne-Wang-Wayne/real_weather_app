@@ -77,10 +77,8 @@ class MyApp extends StatelessWidget {
             settings: settings,
             direction: AxisDirection.up);
       case PictureDetailPage.routeName:
-        return CustomPageRoute(
-            child: PictureDetailPage(),
-            settings: settings,
-            direction: AxisDirection.down);
+        return MaterialPageRoute(
+            builder: (context) => PictureDetailPage(), settings: settings);
       default:
         return CustomPageRoute(child: CreatePostScreen(), settings: settings);
     }

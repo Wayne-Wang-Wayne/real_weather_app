@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/postModel.dart';
@@ -20,6 +21,7 @@ class CreatePostProvider extends ChangeNotifier {
       String postCity,
       String postTown,
       Function showErrorDialog) async {
+    EasyLoading.show(status: '處理中...');
     canPop = false;
     isLoading = true;
     notifyListeners();
@@ -54,6 +56,7 @@ class CreatePostProvider extends ChangeNotifier {
         notifyListeners();
       });
     } catch (error) {
+      EasyLoading.dismiss();
       showErrorDialog();
       canPop = true;
       isLoading = false;

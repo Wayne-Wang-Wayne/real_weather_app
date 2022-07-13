@@ -50,6 +50,8 @@ dependencies:
   uuid: ^3.0.6
   shimmer: ^2.0.0
 
+  flutter_easyloading: ^3.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

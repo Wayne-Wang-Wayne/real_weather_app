@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/providers/createPostProvider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/pictureWidget.dart';
@@ -82,7 +83,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       Provider.of<CreatePostProvider>(context, listen: false)
           .createPost(_imageFile!, _postText!, DateTime.now(), 0, _rainLevel!,
               _pickedCity!, _pickedTown!, _showErrorDialog)
-          .then((value) => Navigator.of(context).pop(true));
+          .then((value) {
+        EasyLoading.dismiss();
+        Navigator.of(context).pop(true);
+      });
     } catch (error) {}
   }
 
@@ -97,7 +101,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: isLoading ? false : true,
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
             color: Colors.black, //change your color here
@@ -113,26 +116,24 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       _pickedCity != null &&
                       _pickedTown != null &&
                       _postText != null &&
-                      _postText != "") {
+                      _postText != "" &&
+                      !isLoading) {
                     createPost(context);
                   }
                 },
-                child: isLoading
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : Text(
-                        "完成",
-                        style: TextStyle(
-                            color: (_imageFile != null &&
-                                    _pickedCity != null &&
-                                    _pickedTown != null &&
-                                    _postText != null &&
-                                    _postText != "")
-                                ? Colors.blueAccent
-                                : Colors.grey,
-                            fontSize: 20),
-                      ))
+                child: Text(
+                  "完成",
+                  style: TextStyle(
+                      color: (_imageFile == null ||
+                              _pickedCity == null ||
+                              _pickedTown == null ||
+                              _postText == null ||
+                              _postText == "" ||
+                              isLoading)
+                          ? Colors.grey
+                          : Colors.blueAccent,
+                      fontSize: 20),
+                ))
           ],
         ),
         body: GestureDetector(

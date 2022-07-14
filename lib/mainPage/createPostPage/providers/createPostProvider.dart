@@ -21,7 +21,7 @@ class CreatePostProvider extends ChangeNotifier {
       String postCity,
       String postTown,
       Function showErrorDialog) async {
-    EasyLoading.show(status: '處理中...');
+    EasyLoading.show(status: '貼文生成中...');
     canPop = false;
     isLoading = true;
     notifyListeners();

@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:real_weather_shared_app/mainPage/createPostPage/providers/createPostProvider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
@@ -33,8 +32,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<GoogleSignInProvider>(
             create: (_) => GoogleSignInProvider()),
-        ChangeNotifierProvider<CreatePostProvider>(
-            create: (_) => CreatePostProvider()),
         ChangeNotifierProvider<MainPostProvider>(
             create: (_) => MainPostProvider())
       ],

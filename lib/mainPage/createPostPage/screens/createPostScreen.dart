@@ -1,17 +1,18 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:real_weather_shared_app/mainPage/createPostPage/providers/createPostProvider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/pictureWidget.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/postTextField.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../models/postModel.dart';
 import '../widgets/areaPicker.dart';
 import '../widgets/weatherPicker.dart';
 
@@ -24,6 +25,9 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
+  bool isLoading = false;
+  bool canPop = true;
+
   File? _imageFile;
 
   int? _rainLevel = 0;
@@ -71,6 +75,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ));
   }
 
+  void errorHandel() {
+    setState(() {
+      EasyLoading.dismiss();
+      _showErrorDialog();
+      canPop = true;
+      isLoading = false;
+    });
+  }
+
   Future<void> createPost(BuildContext context) async {
     if (_imageFile == null) {
       return;
@@ -80,21 +93,74 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
     FocusManager.instance.primaryFocus?.unfocus();
     try {
-      Provider.of<CreatePostProvider>(context, listen: false)
-          .createPost(_imageFile!, _postText!, DateTime.now(), 0, _rainLevel!,
-              _pickedCity!, _pickedTown!, _showErrorDialog)
-          .then((value) {
-        EasyLoading.dismiss();
-        Navigator.of(context).pop(true);
+      setState(() {
+        EasyLoading.showProgress(0.0, status: '貼文產生中.. 0%');
+        canPop = false;
+        isLoading = true;
       });
-    } catch (error) {}
+
+      final postUid = Uuid().v4();
+      final postRef = FirebaseStorage.instance
+          .ref()
+          .child("post_image")
+          .child("$postUid.jpg");
+      final uploadImageTask = postRef.putFile(_imageFile!);
+
+      uploadImageTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) async {
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            final progress = (100.0 *
+                    (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes))
+                .toInt();
+            EasyLoading.showProgress(
+                taskSnapshot.bytesTransferred / taskSnapshot.totalBytes,
+                status: '貼文產生中.. $progress%');
+            break;
+          case TaskState.paused:
+            print("Upload is paused.");
+            break;
+          case TaskState.canceled:
+            print("Upload was canceled");
+            break;
+          case TaskState.error:
+            errorHandel();
+            break;
+          case TaskState.success:
+            final imageUrl = await postRef.getDownloadURL();
+            final docRef = FirebaseFirestore.instance
+                .collection("posts")
+                .withConverter(
+                    fromFirestore: PostModel.fromFirestore,
+                    toFirestore: (PostModel postModel, options) =>
+                        postModel.toFirestore())
+                .doc(postUid);
+
+            await docRef.set(PostModel(
+                postId: postUid,
+                imageUrl: imageUrl,
+                postText: _postText,
+                postDateTimeStamp: DateTime.now().millisecondsSinceEpoch,
+                likedPeopleList: [],
+                rainLevel: _rainLevel,
+                posterUserId: FirebaseAuth.instance.currentUser!.uid,
+                postCity: _pickedCity,
+                postTown: _pickedTown));
+            setState(() {
+              canPop = true;
+              isLoading = false;
+              EasyLoading.dismiss();
+              Navigator.of(context).pop(true);
+            });
+            break;
+        }
+      });
+    } catch (error) {
+      errorHandel();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final canPop =
-        Provider.of<CreatePostProvider>(context, listen: false).canPop;
-    final isLoading = Provider.of<CreatePostProvider>(context).isLoading;
     return WillPopScope(
       onWillPop: () async {
         return canPop;

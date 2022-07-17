@@ -13,6 +13,7 @@ import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/postText
 import 'package:uuid/uuid.dart';
 
 import '../../models/postModel.dart';
+import '../../models/userModel.dart';
 import '../widgets/areaPicker.dart';
 import '../widgets/weatherPicker.dart';
 
@@ -100,18 +101,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       });
 
       final postUid = Uuid().v4();
-      final postRef = FirebaseStorage.instance
+      final postImageRef = FirebaseStorage.instance
           .ref()
           .child("post_image")
           .child("$postUid.jpg");
-      final uploadImageTask = postRef.putFile(_imageFile!);
+      final uploadImageTask = postImageRef.putFile(_imageFile!);
 
       uploadImageTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) async {
         switch (taskSnapshot.state) {
           case TaskState.running:
-            final progress = (100.0 *
+            int progress = (100.0 *
                     (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes))
                 .toInt();
+            if (progress >= 99) progress = 99;
             EasyLoading.showProgress(
                 taskSnapshot.bytesTransferred / taskSnapshot.totalBytes,
                 status: '貼文產生中.. $progress%');
@@ -126,16 +128,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             errorHandel();
             break;
           case TaskState.success:
-            final imageUrl = await postRef.getDownloadURL();
-            final docRef = FirebaseFirestore.instance
+            final imageUrl = await postImageRef.getDownloadURL();
+            final postRef = FirebaseFirestore.instance
                 .collection("posts")
                 .withConverter(
                     fromFirestore: PostModel.fromFirestore,
                     toFirestore: (PostModel postModel, options) =>
                         postModel.toFirestore())
                 .doc(postUid);
+            final userDocRef = FirebaseFirestore.instance
+                .collection('users')
+                .withConverter(
+                    fromFirestore: UserModel.fromFirestore,
+                    toFirestore: (UserModel userModel, options) =>
+                        userModel.toFirestore())
+                .doc(FirebaseAuth.instance.currentUser!.uid);
 
-            await docRef.set(PostModel(
+            UserModel? userModel =
+                await userDocRef.get().then((value) => value.data());
+            await postRef.set(PostModel(
                 postId: postUid,
                 imageUrl: imageUrl,
                 postText: _postText,
@@ -145,6 +156,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 posterUserId: FirebaseAuth.instance.currentUser!.uid,
                 postCity: _pickedCity,
                 postTown: _pickedTown));
+            await userDocRef.update({"postTime": userModel!.postTime! + 1});
+
             setState(() {
               canPop = true;
               isLoading = false;

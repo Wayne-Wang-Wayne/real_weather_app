@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class UserModel {
   final String? userId;
   final String? userName;
-  final String? userImageUrl;
+  String? userImageUrl;
   final int? userExp;
   final int? userLevel;
   final String? userTitle;

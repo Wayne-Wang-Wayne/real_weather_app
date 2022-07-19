@@ -21,6 +21,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  TextEditingController _controller = TextEditingController();
+
   Future<UserModel> getUserProfile() async {
     final docRef = FirebaseFirestore.instance
         .collection('users')
@@ -31,6 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .doc(FirebaseAuth.instance.currentUser!.uid);
     final userModel = await docRef.get().then((value) => value.data());
     return Future.value(userModel);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.clear();
   }
 
   @override
@@ -67,18 +75,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 5,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      userModel.userName!,
-                      style: TextStyle(fontSize: 25),
-                    ),
-                    Icon(
-                      Icons.edit,
-                      size: 15,
-                    )
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    _controller =
+                        TextEditingController(text: userModel.userName!);
+                    _showDialog();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        userModel.userName!,
+                        style: TextStyle(fontSize: 25),
+                      ),
+                      Icon(
+                        Icons.edit,
+                        size: 15,
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 5,
@@ -108,6 +123,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  _showDialog() async {
+    showDialog<Null>(
+      context: context,
+      builder: (ctx) => Container(
+        margin: EdgeInsets.symmetric(horizontal: 50),
+        child: Center(
+          child: Material(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 32, left: 32, right: 32, bottom: 15),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    '修改名字',
+                    style: TextStyle(color: Colors.blueGrey, fontSize: 20),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    maxLength: 15,
+                    controller: _controller,
+                    autofocus: true,
+                    decoration: new InputDecoration(
+                        labelText: 'Full Name', hintText: 'eg. 王小明'),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          _controller.clear();
+                        },
+                        child: Text(
+                          "取消",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            _controller.clear();
+                          },
+                          child: Text("確認", style: TextStyle(fontSize: 20)))
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

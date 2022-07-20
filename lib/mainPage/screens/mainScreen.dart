@@ -46,7 +46,8 @@ class _MainScreenState extends State<MainScreen> {
           _pageController?.jumpToPage(index);
         }),
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.post_add), label: "看天氣"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.library_books_rounded), label: "看天氣"),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle_outlined), label: "我的資料")
         ],

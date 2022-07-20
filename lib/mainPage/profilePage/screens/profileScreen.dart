@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/myAchievementWidget.dart';
@@ -39,6 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void dispose() {
     super.dispose();
     _controller.clear();
+    _controller.dispose();
   }
 
   @override
@@ -151,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: 10,
                   ),
                   TextField(
-                    maxLength: 15,
+                    maxLength: 12,
                     controller: _controller,
                     autofocus: true,
                     decoration: new InputDecoration(
@@ -165,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          _controller.clear();
+                          Navigator.of(context).pop();
                         },
                         child: Text(
                           "取消",
@@ -174,7 +176,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       TextButton(
                           onPressed: () {
-                            _controller.clear();
+                            upDateUserName();
                           },
                           child: Text("確認", style: TextStyle(fontSize: 20)))
                     ],
@@ -186,5 +188,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> upDateUserName() async {
+    EasyLoading.show(status: "變更名字中..");
+    final userDocRef = FirebaseFirestore.instance
+        .collection('users')
+        .withConverter(
+            fromFirestore: UserModel.fromFirestore,
+            toFirestore: (UserModel userModel, options) =>
+                userModel.toFirestore())
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    try {
+      await userDocRef.update({"userName": _controller.text});
+      Navigator.of(context).pop();
+      setState(() {});
+      _controller.clear();
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("網路異常，變更名稱失敗。"),
+      ));
+    }
+    EasyLoading.dismiss();
   }
 }

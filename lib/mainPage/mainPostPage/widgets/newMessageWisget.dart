@@ -21,8 +21,13 @@ class NewMessageWidget extends StatefulWidget {
 
 class _NewMessageWidgetState extends State<NewMessageWidget> {
   final _controller = TextEditingController();
-  var _enterMessage = "";
   bool _isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +60,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
         final userModel = userSnapshot.data() as Map;
         final Map<String, dynamic> newReplierData = {
           "replierId": FirebaseAuth.instance.currentUser!.uid,
-          "replyContent": _enterMessage,
+          "replyContent": _controller.text,
           "replyDateTimestamp": DateTime.now().millisecondsSinceEpoch,
           "replierName": userModel["userName"],
           "replierExp": userModel["userExp"],
@@ -73,7 +78,7 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
         transaction.set(replyDocRef, ReplyListModel(replyList: tempReplyList));
         return tempReplyList;
       }).then((value) {
-        _enterMessage = "";
+        _controller.clear();
         _controller.clear();
         widget.messageSentCallBack();
         setState(() {
@@ -95,11 +100,6 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
             controller: _controller,
             enableSuggestions: true,
             decoration: InputDecoration(labelText: "輸入訊息 ..."),
-            onChanged: (value) {
-              setState(() {
-                _enterMessage = value;
-              });
-            },
           ),
         ),
         _isLoading
@@ -107,12 +107,11 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
                 child: CircularProgressIndicator(),
               )
             : TextButton(
-                onPressed: _enterMessage.trim().isEmpty
-                    ? null
-                    : () {
-                        _leaveMessage();
-                        FocusScope.of(context).unfocus();
-                      },
+                onPressed: () {
+                  if (_controller.text.trim().isEmpty) return;
+                  _leaveMessage();
+                  FocusScope.of(context).unfocus();
+                },
                 child: Text(
                   "留言",
                   style: TextStyle(color: Colors.blue, fontSize: 18),

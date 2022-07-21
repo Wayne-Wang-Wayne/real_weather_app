@@ -1,13 +1,17 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/screens/postMessageScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.dart';
+import 'package:real_weather_shared_app/mainPage/models/areaData.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
 
 import '../../models/postModel.dart';
@@ -171,6 +175,11 @@ class _MainPostScreenState extends State<MainPostScreen>
                 "即時天氣",
                 style: TextStyle(color: Colors.black),
               ),
+              TextButton(
+                  onPressed: () {
+                    showPicker(context);
+                  },
+                  child: Text("換地點")),
             ],
           ),
           actions: [
@@ -328,6 +337,21 @@ class _MainPostScreenState extends State<MainPostScreen>
     final double start = 0;
     controller!.animateTo(start,
         duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+  }
+
+  showPicker(BuildContext context) async {
+    Picker(
+        height: 100,
+        itemExtent: 40,
+        adapter: PickerDataAdapter<String>(
+            pickerdata: AreaData().areaDataForMainPostPicker),
+        hideHeader: true,
+        title: Text("選擇地點"),
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.getSelectedValues());
+        }).showDialog(context);
   }
 
   @override

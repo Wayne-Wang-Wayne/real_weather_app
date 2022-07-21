@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/screens/mainPostScreen.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/showTermsDialog.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/screens/profileScreen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _currentIndex = 0;
     _pageController = PageController(initialPage: _currentIndex!);
+    Future.delayed(Duration.zero, () => _showTermsDialog());
   }
 
   @override
@@ -52,6 +54,14 @@ class _MainScreenState extends State<MainScreen> {
               icon: Icon(Icons.account_circle_outlined), label: "我的資料")
         ],
       ),
+    );
+  }
+
+  _showTermsDialog() async {
+    showDialog<Null>(
+      barrierDismissible: false,
+      context: context,
+      builder: (ctx) => ShowTermsDialog(),
     );
   }
 }

@@ -39,10 +39,13 @@ class _MainPostScreenState extends State<MainPostScreen>
   bool isMoreLoading = false;
   bool canLoadMore = true;
   bool hasLeftTop = false;
+  List<String> currentLocation = ["臺北市", "中正區"];
 
   @override
   void initState() {
     super.initState();
+    // todo需要初始化currentLocation(看是要用抓定位的還是存sharedPref的)
+
     controller = ScrollController()..addListener(_scrollListener);
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
@@ -103,6 +106,8 @@ class _MainPostScreenState extends State<MainPostScreen>
                 fromFirestore: PostModel.fromFirestore,
                 toFirestore: (PostModel postModel, options) =>
                     postModel.toFirestore())
+            .where("postCity", isEqualTo: currentLocation[0])
+            .where("postTown", isEqualTo: currentLocation[1])
             .orderBy("postDateTimeStamp", descending: true)
             .limit(5)
             .get()
@@ -112,6 +117,8 @@ class _MainPostScreenState extends State<MainPostScreen>
                 fromFirestore: PostModel.fromFirestore,
                 toFirestore: (PostModel postModel, options) =>
                     postModel.toFirestore())
+            .where("postCity", isEqualTo: currentLocation[0])
+            .where("postTown", isEqualTo: currentLocation[1])
             .orderBy("postDateTimeStamp", descending: true)
             .startAfterDocument(
                 collectionState!.docs[collectionState!.docs.length - 1])
@@ -349,8 +356,8 @@ class _MainPostScreenState extends State<MainPostScreen>
         title: Text("選擇地點"),
         selectedTextStyle: TextStyle(color: Colors.blue),
         onConfirm: (Picker picker, List value) {
-          print(value.toString());
-          print(picker.getSelectedValues());
+          currentLocation = picker.getSelectedValues() as List<String>;
+          loadFirstData();
         }).showDialog(context);
   }
 

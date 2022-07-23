@@ -228,6 +228,7 @@ class _MainPostScreenState extends State<MainPostScreen>
                     : Stack(
                         children: [
                           ListView.builder(
+                            physics: AlwaysScrollableScrollPhysics(),
                             addAutomaticKeepAlives: true,
                             shrinkWrap: true,
                             controller: controller,

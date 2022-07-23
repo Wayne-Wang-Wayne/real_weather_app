@@ -26,6 +26,7 @@ class _AddPictureWidgetState extends State<AddPictureWidget> {
     }
     setState(() {
       _storedImage = File(imageFile.path);
+      widget.imageFileCallBack(_storedImage!);
     });
   }
 

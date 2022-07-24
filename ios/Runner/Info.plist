@@ -34,6 +34,14 @@
 	<string>需取用您的媒體功能</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>需取用您的媒體功能</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>需開啟定位功能，以享受更流暢體驗。</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>需開啟定位功能，以享受更流暢體驗。</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>需開啟定位功能，以享受更流暢體驗。</string>
+	<key>UIBackgroundModes</key>
+	<string>location</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>CFBundleURLTypes</key>

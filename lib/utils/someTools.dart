@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/fetchUserBottomSheetInfo.dart';
+import 'package:real_weather_shared_app/utils/simpleDialogWidget.dart';
 import 'package:real_weather_shared_app/utils/userInfoWidget.dart';
 
 import '../mainPage/models/postModel.dart';
@@ -47,5 +52,89 @@ class MyTools {
           context: context,
           builder: (context) => FetchUserBottomSheet(userUid: userUid));
     }
+  }
+
+  static showSimpleDialog(BuildContext context, String simpleString) async {
+    showDialog<Null>(
+      barrierDismissible: false,
+      context: context,
+      builder: (ctx) => SimpleDialogBody(simpleString: simpleString),
+    );
+  }
+
+  Future<List<String>> getCurrentLocation(BuildContext context) async {
+    Location location = Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        MyTools.showSimpleDialog(
+            context, "如想體驗自動定位，煩請再手動開啟位置權限，謝謝您。(將以預設位置顯示)");
+      } else {
+        _permissionGranted = await location.hasPermission();
+        if (_permissionGranted == PermissionStatus.denied) {
+          _permissionGranted = await location.requestPermission();
+          if (_permissionGranted != PermissionStatus.granted) {
+            MyTools.showSimpleDialog(
+                context, "如想體驗自動定位，煩請再手動開啟位置權限，謝謝您。(將以預設位置顯示)");
+          } else {
+            return await _fetchLocDetail(location);
+          }
+        } else {
+          return await _fetchLocDetail(location);
+        }
+      }
+    } else {
+      MyTools.showSimpleDialog(context, "如想體驗自動定位，煩請再手動開啟位置權限，謝謝您。(將以預設位置顯示)");
+    }
+    return ["臺北市", "中正區"];
+  }
+
+  Future<List<String>> _fetchLocDetail(Location location) async {
+    LocationData _locationData;
+    _locationData = await location.getLocation();
+    try {
+      final response = await get(Uri.parse(
+          "https://maps.googleapis.com/maps/api/geocode/json?latlng=${_locationData.latitude},${_locationData.longitude}&language=zh-TW&key=AIzaSyCB1bluJpoXlSHbICx713NMtOYaXC4YU48"));
+      if (json.decode(response.body) != null) {
+        final extractedData =
+            json.decode(response.body) as Map<String, dynamic>;
+        final locDetail = extractedData["results"] as List<dynamic>;
+        if (locDetail.isNotEmpty) {
+          final List<String> currentLocate = ["臺北市", "中正區"];
+          (locDetail[0]["address_components"] as List<dynamic>)
+              .forEach((value) {
+            value as Map<dynamic, dynamic>;
+            switch (value["types"][0]) {
+              case "administrative_area_level_3":
+                {
+                  currentLocate[1] =
+                      (value["long_name"] as String).replaceAll("台", "臺");
+                  break;
+                }
+              case "administrative_area_level_2":
+                {
+                  currentLocate[0] =
+                      (value["long_name"] as String).replaceAll("台", "臺");
+                  break;
+                }
+              case "administrative_area_level_1":
+                {
+                  currentLocate[0] =
+                      (value["long_name"] as String).replaceAll("台", "臺");
+                  break;
+                }
+            }
+          });
+          return currentLocate;
+        }
+        ;
+      }
+    } catch (error) {}
+    return ["臺北市", "中正區"];
   }
 }

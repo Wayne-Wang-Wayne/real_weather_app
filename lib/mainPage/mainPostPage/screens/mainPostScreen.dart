@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:http/http.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
@@ -13,6 +16,7 @@ import 'package:real_weather_shared_app/mainPage/mainPostPage/screens/postMessag
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.dart';
 import 'package:real_weather_shared_app/mainPage/models/areaData.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
+import 'package:real_weather_shared_app/utils/someTools.dart';
 
 import '../../models/postModel.dart';
 import '../../models/userModel.dart';
@@ -82,13 +86,16 @@ class _MainPostScreenState extends State<MainPostScreen>
     }
   }
 
-  Future<void> loadFirstData() async {
+  Future<void> loadFirstData({bool needToRelocate = true}) async {
     _showedList = [];
     hasReachedBottom = false;
     collectionState = null;
     setState(() {
       isFirstLoading = true;
     });
+    if (needToRelocate) {
+      currentLocation = await MyTools().getCurrentLocation(context);
+    }
     await fetchPostData();
 
     setState(() {
@@ -358,7 +365,7 @@ class _MainPostScreenState extends State<MainPostScreen>
         selectedTextStyle: TextStyle(color: Colors.blue),
         onConfirm: (Picker picker, List value) {
           currentLocation = picker.getSelectedValues() as List<String>;
-          loadFirstData();
+          loadFirstData(needToRelocate: false);
         }).showDialog(context);
   }
 

@@ -17,6 +17,7 @@ import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.d
 import 'package:real_weather_shared_app/mainPage/models/areaData.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
 import 'package:real_weather_shared_app/utils/someTools.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../models/postModel.dart';
 import '../../models/userModel.dart';
@@ -184,16 +185,21 @@ class _MainPostScreenState extends State<MainPostScreen>
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "即時天氣",
                 style: TextStyle(color: Colors.black),
               ),
-              TextButton(
-                  onPressed: () {
-                    showPicker(context);
-                  },
-                  child: Text("換地點")),
+              isFirstLoading
+                  ? Shimmer.fromColors(
+                      baseColor: Colors.grey.shade400,
+                      highlightColor: Colors.grey.shade200,
+                      child: _getChangeLocationWidget())
+                  : _getChangeLocationWidget(),
+              SizedBox(
+                width: 5,
+              )
             ],
           ),
           actions: [
@@ -371,4 +377,32 @@ class _MainPostScreenState extends State<MainPostScreen>
 
   @override
   bool get wantKeepAlive => true;
+
+  Widget _getChangeLocationWidget() {
+    return isFirstLoading
+        ? TextButton.icon(
+            icon: Icon(
+              Icons.arrow_drop_down_rounded,
+              size: 35,
+            ),
+            onPressed: () {
+              showPicker(context);
+            },
+            label: Container(
+              height: 10,
+              width: 80,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade400,
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+            ))
+        : TextButton.icon(
+            icon: Icon(
+              Icons.arrow_drop_down_rounded,
+              size: 35,
+            ),
+            onPressed: () {
+              showPicker(context);
+            },
+            label: Text("${currentLocation[0]} ${currentLocation[1]}"));
+  }
 }

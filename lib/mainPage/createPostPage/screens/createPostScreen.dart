@@ -8,6 +8,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/createPostShimmer.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/pictureWidget.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/postTextField.dart';
 import 'package:uuid/uuid.dart';
@@ -217,27 +218,29 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         ),
         body: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Container(
-            width: double.infinity,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  AddPictureWidget(imageFileCallBack: _getImageFile),
-                  WeatherPicker(rainLevelCallBack: _getRainLevel),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AreaPicker(
-                        areaCallBack: _getArea,
-                      ),
-                    ],
+          child: isLoading
+              ? CreatePostShimmer()
+              : Container(
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        AddPictureWidget(imageFileCallBack: _getImageFile),
+                        WeatherPicker(rainLevelCallBack: _getRainLevel),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AreaPicker(
+                              areaCallBack: _getArea,
+                            ),
+                          ],
+                        ),
+                        PostTextField(postTextCallBack: _getPostText),
+                      ],
+                    ),
                   ),
-                  PostTextField(postTextCallBack: _getPostText),
-                ],
-              ),
-            ),
-          ),
+                ),
         ),
       ),
     );

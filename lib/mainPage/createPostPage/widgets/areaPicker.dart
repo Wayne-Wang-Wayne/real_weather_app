@@ -47,7 +47,16 @@ class _AreaPickerState extends State<AreaPicker> {
                   builder: (context) => CupertinoActionSheet(
                         actions: [buildCityPicker()],
                         cancelButton: CupertinoActionSheetAction(
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () {
+                              setState(() {
+                                String city =
+                                    areaData.keys.toList()[_cityIndex];
+                                String town = areaData.values
+                                    .toList()[_cityIndex][_townIndex];
+                                widget.areaCallBack(city, town);
+                                Navigator.pop(context);
+                              });
+                            },
                             child: Text("完成")),
                       ));
             },
@@ -63,7 +72,16 @@ class _AreaPickerState extends State<AreaPicker> {
                   builder: (context) => CupertinoActionSheet(
                         actions: [buildTownPicker()],
                         cancelButton: CupertinoActionSheetAction(
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () {
+                              setState(() {
+                                String city =
+                                    areaData.keys.toList()[_cityIndex];
+                                String town = areaData.values
+                                    .toList()[_cityIndex][_townIndex];
+                                widget.areaCallBack(city, town);
+                                Navigator.pop(context);
+                              });
+                            },
                             child: Text("完成")),
                       ));
             },
@@ -83,13 +101,8 @@ class _AreaPickerState extends State<AreaPicker> {
           scrollController: _cityScrollController,
           itemExtent: 64,
           onSelectedItemChanged: (index) {
-            setState(() {
-              _cityIndex = index;
-              _townIndex = 0;
-              String city = areaData.keys.toList()[index];
-              String town = areaData.values.toList()[index][_townIndex];
-              widget.areaCallBack(city, town);
-            });
+            _cityIndex = index;
+            _townIndex = 0;
           },
           children: [
             for (final item in areaData.keys.toList())
@@ -113,12 +126,7 @@ class _AreaPickerState extends State<AreaPicker> {
           scrollController: _townScrollController,
           itemExtent: 64,
           onSelectedItemChanged: (index) {
-            setState(() {
-              _townIndex = index;
-              String city = areaData.keys.toList()[_cityIndex];
-              String town = areaData.values.toList()[_cityIndex][_townIndex];
-              widget.areaCallBack(city, town);
-            });
+            _townIndex = index;
           },
           children: [
             for (final item in areaData.values.toList()[_cityIndex])

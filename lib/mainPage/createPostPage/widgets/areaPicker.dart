@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/screens/mainPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/models/areaData.dart';
 
 class AreaPicker extends StatefulWidget {
@@ -23,6 +24,12 @@ class _AreaPickerState extends State<AreaPicker> {
   @override
   void initState() {
     super.initState();
+    areaData.keys.toList().asMap().forEach((index, value) {
+      if (MainPostScreen.staticCurrentLocation[0] == value) _cityIndex = index;
+    });
+    areaData.values.toList()[_cityIndex].asMap().forEach((index, value) {
+      if (MainPostScreen.staticCurrentLocation[1] == value) _townIndex = index;
+    });
     _cityScrollController =
         FixedExtentScrollController(initialItem: _cityIndex);
     _townScrollController =
@@ -55,6 +62,14 @@ class _AreaPickerState extends State<AreaPicker> {
                                     .toList()[_cityIndex][_townIndex];
                                 widget.areaCallBack(city, town);
                                 Navigator.pop(context);
+                                _cityScrollController.dispose();
+                                _cityScrollController =
+                                    FixedExtentScrollController(
+                                        initialItem: _cityIndex);
+                                _townScrollController.dispose();
+                                _townScrollController =
+                                    FixedExtentScrollController(
+                                        initialItem: _townIndex);
                               });
                             },
                             child: Text("完成")),
@@ -80,6 +95,10 @@ class _AreaPickerState extends State<AreaPicker> {
                                     .toList()[_cityIndex][_townIndex];
                                 widget.areaCallBack(city, town);
                                 Navigator.pop(context);
+                                _townScrollController.dispose();
+                                _townScrollController =
+                                    FixedExtentScrollController(
+                                        initialItem: _townIndex);
                               });
                             },
                             child: Text("完成")),
@@ -92,9 +111,6 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   Widget buildCityPicker() {
-    _cityScrollController.dispose();
-    _cityScrollController =
-        FixedExtentScrollController(initialItem: _cityIndex);
     return SizedBox(
       height: 400,
       child: CupertinoPicker(
@@ -117,9 +133,6 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   Widget buildTownPicker() {
-    _townScrollController.dispose();
-    _townScrollController =
-        FixedExtentScrollController(initialItem: _townIndex);
     return SizedBox(
       height: 400,
       child: CupertinoPicker(

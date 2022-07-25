@@ -26,6 +26,8 @@ import '../widgets/mainPostShimmer.dart';
 class MainPostScreen extends StatefulWidget {
   const MainPostScreen({Key? key}) : super(key: key);
 
+  static List<String> staticCurrentLocation = ["臺北市", "中正區"];
+
   @override
   State<MainPostScreen> createState() => _MainPostScreenState();
 }
@@ -96,6 +98,7 @@ class _MainPostScreenState extends State<MainPostScreen>
     });
     if (needToRelocate) {
       currentLocation = await MyTools().getCurrentLocation(context);
+      MainPostScreen.staticCurrentLocation = currentLocation;
     }
     await fetchPostData();
 
@@ -203,20 +206,12 @@ class _MainPostScreenState extends State<MainPostScreen>
             ],
           ),
           actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(CreatePostScreen.routeName)
-                      .then((needToLoad) {
-                    if (needToLoad != null) {
-                      if (needToLoad as bool) loadFirstData();
-                    }
-                  });
-                },
-                child: Text(
-                  "發佈",
-                  style: TextStyle(color: Colors.blue, fontSize: 20),
-                )),
+            isFirstLoading
+                ? Shimmer.fromColors(
+                    baseColor: Colors.grey.shade400,
+                    highlightColor: Colors.grey.shade200,
+                    child: _getCreatePostButton())
+                : _getCreatePostButton(),
             SizedBox(
               width: 10,
             )
@@ -404,5 +399,29 @@ class _MainPostScreenState extends State<MainPostScreen>
               showPicker(context);
             },
             label: Text("${currentLocation[0]} ${currentLocation[1]}"));
+  }
+
+  Widget _getCreatePostButton() {
+    return isFirstLoading
+        ? TextButton(
+            onPressed: () {},
+            child: Text(
+              "發佈",
+              style: TextStyle(color: Colors.grey.shade400, fontSize: 20),
+            ))
+        : TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamed(CreatePostScreen.routeName)
+                  .then((needToLoad) {
+                if (needToLoad != null) {
+                  if (needToLoad as bool) loadFirstData();
+                }
+              });
+            },
+            child: Text(
+              "發佈",
+              style: TextStyle(color: Colors.blue, fontSize: 20),
+            ));
   }
 }

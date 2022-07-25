@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/createPostShimmer.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/pictureWidget.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/postTextField.dart';
+import 'package:real_weather_shared_app/mainPage/mainPostPage/screens/mainPostScreen.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/postModel.dart';
@@ -34,9 +35,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   int? _rainLevel = 0;
 
-  String? _pickedCity = "臺北市";
+  String? _pickedCity = MainPostScreen.staticCurrentLocation[0];
 
-  String? _pickedTown = "中正區";
+  String? _pickedTown = MainPostScreen.staticCurrentLocation[1];
 
   String? _postText;
 

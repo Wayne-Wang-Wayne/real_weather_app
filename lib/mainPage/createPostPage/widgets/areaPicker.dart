@@ -20,6 +20,8 @@ class _AreaPickerState extends State<AreaPicker> {
   final areaData = AreaData().area_data;
   int _cityIndex = 0;
   int _townIndex = 0;
+  int _tempCityIndex = 0;
+  int _tempTownIndex = 0;
 
   @override
   void initState() {
@@ -56,20 +58,14 @@ class _AreaPickerState extends State<AreaPicker> {
                         cancelButton: CupertinoActionSheetAction(
                             onPressed: () {
                               setState(() {
+                                _cityIndex = _tempCityIndex;
+                                _townIndex = _tempTownIndex;
                                 String city =
                                     areaData.keys.toList()[_cityIndex];
                                 String town = areaData.values
                                     .toList()[_cityIndex][_townIndex];
                                 widget.areaCallBack(city, town);
                                 Navigator.pop(context);
-                                _cityScrollController.dispose();
-                                _cityScrollController =
-                                    FixedExtentScrollController(
-                                        initialItem: _cityIndex);
-                                _townScrollController.dispose();
-                                _townScrollController =
-                                    FixedExtentScrollController(
-                                        initialItem: _townIndex);
                               });
                             },
                             child: Text("完成")),
@@ -89,16 +85,13 @@ class _AreaPickerState extends State<AreaPicker> {
                         cancelButton: CupertinoActionSheetAction(
                             onPressed: () {
                               setState(() {
+                                _townIndex = _tempTownIndex;
                                 String city =
                                     areaData.keys.toList()[_cityIndex];
                                 String town = areaData.values
                                     .toList()[_cityIndex][_townIndex];
                                 widget.areaCallBack(city, town);
                                 Navigator.pop(context);
-                                _townScrollController.dispose();
-                                _townScrollController =
-                                    FixedExtentScrollController(
-                                        initialItem: _townIndex);
                               });
                             },
                             child: Text("完成")),
@@ -111,14 +104,17 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   Widget buildCityPicker() {
+    _cityScrollController.dispose();
+    _cityScrollController =
+        FixedExtentScrollController(initialItem: _cityIndex);
     return SizedBox(
       height: 400,
       child: CupertinoPicker(
           scrollController: _cityScrollController,
           itemExtent: 64,
           onSelectedItemChanged: (index) {
-            _cityIndex = index;
-            _townIndex = 0;
+            _tempCityIndex = index;
+            _tempTownIndex = 0;
           },
           children: [
             for (final item in areaData.keys.toList())
@@ -133,13 +129,16 @@ class _AreaPickerState extends State<AreaPicker> {
   }
 
   Widget buildTownPicker() {
+    _townScrollController.dispose();
+    _townScrollController =
+        FixedExtentScrollController(initialItem: _townIndex);
     return SizedBox(
       height: 400,
       child: CupertinoPicker(
           scrollController: _townScrollController,
           itemExtent: 64,
           onSelectedItemChanged: (index) {
-            _townIndex = index;
+            _tempTownIndex = index;
           },
           children: [
             for (final item in areaData.values.toList()[_cityIndex])

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
+import 'package:real_weather_shared_app/mainPage/profilePage/widgets/LineAnimation.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/signInMissionButton.dart';
 
 class DailyMission extends StatelessWidget {
@@ -30,11 +31,23 @@ class DailyMission extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(7)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Column(
             children: [
-              Text('每日簽到', style: TextStyle(fontSize: 18)),
-              SingInMissionButton(userModel: userModel)
+              Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Colors.grey),
+                  alignment: Alignment.bottomCenter,
+                  height: 8,
+                  width: 208,
+                  child: SizedBox(height: 4, width: 200, child: Line())),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('每日簽到', style: TextStyle(fontSize: 18)),
+                  SingInMissionButton(userModel: userModel)
+                ],
+              ),
             ],
           ),
         )

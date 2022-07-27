@@ -6,8 +6,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 
 class SingInMissionButton extends StatefulWidget {
+  final Function(int) gainExp;
   final UserModel userModel;
-  const SingInMissionButton({Key? key, required this.userModel})
+  const SingInMissionButton(
+      {Key? key, required this.userModel, required this.gainExp})
       : super(key: key);
 
   @override
@@ -35,7 +37,7 @@ class _SingInMissionButtonState extends State<SingInMissionButton> {
       if (!snapshot.exists) {
         throw Exception("User does not exist!");
       }
-      int newExp = (snapshot.data() as Map)["userExp"] + 2;
+      int newExp = (snapshot.data() as Map)["userExp"] + 20;
       transaction.update(docRef, {
         'userExp': newExp,
         "lastSingInTimestamp": DateTime.now().millisecondsSinceEpoch
@@ -46,6 +48,7 @@ class _SingInMissionButtonState extends State<SingInMissionButton> {
         isLoading = false;
         _hasCheckIn = true;
       });
+      widget.gainExp(20);
     }).catchError((error) {
       setState(() {
         isLoading = false;

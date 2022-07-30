@@ -73,25 +73,31 @@ class _SingInMissionButtonState extends State<SingInMissionButton> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: () {
-        if (!_hasCheckIn) {
-          checkIn();
-        }
-      },
-      icon: isLoading
-          ? Center(
-              child: SizedBox(
-                  height: 20, width: 20, child: CircularProgressIndicator()),
-            )
-          : _hasCheckIn
-              ? Icon(Icons.check)
-              : Container(),
-      label: Text(
-        _hasCheckIn ? "已簽到" : "簽到",
-        style: TextStyle(color: _hasCheckIn ? Colors.grey : Colors.white),
+    return Container(
+      width: 100,
+      height: 40,
+      child: TextButton.icon(
+        onPressed: () {
+          if (!_hasCheckIn) {
+            checkIn();
+          }
+        },
+        icon: isLoading
+            ? Center(
+                child: SizedBox(
+                    height: 20, width: 20, child: CircularProgressIndicator()),
+              )
+            : _hasCheckIn
+                ? Icon(Icons.check)
+                : Container(),
+        label: Text(
+          _hasCheckIn ? "已簽到" : "簽到",
+          style: TextStyle(
+              color: _hasCheckIn ? Colors.grey : Colors.white,
+              fontSize: _hasCheckIn ? 13 : 15),
+        ),
+        style: TextButton.styleFrom(backgroundColor: Colors.red.shade200),
       ),
-      style: TextButton.styleFrom(backgroundColor: Colors.red.shade200),
     );
   }
 }

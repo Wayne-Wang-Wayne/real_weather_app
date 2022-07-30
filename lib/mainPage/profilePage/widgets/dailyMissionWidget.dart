@@ -107,6 +107,9 @@ class _DailyMissionState extends State<DailyMission> {
                   )
                 ],
               ),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -127,7 +130,10 @@ class _DailyMissionState extends State<DailyMission> {
                     gainExp: gainExp,
                   )
                 ],
-              )
+              ),
+              SizedBox(
+                height: 5,
+              ),
             ],
           ),
         )

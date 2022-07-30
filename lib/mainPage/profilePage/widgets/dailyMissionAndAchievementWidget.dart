@@ -8,16 +8,20 @@ import 'package:real_weather_shared_app/mainPage/profilePage/widgets/signInMissi
 
 import 'dailyPostButton.dart';
 import 'levelAndTitleWidget.dart';
+import 'myAchievementWidget.dart';
 
-class DailyMission extends StatefulWidget {
-  final UserModel userModel;
-  DailyMission({Key? key, required this.userModel}) : super(key: key);
+class DailyMissionAndAchievement extends StatefulWidget {
+  UserModel userModel;
+  DailyMissionAndAchievement({Key? key, required this.userModel})
+      : super(key: key);
 
   @override
-  State<DailyMission> createState() => _DailyMissionState();
+  State<DailyMissionAndAchievement> createState() =>
+      _DailyMissionAndAchievementState();
 }
 
-class _DailyMissionState extends State<DailyMission> {
+class _DailyMissionAndAchievementState
+    extends State<DailyMissionAndAchievement> {
   int _startExp = 0;
   int _endExp = 0;
   @override
@@ -27,11 +31,16 @@ class _DailyMissionState extends State<DailyMission> {
     _endExp = widget.userModel.userExp!;
   }
 
-  void gainExp(int gainExp) {
+  void _gainExp(int gainExp) {
     setState(() {
       _startExp = _endExp;
       _endExp += gainExp;
     });
+  }
+
+  void _refreshAfterPost(int gainExp) {
+    widget.userModel.postTime = widget.userModel.postTime! + 1;
+    _gainExp(gainExp);
   }
 
   @override
@@ -104,7 +113,7 @@ class _DailyMissionState extends State<DailyMission> {
                   ),
                   SingInMissionButton(
                     userModel: widget.userModel,
-                    gainExp: gainExp,
+                    gainExp: _gainExp,
                   )
                 ],
               ),
@@ -128,7 +137,7 @@ class _DailyMissionState extends State<DailyMission> {
                   ),
                   DailyPostButton(
                     userModel: widget.userModel,
-                    gainExp: gainExp,
+                    refreshAfterPost: _refreshAfterPost,
                   )
                 ],
               ),
@@ -137,6 +146,13 @@ class _DailyMissionState extends State<DailyMission> {
               ),
             ],
           ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        MyAchievement(userModel: widget.userModel),
+        SizedBox(
+          height: 5,
         )
       ],
     );

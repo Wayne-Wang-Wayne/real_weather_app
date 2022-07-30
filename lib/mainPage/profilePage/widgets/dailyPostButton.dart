@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:real_weather_shared_app/utils/someTools.dart';
 
+import '../../createPostPage/screens/createPostScreen.dart';
 import '../../models/userModel.dart';
 
 class DailyPostButton extends StatefulWidget {
-  final Function(int) gainExp;
+  final Function(int) refreshAfterPost;
   final UserModel userModel;
   const DailyPostButton(
-      {Key? key, required this.gainExp, required this.userModel})
+      {Key? key, required this.refreshAfterPost, required this.userModel})
       : super(key: key);
 
   @override
@@ -17,6 +19,13 @@ class DailyPostButton extends StatefulWidget {
 
 class _DailyPostButtonState extends State<DailyPostButton> {
   bool _hasPost = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _hasPost = MyTools.checkIsToday(widget.userModel.lastPostTimestamp!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +33,18 @@ class _DailyPostButtonState extends State<DailyPostButton> {
       height: 40,
       child: TextButton.icon(
         onPressed: () {
-          if (!_hasPost) {}
+          if (!_hasPost) {
+            Navigator.of(context)
+                .pushNamed(CreatePostScreen.routeName)
+                .then((needToRefresh) {
+              if (needToRefresh != null) {
+                setState(() {
+                  _hasPost = true;
+                });
+                if (needToRefresh as bool) widget.refreshAfterPost(25);
+              }
+            });
+          }
         },
         icon: _hasPost ? Icon(Icons.check) : SizedBox.shrink(),
         label: Padding(

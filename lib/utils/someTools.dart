@@ -137,4 +137,17 @@ class MyTools {
     } catch (error) {}
     return ["臺北市", "中正區"];
   }
+
+  static bool checkIsToday(int lastTimestamp) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    var dateToCheck = DateTime.fromMillisecondsSinceEpoch(lastTimestamp);
+    final aDate =
+        DateTime(dateToCheck.year, dateToCheck.month, dateToCheck.day);
+    if (aDate == today) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

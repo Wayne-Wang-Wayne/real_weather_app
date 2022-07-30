@@ -8,7 +8,7 @@ class UserModel {
   final int? userExp;
   final int? userLevel;
   final String? userTitle;
-  final int? postTime;
+  int? postTime;
   final int? likedTime;
   final List<dynamic>? postList;
   final int? lastSingInTimestamp;

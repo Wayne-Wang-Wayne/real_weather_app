@@ -12,7 +12,7 @@ import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileAvat
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileShimmer.dart';
 
 import '../../authPage/providers/googleSignInProvider.dart';
-import '../widgets/dailyMissionWidget.dart';
+import '../widgets/dailyMissionAndAchievementWidget.dart';
 import '../widgets/levelUpRuleWidget.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -90,14 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 5,
                 ),
-                DailyMission(userModel: userModel),
-                SizedBox(
-                  height: 5,
-                ),
-                MyAchievement(userModel: userModel),
-                SizedBox(
-                  height: 5,
-                ),
+                DailyMissionAndAchievement(userModel: userModel),
                 LevelUpRule(),
                 SizedBox(
                   height: 5,

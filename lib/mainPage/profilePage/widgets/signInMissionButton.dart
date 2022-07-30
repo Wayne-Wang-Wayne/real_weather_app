@@ -5,6 +5,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 
+import '../../../utils/someTools.dart';
+
 class SingInMissionButton extends StatefulWidget {
   final Function(int) gainExp;
   final UserModel userModel;
@@ -60,15 +62,7 @@ class _SingInMissionButtonState extends State<SingInMissionButton> {
   @override
   void initState() {
     super.initState();
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    var dateToCheck = DateTime.fromMillisecondsSinceEpoch(
-        widget.userModel.lastSingInTimestamp!);
-    final aDate =
-        DateTime(dateToCheck.year, dateToCheck.month, dateToCheck.day);
-    if (aDate == today) {
-      _hasCheckIn = true;
-    }
+    _hasCheckIn = MyTools.checkIsToday(widget.userModel.lastSingInTimestamp!);
   }
 
   @override

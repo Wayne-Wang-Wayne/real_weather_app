@@ -12,6 +12,7 @@ import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/createPo
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/pictureWidget.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/widgets/postTextField.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/screens/mainPostScreen.dart';
+import 'package:real_weather_shared_app/utils/someTools.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/postModel.dart';
@@ -145,9 +146,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     toFirestore: (UserModel userModel, options) =>
                         userModel.toFirestore())
                 .doc(FirebaseAuth.instance.currentUser!.uid);
-
             UserModel? userModel =
                 await userDocRef.get().then((value) => value.data());
+            bool _hasPost = MyTools.checkIsToday(userModel!.lastPostTimestamp!);
             await postRef.set(PostModel(
                 postId: postUid,
                 imageUrl: imageUrl,
@@ -158,8 +159,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 posterUserId: FirebaseAuth.instance.currentUser!.uid,
                 postCity: _pickedCity,
                 postTown: _pickedTown));
-            await userDocRef.update({"postTime": userModel!.postTime! + 1});
-
+            if (!_hasPost) {
+              await userDocRef.update({
+                "postTime": userModel.postTime! + 1,
+                "lastPostTimestamp": DateTime.now().millisecondsSinceEpoch,
+                "userExp": userModel.userExp! + 25
+              });
+            }
             setState(() {
               canPop = true;
               isLoading = false;

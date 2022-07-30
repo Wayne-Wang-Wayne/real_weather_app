@@ -36,8 +36,15 @@ class MyAchievement extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text('Po文次數: ${userModel.postTime} 次',
+                  Text('有Po文天數: ${userModel.postTime} 天',
                       style: TextStyle(fontSize: 18)),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    "(每日最多累計一次)",
+                    style: TextStyle(color: Colors.grey),
+                  )
                 ],
               ),
               Container(

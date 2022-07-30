@@ -12,6 +12,7 @@ class UserModel {
   final int? likedTime;
   final List<dynamic>? postList;
   final int? lastSingInTimestamp;
+  final int? lastPostTimestamp;
 
   UserModel(
       {this.userId,
@@ -23,7 +24,8 @@ class UserModel {
       this.postTime,
       this.likedTime,
       this.postList,
-      this.lastSingInTimestamp});
+      this.lastSingInTimestamp,
+      this.lastPostTimestamp});
 
   factory UserModel.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -39,7 +41,8 @@ class UserModel {
         postTime: data?["postTime"],
         likedTime: data?["likedTime"],
         postList: data?["postList"],
-        lastSingInTimestamp: data?["lastSingInTimestamp"]);
+        lastSingInTimestamp: data?["lastSingInTimestamp"],
+        lastPostTimestamp: data?["lastPostTimestamp"]);
   }
 
   Map<String, dynamic> toFirestore() {
@@ -53,7 +56,8 @@ class UserModel {
       if (likedTime != null) "likedTime": likedTime,
       if (postList != null) "postList": postList,
       if (lastSingInTimestamp != null)
-        "lastSingInTimestamp": lastSingInTimestamp
+        "lastSingInTimestamp": lastSingInTimestamp,
+      if (lastPostTimestamp != null) "lastPostTimestamp": lastPostTimestamp
     };
   }
 }

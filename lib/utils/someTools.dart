@@ -150,4 +150,20 @@ class MyTools {
       return false;
     }
   }
+
+  static int getCurrentLevel(int endExp) {
+    int tempExp = 0;
+    int currentLevel = 0;
+    while (endExp - tempExp >= 0) {
+      currentLevel++;
+      endExp -= tempExp;
+      tempExp += 75;
+    }
+    return currentLevel;
+  }
+
+  static String getUserTitle(int userExp) {
+    // todo 到時候規則出來要完善邏輯
+    return "天氣專家";
+  }
 }

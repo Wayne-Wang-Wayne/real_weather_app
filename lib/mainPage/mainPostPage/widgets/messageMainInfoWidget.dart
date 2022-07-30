@@ -51,7 +51,7 @@ class MessageMainInfoWidget extends StatelessWidget {
                       width: 2,
                     ),
                     Text(
-                      "(${postModel.posterTitle!})",
+                      "${MyTools.getUserTitle(postModel.posterExp!)} ( Lv. ${MyTools.getCurrentLevel(postModel.posterExp!)} )",
                       style: TextStyle(fontSize: 10, color: Colors.grey),
                     )
                   ],

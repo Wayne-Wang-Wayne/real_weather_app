@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 
+import '../../../utils/someTools.dart';
+
 class PosterInfoWidget extends StatelessWidget {
   final PostModel postModel;
   PosterInfoWidget({Key? key, required this.postModel}) : super(key: key);
@@ -41,9 +43,20 @@ class PosterInfoWidget extends StatelessWidget {
             postModel.posterName!,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
-          Text(
-            postModel.posterTitle!,
-            style: TextStyle(color: Colors.grey),
+          Row(
+            children: [
+              Text(
+                MyTools.getUserTitle(postModel.posterExp!),
+                style: TextStyle(color: Colors.grey),
+              ),
+              SizedBox(
+                width: 3,
+              ),
+              Text(
+                "( Lv. ${MyTools.getCurrentLevel(postModel.posterExp!)} )",
+                style: TextStyle(color: Colors.grey),
+              )
+            ],
           )
         ],
       )

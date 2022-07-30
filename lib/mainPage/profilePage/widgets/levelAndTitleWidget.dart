@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../../../utils/someTools.dart';
+
 class LVAndTitleWidget extends StatelessWidget {
   int endExp;
   LVAndTitleWidget({Key? key, required this.endExp}) : super(key: key);
@@ -14,26 +16,15 @@ class LVAndTitleWidget extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "天氣專家",
+            MyTools.getUserTitle(endExp),
             style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
                 color: Colors.blueGrey),
           ),
-          Text("等級${getCurrentLevel()}")
+          Text("等級${MyTools.getCurrentLevel(endExp)}")
         ],
       ),
     );
-  }
-
-  int getCurrentLevel() {
-    int tempExp = 0;
-    int currentLevel = 0;
-    while (endExp - tempExp >= 0) {
-      currentLevel++;
-      endExp -= tempExp;
-      tempExp += 200;
-    }
-    return currentLevel;
   }
 }

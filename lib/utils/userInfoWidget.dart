@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 import 'package:real_weather_shared_app/utils/pictureDetailPage.dart';
+import 'package:real_weather_shared_app/utils/someTools.dart';
 
 class UserInfoWidget extends StatelessWidget {
   PostModel? postModel;
@@ -46,9 +47,25 @@ class UserInfoWidget extends StatelessWidget {
               fontSize: 25,
               color: Colors.blueGrey),
         ),
-        Text(
-          postModel == null ? userModel!.userTitle! : postModel!.posterTitle!,
-          style: TextStyle(fontSize: 15, color: Colors.grey),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              postModel == null
+                  ? MyTools.getUserTitle(userModel!.userExp!)
+                  : MyTools.getUserTitle(postModel!.posterExp!),
+              style: TextStyle(fontSize: 15, color: Colors.grey),
+            ),
+            SizedBox(
+              width: 3,
+            ),
+            Text(
+              postModel == null
+                  ? "( Lv. ${MyTools.getCurrentLevel(userModel!.userExp!)} )"
+                  : "( Lv. ${MyTools.getCurrentLevel(postModel!.posterExp!)} )",
+              style: TextStyle(fontSize: 15, color: Colors.grey),
+            ),
+          ],
         ),
         SizedBox(
           height: 8,

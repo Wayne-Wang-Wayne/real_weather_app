@@ -11,9 +11,9 @@ class PostModel {
   final String? postTown;
   String? posterName = "";
   String? posterImageUrl = "";
-  String? posterTitle = "";
   int? posterLikedTimes = 0;
   int? posterPostTimes = 0;
+  int? posterExp = 0;
   List<dynamic>? likedPeopleList = [];
   PostModel(
       {required this.postId,
@@ -26,9 +26,9 @@ class PostModel {
       required this.postTown,
       this.posterName,
       this.posterImageUrl,
-      this.posterTitle,
       this.posterLikedTimes,
       this.posterPostTimes,
+      this.posterExp,
       required this.likedPeopleList});
 
   factory PostModel.fromFirestore(

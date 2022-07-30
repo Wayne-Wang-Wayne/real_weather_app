@@ -163,7 +163,7 @@ class _MainPostScreenState extends State<MainPostScreen>
       final userModel = await docRef.get().then((value) => value.data());
       item.posterImageUrl = userModel!.userImageUrl;
       item.posterName = userModel.userName;
-      item.posterTitle = userModel.userTitle;
+      item.posterExp = userModel.userExp;
       item.posterLikedTimes = userModel.likedTime;
       item.posterPostTimes = userModel.postTime;
       _showedList.add(item);

@@ -49,7 +49,7 @@ class MessageItem extends StatelessWidget {
                       width: 2,
                     ),
                     Text(
-                      "(天氣專家)",
+                      "${MyTools.getUserTitle(replyItemModel.replierExp)} ( Lv. ${MyTools.getCurrentLevel(replyItemModel.replierExp)} )",
                       style: TextStyle(fontSize: 10, color: Colors.grey),
                     )
                   ],

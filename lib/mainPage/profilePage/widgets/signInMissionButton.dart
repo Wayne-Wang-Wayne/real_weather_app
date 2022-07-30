@@ -99,7 +99,7 @@ class _SingInMissionButtonState extends State<SingInMissionButton> {
                 fontSize: _hasCheckIn ? 13 : 15),
           ),
         ),
-        style: TextButton.styleFrom(backgroundColor: Colors.red.shade200),
+        style: TextButton.styleFrom(backgroundColor: Colors.blue.shade300),
       ),
     );
   }

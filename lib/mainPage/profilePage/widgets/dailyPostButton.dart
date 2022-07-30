@@ -16,7 +16,7 @@ class DailyPostButton extends StatefulWidget {
 }
 
 class _DailyPostButtonState extends State<DailyPostButton> {
-  bool _hasCheckIn = true;
+  bool _hasPost = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,19 +24,19 @@ class _DailyPostButtonState extends State<DailyPostButton> {
       height: 40,
       child: TextButton.icon(
         onPressed: () {
-          if (!_hasCheckIn) {}
+          if (!_hasPost) {}
         },
-        icon: _hasCheckIn ? Icon(Icons.check) : SizedBox.shrink(),
+        icon: _hasPost ? Icon(Icons.check) : SizedBox.shrink(),
         label: Padding(
           padding: const EdgeInsets.only(right: 4),
           child: Text(
-            _hasCheckIn ? "已發文" : "去發文",
+            _hasPost ? "已發文" : "去發文",
             style: TextStyle(
-                color: _hasCheckIn ? Colors.grey : Colors.white,
-                fontSize: _hasCheckIn ? 13 : 15),
+                color: _hasPost ? Colors.grey : Colors.white,
+                fontSize: _hasPost ? 13 : 15),
           ),
         ),
-        style: TextButton.styleFrom(backgroundColor: Colors.red.shade200),
+        style: TextButton.styleFrom(backgroundColor: Colors.blue.shade300),
       ),
     );
   }

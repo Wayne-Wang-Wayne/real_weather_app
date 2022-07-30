@@ -107,6 +107,27 @@ class _DailyMissionState extends State<DailyMission> {
                   )
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text('每日Po文  ', style: TextStyle(fontSize: 18)),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      Text(
+                        "(+25 exp)",
+                        style: TextStyle(color: Colors.grey),
+                      )
+                    ],
+                  ),
+                  SingInMissionButton(
+                    userModel: widget.userModel,
+                    gainExp: gainExp,
+                  )
+                ],
+              )
             ],
           ),
         )

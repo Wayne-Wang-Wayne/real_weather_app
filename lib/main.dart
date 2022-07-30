@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
+import 'package:real_weather_shared_app/utils/CustomImageCache.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
 import 'package:real_weather_shared_app/utils/pictureDetailPage.dart';
 
@@ -15,6 +16,7 @@ import 'mainPage/authPage/screens/authScreen.dart';
 import 'mainPage/mainPostPage/screens/postMessageScreen.dart';
 
 void main() async {
+  CustomImageCache();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

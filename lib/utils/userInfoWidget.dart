@@ -57,7 +57,7 @@ class UserInfoWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              "貼文次數: ${postModel == null ? userModel!.postTime! : postModel!.posterPostTimes!}",
+              "有Po文天數: ${postModel == null ? userModel!.postTime! : postModel!.posterPostTimes!}",
               style: TextStyle(fontSize: 18, color: Colors.blueGrey),
             ),
             Text(

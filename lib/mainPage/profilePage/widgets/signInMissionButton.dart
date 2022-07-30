@@ -74,7 +74,7 @@ class _SingInMissionButtonState extends State<SingInMissionButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
+      width: 90,
       height: 40,
       child: TextButton.icon(
         onPressed: () {
@@ -89,12 +89,15 @@ class _SingInMissionButtonState extends State<SingInMissionButton> {
               )
             : _hasCheckIn
                 ? Icon(Icons.check)
-                : Container(),
-        label: Text(
-          _hasCheckIn ? "已簽到" : "簽到",
-          style: TextStyle(
-              color: _hasCheckIn ? Colors.grey : Colors.white,
-              fontSize: _hasCheckIn ? 13 : 15),
+                : SizedBox.shrink(),
+        label: Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: Text(
+            _hasCheckIn ? "已簽到" : "簽到",
+            style: TextStyle(
+                color: _hasCheckIn ? Colors.grey : Colors.white,
+                fontSize: _hasCheckIn ? 13 : 15),
+          ),
         ),
         style: TextButton.styleFrom(backgroundColor: Colors.red.shade200),
       ),

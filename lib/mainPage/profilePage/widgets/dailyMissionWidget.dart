@@ -6,6 +6,7 @@ import 'package:real_weather_shared_app/mainPage/profilePage/widgets/LineAnimati
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/expTextWidget.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/signInMissionButton.dart';
 
+import 'dailyPostButton.dart';
 import 'levelAndTitleWidget.dart';
 
 class DailyMission extends StatefulWidget {
@@ -125,7 +126,7 @@ class _DailyMissionState extends State<DailyMission> {
                       )
                     ],
                   ),
-                  SingInMissionButton(
+                  DailyPostButton(
                     userModel: widget.userModel,
                     gainExp: gainExp,
                   )

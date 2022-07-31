@@ -87,7 +87,7 @@ class googleSingInButton extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: () {
         final provider = Provider.of<SignInProvider>(context, listen: false);
-        provider.googleLogin();
+        provider.googleLogin(context);
       },
       label: Text("使用Google帳號登入"),
       style: ElevatedButton.styleFrom(
@@ -112,7 +112,7 @@ class fbSingInButton extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: () {
         final provider = Provider.of<SignInProvider>(context, listen: false);
-        provider.fBLogin();
+        provider.fBLogin(context);
       },
       label: Text("使用Facebook帳號登入"),
       style: ElevatedButton.styleFrom(

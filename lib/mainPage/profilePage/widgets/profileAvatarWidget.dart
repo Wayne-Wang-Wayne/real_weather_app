@@ -41,8 +41,8 @@ class _ProfileAvatarWidgetState extends State<ProfileAvatarWidget> {
   }
 
   void errorHandel() {
+    EasyLoading.dismiss();
     setState(() {
-      EasyLoading.dismiss();
       _showErrorDialog();
       isLoading = false;
     });
@@ -82,6 +82,7 @@ class _ProfileAvatarWidgetState extends State<ProfileAvatarWidget> {
             break;
           case TaskState.canceled:
             print("Upload was canceled");
+            errorHandel();
             break;
           case TaskState.error:
             errorHandel();
@@ -97,10 +98,10 @@ class _ProfileAvatarWidgetState extends State<ProfileAvatarWidget> {
                 .doc(userUid);
 
             await docRef.update({"userImageUrl": imageUrl});
+            EasyLoading.dismiss();
             setState(() {
               widget.userModel.userImageUrl = imageUrl;
               isLoading = false;
-              EasyLoading.dismiss();
             });
             break;
         }

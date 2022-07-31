@@ -80,8 +80,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void errorHandel() {
+    EasyLoading.dismiss();
     setState(() {
-      EasyLoading.dismiss();
       _showErrorDialog();
       canPop = true;
       isLoading = false;
@@ -166,10 +166,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 "userExp": userModel.userExp! + 25
               });
             }
+            EasyLoading.dismiss();
             setState(() {
               canPop = true;
               isLoading = false;
-              EasyLoading.dismiss();
               Navigator.of(context).pop(true);
             });
             break;

@@ -48,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
           if (snapshot.hasError) {
             return Center(
-              child: Column(children: [
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Text("讀取個人資料發生問題"),
                 ElevatedButton(
                     onPressed: () {

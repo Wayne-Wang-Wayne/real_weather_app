@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart';
 
 import '../../models/userModel.dart';
 
@@ -15,7 +17,8 @@ class SignInProvider extends ChangeNotifier {
   GoogleSignInAccount get user => _user!;
 
   // Google Sign In
-  Future googleLogin() async {
+  Future googleLogin(BuildContext context,
+      [String? email, facebookCredential]) async {
     try {
       final googleUser = await googleSignIn.signIn();
       if (googleUser == null) return;
@@ -23,16 +26,10 @@ class SignInProvider extends ChangeNotifier {
       final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      final checkUserResult = await checkIsUserAlreadyExisted();
-      if (!checkUserResult!.exists) {
-        await addNewUser();
-      }
+      await _firebaseCredential(context, credential);
     } catch (e) {
       print(e.toString());
     }
-    notifyListeners();
   }
 
   Future logout() async {
@@ -74,7 +71,7 @@ class SignInProvider extends ChangeNotifier {
     await docRef.set(userModel);
   }
 
-  Future<void> fBLogin() async {
+  Future fBLogin(BuildContext context) async {
     var existingEmail = null;
     var pendingCred = null;
     try {
@@ -82,14 +79,76 @@ class SignInProvider extends ChangeNotifier {
       final facebookAuthCredential =
           FacebookAuthProvider.credential(fbLoginResult.accessToken!.token);
 
-      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      await _firebaseCredential(context, facebookAuthCredential);
+    } catch (error) {
+      print(e.toString());
+    }
+  }
+
+  _firebaseCredential(BuildContext context, credential) async {
+    try {
+      User user =
+          (await FirebaseAuth.instance.signInWithCredential(credential)).user!;
       final checkUserResult = await checkIsUserAlreadyExisted();
       if (!checkUserResult!.exists) {
         await addNewUser();
       }
-    } catch (error) {
-      print(e.toString());
+      notifyListeners();
+      //await firebaseProfile.updateUserData(context, user);
+    } on FirebaseAuthException catch (error) {
+      if (error.code == 'account-exists-with-different-credential') {
+        String email = error.email!;
+        List<String> signInMethods =
+            await FirebaseAuth.instance.fetchSignInMethodsForEmail(email);
+        var user;
+        switch (signInMethods.first) {
+          case 'google.com':
+            user = await googleLogin(context, email, credential);
+            break;
+          case 'facebook.com':
+            user = await fBLogin(context);
+            break;
+          case 'apple.com':
+            //user = await appleSignIn(context);
+            break;
+          case 'password':
+            // since password is managed by user we force have email provider only
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('auth.signInMethods_password')));
+            break;
+          // TODO: apple
+        }
+        await linkProvider(context, credential);
+        return user;
+      }
+
+      return ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error.message!)));
     }
-    notifyListeners();
+  }
+
+  // just some extra error covering
+  Future linkProvider(BuildContext context, credential) async {
+    try {
+      await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "provider-already-linked":
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('auth.provider_already_linked')));
+          break;
+        case "invalid-credential":
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('auth.invalid_credential')));
+          break;
+        case "credential-already-in-use":
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('auth.credential_already_in_use')));
+          break;
+        default:
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('auth.something_happened')));
+      }
+    }
   }
 }

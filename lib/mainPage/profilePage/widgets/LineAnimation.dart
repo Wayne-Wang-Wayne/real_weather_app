@@ -17,7 +17,7 @@ class _LineState extends State<Line> with TickerProviderStateMixin {
 
   List<double> _getMoveRange(int startExp, int finalExp) {
     final List<double> proportionList = [];
-    int tempExp = 200;
+    int tempExp = 0;
     while (startExp - tempExp >= 0) {
       startExp -= tempExp;
       tempExp += 75;

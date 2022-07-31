@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Flutter Weather Shared App</string>
+    <string name="facebook_app_id">764542721492881</string>
+    <string name="fb_login_protocol_scheme">fb764542721492881</string>
+    <string name="facebook_client_token">debe952c6d924b2377ede5077ace6d6e</string>
+</resources>
+

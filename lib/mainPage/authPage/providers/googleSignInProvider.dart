@@ -1,16 +1,20 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../models/userModel.dart';
 
-class GoogleSignInProvider extends ChangeNotifier {
+class SignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
 
   GoogleSignInAccount get user => _user!;
 
+  // Google Sign In
   Future googleLogin() async {
     try {
       final googleUser = await googleSignIn.signIn();
@@ -68,5 +72,24 @@ class GoogleSignInProvider extends ChangeNotifier {
                 userModel.toFirestore())
         .doc(currentUser.uid);
     await docRef.set(userModel);
+  }
+
+  Future<void> fBLogin() async {
+    var existingEmail = null;
+    var pendingCred = null;
+    try {
+      final fbLoginResult = await FacebookAuth.instance.login();
+      final facebookAuthCredential =
+          FacebookAuthProvider.credential(fbLoginResult.accessToken!.token);
+
+      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      final checkUserResult = await checkIsUserAlreadyExisted();
+      if (!checkUserResult!.exists) {
+        await addNewUser();
+      }
+    } catch (error) {
+      print(e.toString());
+    }
+    notifyListeners();
   }
 }

@@ -97,9 +97,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 TextButton.icon(
                     onPressed: () {
-                      final provider = Provider.of<GoogleSignInProvider>(
-                          context,
-                          listen: false);
+                      final provider =
+                          Provider.of<SignInProvider>(context, listen: false);
                       provider.logout();
                     },
                     icon: Icon(Icons.logout),

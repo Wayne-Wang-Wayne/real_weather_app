@@ -45,24 +45,13 @@ class AuthScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 100,
+                height: 60,
               ),
-              ElevatedButton.icon(
-                onPressed: () {
-                  final provider =
-                      Provider.of<GoogleSignInProvider>(context, listen: false);
-                  provider.googleLogin();
-                },
-                label: Text("Sign Up with Google"),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: Colors.black,
-                    minimumSize: Size(double.infinity, 50)),
-                icon: FaIcon(
-                  FontAwesomeIcons.google,
-                  color: Colors.red,
-                ),
+              googleSingInButton(),
+              SizedBox(
+                height: 10,
               ),
+              fbSingInButton(),
               SizedBox(
                 height: 40,
               ),
@@ -83,6 +72,56 @@ class AuthScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class googleSingInButton extends StatelessWidget {
+  const googleSingInButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () {
+        final provider = Provider.of<SignInProvider>(context, listen: false);
+        provider.googleLogin();
+      },
+      label: Text("使用Google帳號登入"),
+      style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+          onPrimary: Colors.black,
+          minimumSize: Size(double.infinity, 50)),
+      icon: FaIcon(
+        FontAwesomeIcons.google,
+        color: Colors.red,
+      ),
+    );
+  }
+}
+
+class fbSingInButton extends StatelessWidget {
+  const fbSingInButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () {
+        final provider = Provider.of<SignInProvider>(context, listen: false);
+        provider.fBLogin();
+      },
+      label: Text("使用Facebook帳號登入"),
+      style: ElevatedButton.styleFrom(
+          primary: Colors.white,
+          onPrimary: Colors.black,
+          minimumSize: Size(double.infinity, 50)),
+      icon: FaIcon(
+        FontAwesomeIcons.facebook,
+        color: Colors.blue,
       ),
     );
   }

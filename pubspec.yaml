@@ -58,6 +58,7 @@ dependencies:
   image_downloader: ^0.31.0
   flutter_picker: ^2.0.5
   location: ^4.4.0
+  flutter_facebook_auth: ^4.4.0+1
 
 dev_dependencies:
   flutter_test:

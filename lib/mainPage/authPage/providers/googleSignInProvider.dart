@@ -33,7 +33,14 @@ class SignInProvider extends ChangeNotifier {
   }
 
   Future logout() async {
-    await googleSignIn.disconnect();
+    try {
+      await googleSignIn.disconnect();
+    } catch (error) {}
+
+    try {
+      await FacebookAuth.instance.logOut();
+    } catch (error) {}
+
     FirebaseAuth.instance.signOut();
   }
 

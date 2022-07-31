@@ -29,7 +29,7 @@ class _DailyPostButtonState extends State<DailyPostButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 90,
+      width: 100,
       height: 40,
       child: TextButton.icon(
         onPressed: () {

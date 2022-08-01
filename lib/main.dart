@@ -9,6 +9,7 @@ import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
 import 'package:real_weather_shared_app/utils/CustomImageCache.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
 import 'package:real_weather_shared_app/utils/pictureDetailPage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'firebase_options.dart';
 import 'mainPage/authPage/providers/googleSignInProvider.dart';
@@ -20,6 +21,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
   );
   runApp(const MyApp());
 }

@@ -142,7 +142,8 @@ class _MainPostScreenState extends State<MainPostScreen>
       tempPostList.add(post.data());
     });
     if (tempPostList.isEmpty) {
-      MyTools.showSimpleDialog(context, "目前沒有人分享，趕緊分享幫助大家，增加被讚的機會唷！");
+      if (isFirstLoading)
+        MyTools.showSimpleDialog(context, "短時間內沒有人分享，趕緊分享幫助大家，增加被讚的機會唷！");
       setState(() {
         isFirstLoading = false;
         isMoreLoading = false;

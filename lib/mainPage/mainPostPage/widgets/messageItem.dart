@@ -61,7 +61,7 @@ class MessageItem extends StatelessWidget {
                 text: replyItemModel.replyContent,
                 style: TextStyle(fontSize: 14),
                 onOpen: (link) {
-                  _launchUrl(Uri.parse(link.url));
+                  MyTools.launchMyUrl(Uri.parse(link.url));
                 },
               ),
               Text(MyTools.getReadableTime(replyItemModel.replyDateTimestamp),
@@ -71,11 +71,5 @@ class MessageItem extends StatelessWidget {
         )
       ]),
     );
-  }
-
-  Future<void> _launchUrl(Uri url) async {
-    if (!await launchUrl(url)) {
-      throw 'Could not launch $url';
-    }
   }
 }

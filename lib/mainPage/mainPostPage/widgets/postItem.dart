@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/locDateWidget.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItemImageWidget.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postLabel.dart';
@@ -50,10 +51,12 @@ class PostItem extends StatelessWidget {
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         width: double.infinity,
-        child: Text(
-          postModel.postText!,
-          style: TextStyle(fontSize: 20),
-        ),
+        child: Linkify(
+            text: postModel.postText!,
+            style: TextStyle(fontSize: 20),
+            onOpen: (link) {
+              MyTools.launchMyUrl(Uri.parse(link.url));
+            }),
       ),
       SizedBox(
         height: 5,

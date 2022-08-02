@@ -7,6 +7,7 @@ import 'package:location/location.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/fetchUserBottomSheetInfo.dart';
 import 'package:real_weather_shared_app/utils/simpleDialogWidget.dart';
 import 'package:real_weather_shared_app/utils/userInfoWidget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../mainPage/models/postModel.dart';
 
@@ -165,5 +166,11 @@ class MyTools {
   static String getUserTitle(int userExp) {
     // todo 到時候規則出來要完善邏輯
     return "天氣專家";
+  }
+
+  static Future<void> launchMyUrl(Uri url) async {
+    if (!await launchUrl(url)) {
+      throw 'Could not launch $url';
+    }
   }
 }

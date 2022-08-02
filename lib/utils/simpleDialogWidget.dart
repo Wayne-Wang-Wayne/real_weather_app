@@ -18,7 +18,7 @@ class SimpleDialogBody extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: Padding(
             padding:
-                const EdgeInsets.only(top: 16, left: 20, right: 20, bottom: 20),
+                const EdgeInsets.only(top: 16, left: 20, right: 16, bottom: 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

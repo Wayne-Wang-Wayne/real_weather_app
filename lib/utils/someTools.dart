@@ -173,4 +173,8 @@ class MyTools {
       throw 'Could not launch $url';
     }
   }
+
+  static bool isNeedToEncouragePost(DateTime date) {
+    return DateTime.now().subtract(Duration(hours: 3)).isAfter(date);
+  }
 }

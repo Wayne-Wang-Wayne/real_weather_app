@@ -101,7 +101,9 @@ class _MainPostScreenState extends State<MainPostScreen>
       MainPostScreen.staticCurrentLocation = currentLocation;
     }
     await fetchPostData();
-
+    if (MyTools.isNeedToEncouragePost((DateTime.fromMillisecondsSinceEpoch(
+        (_showedList[0] as PostModel).postDateTimeStamp!))))
+      MyTools.showSimpleDialog(context, "短時間內沒有人分享，趕緊分享幫助大家，增加被讚的機會唷！");
     setState(() {
       isFirstLoading = false;
       canLoadMore = true;
@@ -140,6 +142,7 @@ class _MainPostScreenState extends State<MainPostScreen>
       tempPostList.add(post.data());
     });
     if (tempPostList.isEmpty) {
+      MyTools.showSimpleDialog(context, "目前沒有人分享，趕緊分享幫助大家，增加被讚的機會唷！");
       setState(() {
         isFirstLoading = false;
         isMoreLoading = false;

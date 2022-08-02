@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../utils/someTools.dart';
 
@@ -55,7 +57,13 @@ class MessageItem extends StatelessWidget {
                   ],
                 ),
               ),
-              Text(replyItemModel.replyContent, style: TextStyle(fontSize: 14)),
+              Linkify(
+                text: replyItemModel.replyContent,
+                style: TextStyle(fontSize: 14),
+                onOpen: (link) {
+                  _launchUrl(Uri.parse(link.url));
+                },
+              ),
               Text(MyTools.getReadableTime(replyItemModel.replyDateTimestamp),
                   style: TextStyle(fontSize: 10, color: Colors.grey))
             ],
@@ -63,5 +71,11 @@ class MessageItem extends StatelessWidget {
         )
       ]),
     );
+  }
+
+  Future<void> _launchUrl(Uri url) async {
+    if (!await launchUrl(url)) {
+      throw 'Could not launch $url';
+    }
   }
 }

@@ -62,6 +62,11 @@
 	<string>debe952c6d924b2377ede5077ace6d6e</string>
 	<key>FacebookDisplayName</key>
 	<string>Flutter Weather Shared App</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+  		<string>sms</string>
+  		<string>tel</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>

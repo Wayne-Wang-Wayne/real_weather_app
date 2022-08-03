@@ -5,7 +5,13 @@ import 'package:flutter/widgets.dart';
 
 class SimpleDialogBody extends StatelessWidget {
   final String simpleString;
-  const SimpleDialogBody({Key? key, required this.simpleString})
+  final Function? callBack;
+  final double? wordingFontSize;
+  const SimpleDialogBody(
+      {Key? key,
+      required this.simpleString,
+      this.callBack,
+      this.wordingFontSize})
       : super(key: key);
 
   @override
@@ -22,12 +28,16 @@ class SimpleDialogBody extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(simpleString),
+                Text(
+                  simpleString,
+                  style: TextStyle(fontSize: wordingFontSize ?? null),
+                ),
                 SizedBox(
                   height: 10,
                 ),
                 TextButton(
                     onPressed: () {
+                      if (callBack != null) callBack!();
                       Navigator.of(context).pop();
                     },
                     child: Text(

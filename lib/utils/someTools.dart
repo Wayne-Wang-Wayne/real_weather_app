@@ -55,11 +55,18 @@ class MyTools {
     }
   }
 
-  static showSimpleDialog(BuildContext context, String simpleString) async {
+  static showSimpleDialog(BuildContext context, String simpleString,
+      {Function? callBack = null,
+      double? wordingFontSize = null,
+      bool cancelable = false}) async {
     showDialog<Null>(
-      barrierDismissible: false,
+      barrierDismissible: cancelable,
       context: context,
-      builder: (ctx) => SimpleDialogBody(simpleString: simpleString),
+      builder: (ctx) => SimpleDialogBody(
+        simpleString: simpleString,
+        callBack: callBack,
+        wordingFontSize: wordingFontSize,
+      ),
     );
   }
 

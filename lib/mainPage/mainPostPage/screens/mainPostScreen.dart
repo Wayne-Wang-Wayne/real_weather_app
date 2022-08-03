@@ -103,7 +103,8 @@ class _MainPostScreenState extends State<MainPostScreen>
     await fetchPostData();
     if (MyTools.isNeedToEncouragePost((DateTime.fromMillisecondsSinceEpoch(
         (_showedList[0] as PostModel).postDateTimeStamp!))))
-      MyTools.showSimpleDialog(context, "短時間內沒有人分享，趕緊分享幫助大家，增加被讚的機會唷！");
+      MyTools.showSimpleDialog(context, "短時間內沒有人分享，趕緊分享幫助大家，增加被讚的機會唷！",
+          wordingFontSize: 16);
     setState(() {
       isFirstLoading = false;
       canLoadMore = true;
@@ -143,7 +144,8 @@ class _MainPostScreenState extends State<MainPostScreen>
     });
     if (tempPostList.isEmpty) {
       if (isFirstLoading)
-        MyTools.showSimpleDialog(context, "短時間內沒有人分享，趕緊分享幫助大家，增加被讚的機會唷！");
+        MyTools.showSimpleDialog(context, "短時間內沒有人分享，趕緊分享幫助大家，增加被讚的機會唷！",
+            wordingFontSize: 16);
       setState(() {
         isFirstLoading = false;
         isMoreLoading = false;

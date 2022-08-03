@@ -205,7 +205,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       _postText != null &&
                       _postText != "" &&
                       !isLoading) {
-                    createPost(context);
+                    MyTools.showSimpleDialog(context, "確定要發出貼文？",
+                        callBack: () => createPost(context),
+                        wordingFontSize: 18,
+                        cancelable: true);
                   }
                 },
                 child: Text(

@@ -72,6 +72,7 @@ class MessageMainInfoWidget extends StatelessWidget {
               arguments: {"pictureUrl": postModel.imageUrl!}),
           child: Container(
             height: 120,
+            width: 100,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Hero(

@@ -14,7 +14,10 @@ import '../../models/postModel.dart';
 
 class PostItem extends StatelessWidget {
   final PostModel postModel;
-  const PostItem({Key? key, required this.postModel}) : super(key: key);
+  final Function(String) updateDeleteCallBack;
+  const PostItem(
+      {Key? key, required this.postModel, required this.updateDeleteCallBack})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -75,7 +78,8 @@ class PostItem extends StatelessWidget {
           )
         ]),
         Positioned(
-          child: PostMoreOptionWidget(postModel: postModel),
+          child: PostMoreOptionWidget(
+              postModel: postModel, updateDeleteCallBack: updateDeleteCallBack),
           right: 15,
           top: 5,
         )

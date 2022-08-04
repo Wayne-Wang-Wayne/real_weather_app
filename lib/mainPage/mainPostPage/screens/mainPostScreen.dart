@@ -188,6 +188,12 @@ class _MainPostScreenState extends State<MainPostScreen>
     });
   }
 
+  void updateDeleteCallBack(String removePostId) {
+    _showedList
+        .removeWhere((item) => (item as PostModel).postId == removePostId);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -263,8 +269,9 @@ class _MainPostScreenState extends State<MainPostScreen>
                                 child: Column(
                                   children: [
                                     PostItem(
-                                      postModel: _showedList[index],
-                                    ),
+                                        postModel: _showedList[index],
+                                        updateDeleteCallBack:
+                                            updateDeleteCallBack),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,

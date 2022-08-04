@@ -5,12 +5,14 @@ import 'package:flutter/widgets.dart';
 
 class SimpleDialogBody extends StatelessWidget {
   final String simpleString;
-  final Function? callBack;
+  final Function? positiveCallBack;
   final double? wordingFontSize;
+  final Function? negativeCallBack;
   const SimpleDialogBody(
       {Key? key,
       required this.simpleString,
-      this.callBack,
+      this.positiveCallBack,
+      this.negativeCallBack,
       this.wordingFontSize})
       : super(key: key);
 
@@ -35,15 +37,29 @@ class SimpleDialogBody extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                TextButton(
-                    onPressed: () {
-                      if (callBack != null) callBack!();
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      "確定",
-                      style: TextStyle(fontSize: 15),
-                    ))
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    if (negativeCallBack != null)
+                      TextButton(
+                          onPressed: () {
+                            negativeCallBack!();
+                          },
+                          child: Text(
+                            "取消",
+                            style: TextStyle(fontSize: 15),
+                          )),
+                    TextButton(
+                        onPressed: () {
+                          if (positiveCallBack != null) positiveCallBack!();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "確定",
+                          style: TextStyle(fontSize: 15),
+                        )),
+                  ],
+                )
               ],
             ),
           ),

@@ -159,20 +159,29 @@ class _MainPostScreenState extends State<MainPostScreen>
 
   Future<void> fetchUserData(List<dynamic> tempPostList) async {
     for (final item in tempPostList) {
-      final docRef = FirebaseFirestore.instance
-          .collection('users')
-          .withConverter(
-              fromFirestore: UserModel.fromFirestore,
-              toFirestore: (UserModel userModel, options) =>
-                  userModel.toFirestore())
-          .doc((item as PostModel).posterUserId);
-      final userModel = await docRef.get().then((value) => value.data());
-      item.posterImageUrl = userModel!.userImageUrl;
-      item.posterName = userModel.userName;
-      item.posterExp = userModel.userExp;
-      item.posterLikedTimes = userModel.likedTime;
-      item.posterPostTimes = userModel.postTime;
-      _showedList.add(item);
+      try {
+        final docRef = FirebaseFirestore.instance
+            .collection('users')
+            .withConverter(
+                fromFirestore: UserModel.fromFirestore,
+                toFirestore: (UserModel userModel, options) =>
+                    userModel.toFirestore())
+            .doc((item as PostModel).posterUserId);
+        final userModel = await docRef.get().then((value) => value.data());
+        item.posterImageUrl = userModel!.userImageUrl;
+        item.posterName = userModel.userName;
+        item.posterExp = userModel.userExp;
+        item.posterLikedTimes = userModel.likedTime;
+        item.posterPostTimes = userModel.postTime;
+        _showedList.add(item);
+      } catch (error) {
+        item.posterImageUrl = "";
+        item.posterName = "未知";
+        item.posterExp = 0;
+        item.posterLikedTimes = 0;
+        item.posterPostTimes = 0;
+        _showedList.add(item);
+      }
     }
   }
 

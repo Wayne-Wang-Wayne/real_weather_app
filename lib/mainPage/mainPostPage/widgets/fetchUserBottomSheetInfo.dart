@@ -33,7 +33,14 @@ class FetchUserBottomSheet extends StatelessWidget {
             return FetchUserBottomSheetShimmer();
           }
           if (snapshot.hasError) {
-            return Center(child: Text("讀取個人資料發生問題"));
+            return Container(
+                height: 300,
+                alignment: Alignment.center,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Text(
+                  "讀取個人資料發生問題",
+                  style: TextStyle(fontSize: 15),
+                ));
           }
 
           final userModel = snapshot.data;

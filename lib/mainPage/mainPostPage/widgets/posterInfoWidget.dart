@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -28,7 +30,13 @@ class PosterInfoWidget extends StatelessWidget {
           tag: postModel.posterImageUrl! + postModel.postId!,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(40),
-            child: Image.network(postModel.posterImageUrl!, fit: BoxFit.cover),
+            child: postModel.posterImageUrl!.isEmpty
+                ? Image.asset("assets/images/default_avatar.png")
+                : FadeInImage(
+                    image: NetworkImage(postModel.posterImageUrl!),
+                    placeholder: AssetImage("assets/images/default_avatar.png"),
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
       ),

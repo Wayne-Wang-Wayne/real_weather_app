@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
+import 'package:real_weather_shared_app/mainPage/profilePage/screens/EditNotifyPage.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
 import 'package:real_weather_shared_app/utils/CustomImageCache.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
@@ -104,6 +105,11 @@ class MyApp extends StatelessWidget {
       case PictureDetailPage.routeName:
         return MaterialPageRoute(
             builder: (context) => PictureDetailPage(), settings: settings);
+      case EditNotifyPage.routeName:
+        return CustomPageRoute(
+            child: EditNotifyPage(),
+            settings: settings,
+            direction: AxisDirection.up);
       default:
         return CustomPageRoute(child: CreatePostScreen(), settings: settings);
     }

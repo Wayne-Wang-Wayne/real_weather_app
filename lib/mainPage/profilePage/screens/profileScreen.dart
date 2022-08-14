@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
+import 'package:real_weather_shared_app/mainPage/profilePage/screens/EditNotifyPage.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/editUserNameDialog.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/myAchievementWidget.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileAvatarWidget.dart';
@@ -96,7 +97,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     size: 15,
                     color: Colors.yellow.shade700,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(EditNotifyPage.routeName);
+                  },
                   label: Text(
                     "管理我的訂閱通知",
                     style: TextStyle(),

@@ -21,6 +21,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../models/postModel.dart';
 import '../../models/userModel.dart';
+import '../../profilePage/screens/EditNotifyPage.dart';
 import '../widgets/mainPostShimmer.dart';
 
 class MainPostScreen extends StatefulWidget {
@@ -393,7 +394,9 @@ class _MainPostScreenState extends State<MainPostScreen>
                 size: 15,
                 color: Colors.yellow.shade700,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(EditNotifyPage.routeName);
+              },
               label: Text(
                 "管理訂閱通知",
                 style: TextStyle(),

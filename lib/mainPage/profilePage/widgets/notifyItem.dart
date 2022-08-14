@@ -4,7 +4,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
 class NotifyItem extends StatelessWidget {
-  const NotifyItem({Key? key}) : super(key: key);
+  final String locationName;
+  final Function(String) unsubscribe;
+  const NotifyItem(
+      {Key? key, required this.locationName, required this.unsubscribe})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +24,15 @@ class NotifyItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "彰化縣 彰化市",
+              locationName,
               style: TextStyle(fontSize: 18, color: Colors.blueGrey),
             ),
             IconButton(
               icon: Icon(Icons.delete),
               color: Colors.red.shade200,
-              onPressed: () {},
+              onPressed: () {
+                unsubscribe(locationName);
+              },
             )
           ]),
     );

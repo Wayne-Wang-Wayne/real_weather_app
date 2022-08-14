@@ -52,7 +52,6 @@ class _MainPostScreenState extends State<MainPostScreen>
   @override
   void initState() {
     super.initState();
-    // todo需要初始化currentLocation(看是要用抓定位的還是存sharedPref的)
 
     controller = ScrollController()..addListener(_scrollListener);
     animationController =
@@ -380,33 +379,38 @@ class _MainPostScreenState extends State<MainPostScreen>
 
   showPicker(BuildContext context) async {
     Picker(
-        height: 85,
-        itemExtent: 40,
-        adapter: PickerDataAdapter<String>(
-            pickerdata: AreaData().areaDataForMainPostPicker),
-        hideHeader: true,
-        title:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text("選擇地點"),
-          TextButton.icon(
-              icon: Icon(
-                Icons.notifications_active_rounded,
-                size: 15,
-                color: Colors.yellow.shade700,
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed(EditNotifyPage.routeName);
-              },
-              label: Text(
-                "管理訂閱通知",
-                style: TextStyle(),
-              ))
-        ]),
-        selectedTextStyle: TextStyle(color: Colors.blue),
-        onConfirm: (Picker picker, List value) {
-          currentLocation = picker.getSelectedValues() as List<String>;
-          loadFirstData(needToRelocate: false);
-        }).showDialog(context);
+            height: 85,
+            itemExtent: 40,
+            adapter: PickerDataAdapter<String>(
+                pickerdata: AreaData().areaDataForMainPostPicker),
+            hideHeader: true,
+            title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("選擇地點"),
+                  TextButton.icon(
+                      icon: Icon(
+                        Icons.notifications_active_rounded,
+                        size: 15,
+                        color: Colors.yellow.shade700,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(EditNotifyPage.routeName);
+                      },
+                      label: Text(
+                        "管理訂閱通知",
+                        style: TextStyle(),
+                      ))
+                ]),
+            selectedTextStyle: TextStyle(color: Colors.blue),
+            onConfirm: (Picker picker, List value) {
+              currentLocation = picker.getSelectedValues() as List<String>;
+              loadFirstData(needToRelocate: false);
+            },
+            confirmText: "確定",
+            cancelText: "取消")
+        .showDialog(context);
   }
 
   @override

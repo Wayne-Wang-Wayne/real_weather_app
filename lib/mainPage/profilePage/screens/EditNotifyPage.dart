@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_picker/Picker.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/notifyItem.dart';
+
+import '../../models/areaData.dart';
 
 class EditNotifyPage extends StatelessWidget {
   const EditNotifyPage({Key? key}) : super(key: key);
@@ -21,7 +24,9 @@ class EditNotifyPage extends StatelessWidget {
         ),
         actions: [
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                _showPicker(context);
+              },
               child: Text(
                 "新增",
                 style: TextStyle(color: Colors.blueAccent, fontSize: 20),
@@ -33,5 +38,23 @@ class EditNotifyPage extends StatelessWidget {
         itemCount: 1,
       ),
     );
+  }
+
+  _showPicker(BuildContext context) async {
+    Picker(
+            height: 85,
+            itemExtent: 40,
+            adapter: PickerDataAdapter<String>(
+                pickerdata: AreaData().areaDataForMainPostPicker),
+            hideHeader: true,
+            title: Text("訂閱地點"),
+            selectedTextStyle: TextStyle(color: Colors.blue),
+            onConfirm: (Picker picker, List value) {
+              // currentLocation = picker.getSelectedValues() as List<String>;
+              // loadFirstData(needToRelocate: false);
+            },
+            confirmText: "訂閱",
+            cancelText: "取消")
+        .showDialog(context);
   }
 }

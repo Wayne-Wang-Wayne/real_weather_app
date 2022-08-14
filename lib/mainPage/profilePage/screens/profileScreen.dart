@@ -90,6 +90,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 SizedBox(
                   height: 5,
                 ),
+                ElevatedButton.icon(
+                  icon: Icon(
+                    Icons.notifications_active_rounded,
+                    size: 15,
+                    color: Colors.yellow.shade700,
+                  ),
+                  onPressed: () {},
+                  label: Text(
+                    "管理我的訂閱通知",
+                    style: TextStyle(),
+                  ),
+                  style: ElevatedButton.styleFrom(primary: Colors.blueGrey),
+                ),
                 DailyMissionAndAchievement(userModel: userModel),
                 LevelUpRule(),
                 SizedBox(

@@ -379,12 +379,26 @@ class _MainPostScreenState extends State<MainPostScreen>
 
   showPicker(BuildContext context) async {
     Picker(
-        height: 100,
+        height: 85,
         itemExtent: 40,
         adapter: PickerDataAdapter<String>(
             pickerdata: AreaData().areaDataForMainPostPicker),
         hideHeader: true,
-        title: Text("選擇地點"),
+        title:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text("選擇地點"),
+          TextButton.icon(
+              icon: Icon(
+                Icons.notifications_active_rounded,
+                size: 15,
+                color: Colors.yellow.shade700,
+              ),
+              onPressed: () {},
+              label: Text(
+                "管理訂閱通知",
+                style: TextStyle(),
+              ))
+        ]),
         selectedTextStyle: TextStyle(color: Colors.blue),
         onConfirm: (Picker picker, List value) {
           currentLocation = picker.getSelectedValues() as List<String>;

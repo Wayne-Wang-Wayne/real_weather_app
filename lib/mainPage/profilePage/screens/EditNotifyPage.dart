@@ -62,7 +62,12 @@ class _EditNotifyPageState extends State<EditNotifyPage> {
         actions: [
           TextButton(
               onPressed: () {
-                _showPicker(context);
+                if (subscribeList.length >= 6) {
+                  MyTools.showSimpleDialog(context, "最多只能訂閱六個地點！",
+                      wordingFontSize: 20);
+                } else {
+                  _showPicker(context);
+                }
               },
               child: Text(
                 "新增",
@@ -96,7 +101,8 @@ class _EditNotifyPageState extends State<EditNotifyPage> {
                   picker.getSelectedValues() as List<String>;
               String pickedString = "${pickedLocation[0]} ${pickedLocation[1]}";
               if (subscribeList.contains(pickedString)) {
-                MyTools.showSimpleDialog(context, "您已經訂閱過這個地點！");
+                MyTools.showSimpleDialog(context, "您已經訂閱過這個地點！",
+                    wordingFontSize: 20);
               } else {
                 subscribeList.add(pickedString);
                 prefs!.setStringList(listKey, subscribeList);

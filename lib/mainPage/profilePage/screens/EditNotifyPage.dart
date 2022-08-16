@@ -42,8 +42,10 @@ class _EditNotifyPageState extends State<EditNotifyPage> {
     void _unsuscribeLocation(String locationName) {
       subscribeList.remove(locationName);
       prefs!.setStringList(listKey, subscribeList);
-      FirebaseMessaging.instance
-          .unsubscribeFromTopic(locationName.replaceAll(" ", ""));
+      final cityName = locationName.split(" ")[0];
+      final townName = locationName.split(" ")[1];
+      final locCode = MyTools.getLocCode(cityName, townName);
+      FirebaseMessaging.instance.unsubscribeFromTopic(locCode);
       setState(() {});
     }
 
@@ -98,8 +100,9 @@ class _EditNotifyPageState extends State<EditNotifyPage> {
               } else {
                 subscribeList.add(pickedString);
                 prefs!.setStringList(listKey, subscribeList);
-                FirebaseMessaging.instance
-                    .subscribeToTopic(pickedString.replaceAll(" ", ""));
+                final locCode =
+                    MyTools.getLocCode(pickedLocation[0], pickedLocation[1]);
+                FirebaseMessaging.instance.subscribeToTopic(locCode);
                 setState(() {});
               }
             },

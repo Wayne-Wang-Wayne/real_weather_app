@@ -9,6 +9,7 @@ import 'package:real_weather_shared_app/utils/simpleDialogWidget.dart';
 import 'package:real_weather_shared_app/utils/userInfoWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../mainPage/models/areaData.dart';
 import '../mainPage/models/postModel.dart';
 
 class MyTools {
@@ -184,5 +185,21 @@ class MyTools {
 
   static bool isNeedToEncouragePost(DateTime date) {
     return DateTime.now().subtract(Duration(hours: 3)).isAfter(date);
+  }
+
+  static String getLocCode(String cityName, String townName) {
+    final areaData = AreaData().area_data;
+    final firstIndex = areaData.keys.toList().indexOf(cityName);
+    final secondIndex = areaData[cityName]!.indexOf(townName);
+    String myCode = "";
+    if (firstIndex < 10)
+      myCode = "0$firstIndex";
+    else
+      myCode = firstIndex.toString();
+    if (secondIndex < 10)
+      myCode = "${myCode}0$secondIndex";
+    else
+      myCode = "$myCode$secondIndex";
+    return myCode;
   }
 }

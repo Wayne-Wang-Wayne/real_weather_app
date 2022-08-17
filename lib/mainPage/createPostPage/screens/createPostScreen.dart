@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -166,6 +167,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 "userExp": userModel.userExp! + 25
               });
             }
+            await sendNotification("$_pickedCity $_pickedTown",
+                MyTools.getLocCode(_pickedCity!, _pickedTown!), _postText!);
             EasyLoading.dismiss();
             setState(() {
               canPop = true;
@@ -178,6 +181,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     } catch (error) {
       errorHandel();
     }
+  }
+
+  Future<void> sendNotification(
+      String location, String topicCode, String postText) async {
+    HttpsCallable callable =
+        FirebaseFunctions.instance.httpsCallable('sendNotification');
+    final resp = await callable.call(<String, dynamic>{
+      'location': location,
+      'topicCode': topicCode,
+      'postText': postText
+    });
   }
 
   @override

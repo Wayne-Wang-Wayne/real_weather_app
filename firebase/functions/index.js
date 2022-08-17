@@ -23,3 +23,30 @@ exports.removeExpiredPostAndPic = functions.pubsub.schedule("every 240 hours").o
   });
   return Promise.all(promises);
 });
+
+
+exports.sendNotification = functions.https.onCall(async (data, context) => {
+
+  const location = data.location;
+  const topicCode = data.topicCode;
+  const postText = data.postText;
+
+  const message = {
+    data: {
+      location: location,
+      content: `${location}: ${postText}`,
+    },
+    topic: topicCode,
+  };
+  admin
+    .messaging()
+    .send(message)
+    .then((response) => {
+    console.log("Successfully sent message:", response);
+  })
+  .catch((error) => {
+    console.log("Error sending message:", error);
+  });
+
+  return `Successfully send notification`;
+});

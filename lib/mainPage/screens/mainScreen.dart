@@ -1,9 +1,11 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/screens/mainPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/showTermsDialog.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/screens/profileScreen.dart';
+import 'package:real_weather_shared_app/mainPage/screens/noInternetScreen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   int? _currentIndex;
   final _screens = [MainPostScreen(), ProfileScreen()];
   PageController? _pageController;
+  bool hasInternet = true;
 
   @override
   void initState() {
@@ -23,6 +26,16 @@ class _MainScreenState extends State<MainScreen> {
     _currentIndex = 0;
     _pageController = PageController(initialPage: _currentIndex!);
     Future.delayed(Duration.zero, () => _showTermsDialog());
+    checkInternet();
+  }
+
+  Future<void> checkInternet() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      setState(() {
+        hasInternet = false;
+      });
+    }
   }
 
   @override
@@ -35,11 +48,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: NeverScrollableScrollPhysics(),
-        children: _screens,
-      ),
+      body: hasInternet
+          ? PageView(
+              controller: _pageController,
+              physics: NeverScrollableScrollPhysics(),
+              children: _screens,
+            )
+          : NoInternetScreen(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,
         currentIndex: _currentIndex!,

@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'firebase_options.dart';
 import 'mainPage/authPage/providers/googleSignInProvider.dart';
 import 'mainPage/authPage/screens/authScreen.dart';
 import 'mainPage/mainPostPage/screens/postMessageScreen.dart';
+import 'mainPage/screens/noInternetScreen.dart';
 
 void main() async {
   CustomImageCache();
@@ -68,21 +70,30 @@ class MyApp extends StatelessWidget {
                 .copyWith(secondary: Colors.white)),
         home: Scaffold(
             body: WillPopScope(
-                child: StreamBuilder(
-                    stream: FirebaseAuth.instance.authStateChanges(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasData) {
-                        return MainScreen();
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text("Oops!有東西出錯了。"),
-                        );
-                      } else {
-                        return AuthScreen();
-                      }
-                    }),
+                child: StreamBuilder<ConnectivityResult>(
+                  stream: Connectivity().onConnectivityChanged,
+                  builder: (context, snapshot) {
+                    final conenctivityResult = snapshot.data;
+                    if (conenctivityResult == ConnectivityResult.none)
+                      return NoInternetScreen();
+                    return StreamBuilder(
+                        stream: FirebaseAuth.instance.authStateChanges(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasData) {
+                            return MainScreen();
+                          } else if (snapshot.hasError) {
+                            return Center(
+                              child: Text("Oops!有東西出錯了。"),
+                            );
+                          } else {
+                            return AuthScreen();
+                          }
+                        });
+                  },
+                ),
                 onWillPop: onWillPop)),
         onGenerateRoute: (route) => onGenerateRoute(route),
         builder: EasyLoading.init(),

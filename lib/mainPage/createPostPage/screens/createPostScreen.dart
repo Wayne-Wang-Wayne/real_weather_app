@@ -152,6 +152,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             UserModel? userModel =
                 await userDocRef.get().then((value) => value.data());
             bool _hasPost = MyTools.checkIsToday(userModel!.lastPostTimestamp!);
+            final locCode = MyTools.getLocCode(_pickedCity!, _pickedTown!);
             await postRef.set(PostModel(
                 postId: postUid,
                 imageUrl: imageUrl,
@@ -161,7 +162,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 rainLevel: _rainLevel,
                 posterUserId: FirebaseAuth.instance.currentUser!.uid,
                 postCity: _pickedCity,
-                postTown: _pickedTown));
+                postTown: _pickedTown,
+                locCode: locCode));
             if (!_hasPost) {
               await userDocRef.update({
                 "postTime": userModel.postTime! + 1,
@@ -169,8 +171,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 "userExp": userModel.userExp! + 25
               });
             }
-            await sendNotification("$_pickedCity $_pickedTown",
-                MyTools.getLocCode(_pickedCity!, _pickedTown!), _postText!);
             EasyLoading.dismiss();
             setState(() {
               canPop = true;
@@ -183,17 +183,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     } catch (error) {
       errorHandel();
     }
-  }
-
-  Future<void> sendNotification(
-      String location, String topicCode, String postText) async {
-    HttpsCallable callable =
-        FirebaseFunctions.instance.httpsCallable('sendNotification');
-    final resp = await callable.call(<String, dynamic>{
-      'location': location,
-      'topicCode': topicCode,
-      'postText': postText
-    });
   }
 
   @override

@@ -24,29 +24,62 @@ exports.removeExpiredPostAndPic = functions.pubsub.schedule("every 240 hours").o
   return Promise.all(promises);
 });
 
-
-exports.sendNotification = functions.https.onCall(async (data, context) => {
-
-  const location = data.location;
-  const topicCode = data.topicCode;
-  const postText = data.postText;
+exports.onCreatePost = functions.firestore
+.document('posts/{docId}')
+.onCreate((snap, context) => {
+  const postData = snap.data();
+  const locCode = postData.locCode;
+  const location = `${postData.postCity} ${postData.postTown}`;
+  const postText = postData.postText;
+  const postId = postData.postId;
+  const imageUrl = postData.imageUrl;
 
   const message = {
     data: {
       location: location,
-      content: `${location}: ${postText}`,
+      locCode: locCode,
+      postId: postId
     },
-    topic: topicCode,
+    notification: {
+      title: location,
+      body: postText
+    },
+    topic: locCode,
   };
   admin
     .messaging()
     .send(message)
     .then((response) => {
-    console.log("Successfully sent message:", response);
+    console.log("Successfully sent message:", `locCode = ${locCode}, location = ${location}, postText = ${postText}`);
   })
   .catch((error) => {
     console.log("Error sending message:", error);
   });
-
-  return `Successfully send notification`;
 });
+
+
+// exports.sendNotification = functions.https.onCall(async (data, context) => {
+
+//   const location = data.location;
+//   const topicCode = data.topicCode;
+//   const postText = data.postText;
+
+//   const message = {
+//     data: {
+//       location: location,
+//       content: `${location}: ${postText}`,
+//     },
+//     topic: topicCode,
+//   };
+//   admin
+//     .messaging()
+//     .send(message)
+//     .then((response) => {
+//     console.log("Successfully sent message:", response);
+//   })
+//   .catch((error) => {
+//     console.log("Error sending message:", error);
+//   });
+
+//   return `Successfully send notification`;
+// });

@@ -9,6 +9,7 @@ class PostModel {
   final String? posterUserId;
   final String? postCity;
   final String? postTown;
+  final String? locCode;
   String? posterName = "";
   String? posterImageUrl = "";
   int? posterLikedTimes = 0;
@@ -24,6 +25,7 @@ class PostModel {
       required this.posterUserId,
       required this.postCity,
       required this.postTown,
+      required this.locCode,
       this.posterName,
       this.posterImageUrl,
       this.posterLikedTimes,
@@ -44,6 +46,7 @@ class PostModel {
         posterUserId: data?["posterUserId"],
         postCity: data?["postCity"],
         postTown: data?["postTown"],
+        locCode: data?["locCode"],
         likedPeopleList: data?["likedPeopleList"]);
   }
 
@@ -57,6 +60,7 @@ class PostModel {
       if (posterUserId != null) "posterUserId": posterUserId,
       if (postCity != null) "postCity": postCity,
       if (postTown != null) "postTown": postTown,
+      if (locCode != null) "locCode": locCode,
       if (likedPeopleList != null) "likedPeopleList": likedPeopleList
     };
   }

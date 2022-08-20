@@ -90,6 +90,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   Future<void> createPost(BuildContext context) async {
+    final hasInternet = await MyTools.hasInternet(context);
+    if (!hasInternet) return;
     if (_imageFile == null) {
       return;
     }

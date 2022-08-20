@@ -22,12 +22,8 @@ class SignInProvider extends ChangeNotifier {
   Future googleLogin(BuildContext context,
       [String? email, facebookCredential]) async {
     try {
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.none) {
-        MyTools.showSimpleDialog(context, "目前沒網路，請檢查網路！", wordingFontSize: 20);
-        return;
-      }
-      ;
+      final hasInternet = await MyTools.hasInternet(context);
+      if (!hasInternet) return;
       final googleUser = await googleSignIn.signIn();
       if (googleUser == null) return;
       _user = googleUser;
@@ -90,11 +86,8 @@ class SignInProvider extends ChangeNotifier {
     var existingEmail = null;
     var pendingCred = null;
     try {
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.none) {
-        MyTools.showSimpleDialog(context, "目前沒網路，請檢查網路！", wordingFontSize: 20);
-        return;
-      }
+      final hasInternet = await MyTools.hasInternet(context);
+      if (!hasInternet) return;
       final fbLoginResult = await FacebookAuth.instance.login();
       final facebookAuthCredential =
           FacebookAuthProvider.credential(fbLoginResult.accessToken!.token);

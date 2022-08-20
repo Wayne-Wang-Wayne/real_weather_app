@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -201,5 +202,14 @@ class MyTools {
     else
       myCode = "$myCode$secondIndex";
     return myCode;
+  }
+
+  static Future<bool> hasInternet(BuildContext context) async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      MyTools.showSimpleDialog(context, "目前沒網路，請檢查網路！", wordingFontSize: 20);
+      return false;
+    }
+    return true;
   }
 }

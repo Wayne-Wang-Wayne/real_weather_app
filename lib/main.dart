@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -74,7 +76,8 @@ class MyApp extends StatelessWidget {
                   stream: Connectivity().onConnectivityChanged,
                   builder: (context, snapshot) {
                     final conenctivityResult = snapshot.data;
-                    if (conenctivityResult == ConnectivityResult.none)
+                    if ((conenctivityResult == null && Platform.isAndroid) ||
+                        conenctivityResult == ConnectivityResult.none)
                       return NoInternetScreen();
                     return StreamBuilder(
                         stream: FirebaseAuth.instance.authStateChanges(),

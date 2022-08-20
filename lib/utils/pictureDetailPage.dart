@@ -4,6 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_downloader/image_downloader.dart';
+import 'package:real_weather_shared_app/utils/someTools.dart';
 
 class PictureDetailPage extends StatelessWidget {
   PictureDetailPage({Key? key}) : super(key: key);
@@ -75,7 +76,11 @@ class PictureDetailPage extends StatelessWidget {
             height: 130,
             right: 15,
             child: GestureDetector(
-              onTap: () => downLoadImage(),
+              onTap: () async {
+                final hasInternet = await MyTools.hasInternet(context);
+                if (!hasInternet) return;
+                downLoadImage();
+              },
               child: Icon(
                 Icons.download_rounded,
                 color: Colors.white,

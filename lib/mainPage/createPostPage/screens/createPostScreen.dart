@@ -203,7 +203,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           ),
           actions: [
             TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  final hasInternet = await MyTools.hasInternet(context);
+                  if (!hasInternet) return;
                   if (_imageFile != null &&
                       _pickedCity != null &&
                       _pickedTown != null &&

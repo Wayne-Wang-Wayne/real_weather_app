@@ -49,7 +49,9 @@ class PostMoreOptionWidget extends StatelessWidget {
               child: Text(value),
             );
           }).toList(),
-          onChanged: (todo) {
+          onChanged: (todo) async {
+            final hasInternet = await MyTools.hasInternet(context);
+            if (!hasInternet) return;
             switch (todo) {
               case '刪除貼文':
                 {

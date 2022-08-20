@@ -140,38 +140,27 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         home: Scaffold(
             body: WillPopScope(
-                child: StreamBuilder<ConnectivityResult>(
-                  stream: Connectivity().onConnectivityChanged,
-                  builder: (context, snapshot) {
-                    final conenctivityResult = snapshot.data;
-                    if ((conenctivityResult == null && Platform.isAndroid) ||
-                        conenctivityResult == ConnectivityResult.none)
-                      return NoInternetScreen();
-                    return StreamBuilder(
-                        stream: FirebaseAuth.instance.authStateChanges(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          } else if (snapshot.hasData) {
-                            if (ModalRoute.of(context) == null)
-                              return MainScreen();
-                            if (ModalRoute.of(context)!.settings.arguments ==
-                                null) return MainScreen();
-                            final RemoteMessage notifyData =
-                                ModalRoute.of(context)!.settings.arguments
-                                    as RemoteMessage;
-                            return MainScreen(notifyData: notifyData);
-                          } else if (snapshot.hasError) {
-                            return Center(
-                              child: Text("Oops!有東西出錯了。"),
-                            );
-                          } else {
-                            return AuthScreen();
-                          }
-                        });
-                  },
-                ),
+                child: StreamBuilder(
+                    stream: FirebaseAuth.instance.authStateChanges(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasData) {
+                        if (ModalRoute.of(context) == null) return MainScreen();
+                        if (ModalRoute.of(context)!.settings.arguments == null)
+                          return MainScreen();
+                        final RemoteMessage notifyData = ModalRoute.of(context)!
+                            .settings
+                            .arguments as RemoteMessage;
+                        return MainScreen(notifyData: notifyData);
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Oops!有東西出錯了。"),
+                        );
+                      } else {
+                        return AuthScreen();
+                      }
+                    }),
                 onWillPop: onWillPop)),
         onGenerateRoute: (route) => MyApp.onGenerateRoute(route),
         builder: EasyLoading.init(),

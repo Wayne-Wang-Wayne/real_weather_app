@@ -19,7 +19,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int? _currentIndex;
   PageController? _pageController;
-  bool hasInternet = true;
 
   @override
   void initState() {
@@ -27,16 +26,6 @@ class _MainScreenState extends State<MainScreen> {
     _currentIndex = 0;
     _pageController = PageController(initialPage: _currentIndex!);
     Future.delayed(Duration.zero, () => _showTermsDialog());
-    checkInternet();
-  }
-
-  Future<void> checkInternet() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      setState(() {
-        hasInternet = false;
-      });
-    }
   }
 
   @override
@@ -53,13 +42,11 @@ class _MainScreenState extends State<MainScreen> {
       ProfileScreen()
     ];
     return Scaffold(
-      body: hasInternet
-          ? PageView(
-              controller: _pageController,
-              physics: NeverScrollableScrollPhysics(),
-              children: _screens,
-            )
-          : NoInternetScreen(),
+      body: PageView(
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
+        children: _screens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.black,
         currentIndex: _currentIndex!,

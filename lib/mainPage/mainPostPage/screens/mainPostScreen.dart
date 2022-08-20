@@ -49,6 +49,7 @@ class _MainPostScreenState extends State<MainPostScreen>
   bool isMoreLoading = false;
   bool canLoadMore = true;
   bool hasLeftTop = false;
+  bool checkHasInternet = true;
   List<String> currentLocation = ["臺北市", "中正區"];
 
   @override
@@ -92,6 +93,12 @@ class _MainPostScreenState extends State<MainPostScreen>
   }
 
   Future<void> loadFirstData({bool needToRelocate = true}) async {
+    final hasInternet = await MyTools.hasInternet(context);
+    checkHasInternet = hasInternet;
+    if (!hasInternet) {
+      setState(() {});
+      return;
+    }
     _showedList = [];
     hasReachedBottom = false;
     collectionState = null;
@@ -195,6 +202,12 @@ class _MainPostScreenState extends State<MainPostScreen>
   }
 
   Future<void> loadMore() async {
+    final hasInternet = await MyTools.hasInternet(context);
+    checkHasInternet = hasInternet;
+    if (!hasInternet) {
+      setState(() {});
+      return;
+    }
     if (hasReachedBottom) return;
     setState(() {
       isMoreLoading = true;
@@ -251,52 +264,70 @@ class _MainPostScreenState extends State<MainPostScreen>
             ? SingleChildScrollView(child: MainPostShimmer())
             : RefreshIndicator(
                 onRefresh: loadFirstData,
-                child: _showedList.isEmpty
+                child: !checkHasInternet
                     ? SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),
                         child: Container(
                           child: Center(
-                            child: Text('不好意思，目前沒有相關資料！'),
+                            child: ElevatedButton(
+                              child: Text("目前沒有網路，按此重試"),
+                              onPressed: () {
+                                loadFirstData();
+                              },
+                            ),
                           ),
                           height: MediaQuery.of(context).size.height -
                               kBottomNavigationBarHeight -
                               AppBar().preferredSize.height,
                         ),
                       )
-                    : Stack(
-                        children: [
-                          ListView.builder(
+                    : _showedList.isEmpty
+                        ? SingleChildScrollView(
                             physics: AlwaysScrollableScrollPhysics(),
-                            addAutomaticKeepAlives: true,
-                            shrinkWrap: true,
-                            controller: controller,
-                            itemBuilder: ((context, index) {
-                              if (index == _showedList.length &&
-                                  isMoreLoading) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 20.0),
-                                  child: Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                );
-                              }
-                              return Card(
-                                key: ValueKey(
-                                    (_showedList[index] as PostModel).postId),
-                                child: Column(
-                                  children: [
-                                    PostItem(
-                                        postModel: _showedList[index],
-                                        updateDeleteCallBack:
-                                            updateDeleteCallBack),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                            child: Container(
+                              child: Center(
+                                child: Text('不好意思，目前沒有相關資料！'),
+                              ),
+                              height: MediaQuery.of(context).size.height -
+                                  kBottomNavigationBarHeight -
+                                  AppBar().preferredSize.height,
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              ListView.builder(
+                                physics: AlwaysScrollableScrollPhysics(),
+                                addAutomaticKeepAlives: true,
+                                shrinkWrap: true,
+                                controller: controller,
+                                itemBuilder: ((context, index) {
+                                  if (index == _showedList.length &&
+                                      isMoreLoading) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20.0),
+                                      child: Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  }
+                                  return Card(
+                                    key: ValueKey(
+                                        (_showedList[index] as PostModel)
+                                            .postId),
+                                    child: Column(
                                       children: [
-                                        TextButton.icon(
-                                          icon: Icon(
-                                              (_showedList[index] as PostModel)
+                                        PostItem(
+                                            postModel: _showedList[index],
+                                            updateDeleteCallBack:
+                                                updateDeleteCallBack),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            TextButton.icon(
+                                              icon: Icon((_showedList[index]
+                                                          as PostModel)
                                                       .likedPeopleList!
                                                       .contains(FirebaseAuth
                                                           .instance
@@ -304,79 +335,97 @@ class _MainPostScreenState extends State<MainPostScreen>
                                                           .uid)
                                                   ? Icons.favorite
                                                   : Icons.favorite_border),
-                                          onPressed: () {
-                                            if ((_showedList[index]
-                                                    as PostModel)
-                                                .likedPeopleList!
-                                                .contains(FirebaseAuth.instance
-                                                    .currentUser!.uid)) {
-                                              (_showedList[index] as PostModel)
-                                                  .likedPeopleList!
-                                                  .remove(FirebaseAuth.instance
-                                                      .currentUser!.uid);
-                                            } else {
-                                              (_showedList[index] as PostModel)
-                                                  .likedPeopleList!
-                                                  .add(FirebaseAuth.instance
-                                                      .currentUser!.uid);
-                                            }
-                                            setState(() {});
-                                            Provider.of<MainPostProvider>(
-                                                    context,
-                                                    listen: false)
-                                                .likePost(_showedList[index]);
-                                          },
-                                          label: Text(
-                                              "${(_showedList[index] as PostModel).likedPeopleList!.length} 讚"),
-                                        ),
-                                        TextButton.icon(
-                                            onPressed: () {
-                                              // Navigator.of(context).push(
-                                              //     CustomPageRoute(
-                                              //         child: PostMessageScreen(),
-                                              //         direction: AxisDirection.up));
-                                              Navigator.of(context).pushNamed(
-                                                  PostMessageScreen.routeName,
-                                                  arguments: {
-                                                    "postModel":
-                                                        _showedList[index]
-                                                            as PostModel
-                                                  });
-                                            },
-                                            icon: Icon(Icons.message_outlined),
-                                            label: Text("留言"))
+                                              onPressed: () async {
+                                                final hasInternet =
+                                                    await MyTools.hasInternet(
+                                                        context);
+                                                if (!hasInternet) return;
+                                                if ((_showedList[index]
+                                                        as PostModel)
+                                                    .likedPeopleList!
+                                                    .contains(FirebaseAuth
+                                                        .instance
+                                                        .currentUser!
+                                                        .uid)) {
+                                                  (_showedList[index]
+                                                          as PostModel)
+                                                      .likedPeopleList!
+                                                      .remove(FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid);
+                                                } else {
+                                                  (_showedList[index]
+                                                          as PostModel)
+                                                      .likedPeopleList!
+                                                      .add(FirebaseAuth.instance
+                                                          .currentUser!.uid);
+                                                }
+                                                setState(() {});
+                                                Provider.of<MainPostProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .likePost(
+                                                        _showedList[index]);
+                                              },
+                                              label: Text(
+                                                  "${(_showedList[index] as PostModel).likedPeopleList!.length} 讚"),
+                                            ),
+                                            TextButton.icon(
+                                                onPressed: () async {
+                                                  final hasInternet =
+                                                      await MyTools.hasInternet(
+                                                          context);
+                                                  if (!hasInternet) return;
+                                                  // Navigator.of(context).push(
+                                                  //     CustomPageRoute(
+                                                  //         child: PostMessageScreen(),
+                                                  //         direction: AxisDirection.up));
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          PostMessageScreen
+                                                              .routeName,
+                                                          arguments: {
+                                                        "postModel":
+                                                            _showedList[index]
+                                                                as PostModel
+                                                      });
+                                                },
+                                                icon: Icon(
+                                                    Icons.message_outlined),
+                                                label: Text("留言"))
+                                          ],
+                                        )
                                       ],
-                                    )
-                                  ],
-                                ),
-                              );
-                            }),
-                            itemCount: isMoreLoading
-                                ? _showedList.length + 1
-                                : _showedList.length,
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: SlideTransition(
-                              position: offset!,
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 50.0, horizontal: 30),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    scrollToTop();
-                                  },
-                                  child: Icon(
-                                    Icons.arrow_upward_rounded,
-                                    size: 50,
-                                    color: Colors.blueGrey,
+                                    ),
+                                  );
+                                }),
+                                itemCount: isMoreLoading
+                                    ? _showedList.length + 1
+                                    : _showedList.length,
+                              ),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: SlideTransition(
+                                  position: offset!,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 50.0, horizontal: 30),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        scrollToTop();
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_upward_rounded,
+                                        size: 50,
+                                        color: Colors.blueGrey,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
+                              )
+                            ],
+                          ),
               ));
   }
 

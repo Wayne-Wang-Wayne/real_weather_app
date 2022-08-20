@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -25,7 +26,8 @@ import '../../profilePage/screens/EditNotifyPage.dart';
 import '../widgets/mainPostShimmer.dart';
 
 class MainPostScreen extends StatefulWidget {
-  const MainPostScreen({Key? key}) : super(key: key);
+  RemoteMessage? notifyData;
+  MainPostScreen({Key? key, this.notifyData}) : super(key: key);
 
   static List<String> staticCurrentLocation = ["臺北市", "中正區"];
 
@@ -97,7 +99,14 @@ class _MainPostScreenState extends State<MainPostScreen>
       isFirstLoading = true;
     });
     if (needToRelocate) {
-      currentLocation = await MyTools().getCurrentLocation(context);
+      if (widget.notifyData != null) {
+        String locString = widget.notifyData!.data["location"];
+        final locList = locString.split(" ");
+        currentLocation = locList;
+        widget.notifyData = null;
+      } else {
+        currentLocation = await MyTools().getCurrentLocation(context);
+      }
       MainPostScreen.staticCurrentLocation = currentLocation;
     }
     await fetchPostData();

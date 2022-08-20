@@ -41,10 +41,76 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  static Route onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case CreatePostScreen.routeName:
+        return CustomPageRoute(
+            child: CreatePostScreen(),
+            settings: settings,
+            direction: AxisDirection.right);
+      case PostMessageScreen.routeName:
+        return CustomPageRoute(
+            child: PostMessageScreen(),
+            settings: settings,
+            direction: AxisDirection.up);
+      case PictureDetailPage.routeName:
+        return MaterialPageRoute(
+            builder: (context) => PictureDetailPage(), settings: settings);
+      case EditNotifyPage.routeName:
+        return CustomPageRoute(
+            child: EditNotifyPage(),
+            settings: settings,
+            direction: AxisDirection.up);
+      default:
+        return CustomPageRoute(child: CreatePostScreen(), settings: settings);
+    }
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  GlobalKey<NavigatorState>? navigatorKey;
   // This widget is the root of your application.
+
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    navigatorKey?.currentState?.pushNamedAndRemoveUntil(
+      '/',
+      (r) => false,
+      arguments: message,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    navigatorKey = new GlobalKey<NavigatorState>();
+    // Run code required to handle interacted messages in an async function
+    // as initState() must not be async
+    setupInteractedMessage();
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime? currentBackPressTime;
@@ -70,6 +136,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
                 .copyWith(secondary: Colors.white)),
+        initialRoute: "/",
+        navigatorKey: navigatorKey,
         home: Scaffold(
             body: WillPopScope(
                 child: StreamBuilder<ConnectivityResult>(
@@ -86,7 +154,14 @@ class MyApp extends StatelessWidget {
                               ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           } else if (snapshot.hasData) {
-                            return MainScreen();
+                            if (ModalRoute.of(context) == null)
+                              return MainScreen();
+                            if (ModalRoute.of(context)!.settings.arguments ==
+                                null) return MainScreen();
+                            final RemoteMessage notifyData =
+                                ModalRoute.of(context)!.settings.arguments
+                                    as RemoteMessage;
+                            return MainScreen(notifyData: notifyData);
                           } else if (snapshot.hasError) {
                             return Center(
                               child: Text("Oops!有東西出錯了。"),
@@ -98,34 +173,9 @@ class MyApp extends StatelessWidget {
                   },
                 ),
                 onWillPop: onWillPop)),
-        onGenerateRoute: (route) => onGenerateRoute(route),
+        onGenerateRoute: (route) => MyApp.onGenerateRoute(route),
         builder: EasyLoading.init(),
       ),
     );
-  }
-
-  static Route onGenerateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case CreatePostScreen.routeName:
-        return CustomPageRoute(
-            child: CreatePostScreen(),
-            settings: settings,
-            direction: AxisDirection.right);
-      case PostMessageScreen.routeName:
-        return CustomPageRoute(
-            child: PostMessageScreen(),
-            settings: settings,
-            direction: AxisDirection.up);
-      case PictureDetailPage.routeName:
-        return MaterialPageRoute(
-            builder: (context) => PictureDetailPage(), settings: settings);
-      case EditNotifyPage.routeName:
-        return CustomPageRoute(
-            child: EditNotifyPage(),
-            settings: settings,
-            direction: AxisDirection.up);
-      default:
-        return CustomPageRoute(child: CreatePostScreen(), settings: settings);
-    }
   }
 }

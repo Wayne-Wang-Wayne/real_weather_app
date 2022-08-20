@@ -96,7 +96,9 @@ class _EditNotifyPageState extends State<EditNotifyPage> {
             hideHeader: true,
             title: Text("訂閱地點"),
             selectedTextStyle: TextStyle(color: Colors.blue),
-            onConfirm: (Picker picker, List value) {
+            onConfirm: (Picker picker, List value) async {
+              final hasInternet = await MyTools.hasInternet(context);
+              if (!hasInternet) return;
               List<String> pickedLocation =
                   picker.getSelectedValues() as List<String>;
               String pickedString = "${pickedLocation[0]} ${pickedLocation[1]}";

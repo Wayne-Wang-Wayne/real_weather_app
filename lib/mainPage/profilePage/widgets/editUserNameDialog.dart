@@ -5,6 +5,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import '../../../utils/someTools.dart';
 import '../../models/userModel.dart';
 
 class EditUserNameDialog extends StatefulWidget {
@@ -90,7 +91,10 @@ class _EditUserNameDialogState extends State<EditUserNameDialog> {
                       ),
                     ),
                     TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          final hasInternet =
+                              await MyTools.hasInternet(context);
+                          if (!hasInternet) return;
                           if (_controller!.text.isEmpty ||
                               _controller!.text.length < 2) {
                             setState(() {

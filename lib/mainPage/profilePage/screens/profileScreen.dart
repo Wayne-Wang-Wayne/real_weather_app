@@ -12,6 +12,7 @@ import 'package:real_weather_shared_app/mainPage/profilePage/widgets/myAchieveme
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileAvatarWidget.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileShimmer.dart';
 
+import '../../../utils/someTools.dart';
 import '../../authPage/providers/googleSignInProvider.dart';
 import '../widgets/dailyMissionAndAchievementWidget.dart';
 import '../widgets/levelUpRuleWidget.dart';
@@ -112,7 +113,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 5,
                 ),
                 TextButton.icon(
-                    onPressed: () {
+                    onPressed: () async {
+                      final hasInternet = await MyTools.hasInternet(context);
+                      if (!hasInternet) return;
                       final provider =
                           Provider.of<SignInProvider>(context, listen: false);
                       provider.logout();

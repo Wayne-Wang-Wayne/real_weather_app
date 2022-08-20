@@ -71,8 +71,10 @@ class _SingInMissionButtonState extends State<SingInMissionButton> {
       width: 100,
       height: 40,
       child: TextButton.icon(
-        onPressed: () {
+        onPressed: () async {
           if (!_hasCheckIn) {
+            final hasInternet = await MyTools.hasInternet(context);
+            if (!hasInternet) return;
             checkIn();
           }
         },

@@ -11,6 +11,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../utils/someTools.dart';
 import '../../models/userModel.dart';
 
 class ProfileAvatarWidget extends StatefulWidget {
@@ -149,7 +150,11 @@ class _ProfileAvatarWidgetState extends State<ProfileAvatarWidget> {
                 ),
               ),
               TextButton(
-                  onPressed: _pickPictureFromGallery,
+                  onPressed: () async {
+                    final hasInternet = await MyTools.hasInternet(context);
+                    if (!hasInternet) return;
+                    _pickPictureFromGallery();
+                  },
                   child: Text(
                     "更換大頭貼",
                     style: TextStyle(color: Colors.blue),

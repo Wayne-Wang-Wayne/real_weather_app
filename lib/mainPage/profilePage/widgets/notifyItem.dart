@@ -3,6 +3,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../../utils/someTools.dart';
+
 class NotifyItem extends StatelessWidget {
   final String locationName;
   final Function(String) unsubscribe;
@@ -30,7 +32,9 @@ class NotifyItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete),
               color: Colors.red.shade200,
-              onPressed: () {
+              onPressed: () async {
+                final hasInternet = await MyTools.hasInternet(context);
+                if (!hasInternet) return;
                 unsubscribe(locationName);
               },
             )

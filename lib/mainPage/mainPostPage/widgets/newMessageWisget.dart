@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:real_weather_shared_app/mainPage/models/postModel.dart';
 
+import '../../../utils/someTools.dart';
 import '../../models/userModel.dart';
 
 class NewMessageWidget extends StatefulWidget {
@@ -107,7 +108,9 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
                 child: CircularProgressIndicator(),
               )
             : TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  final hasInternet = await MyTools.hasInternet(context);
+                  if (!hasInternet) return;
                   if (_controller.text.trim().isEmpty) return;
                   _leaveMessage();
                   FocusScope.of(context).unfocus();

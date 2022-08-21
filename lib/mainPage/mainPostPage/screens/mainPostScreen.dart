@@ -18,6 +18,7 @@ import 'package:real_weather_shared_app/mainPage/mainPostPage/widgets/postItem.d
 import 'package:real_weather_shared_app/mainPage/models/areaData.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
 import 'package:real_weather_shared_app/utils/someTools.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../models/postModel.dart';
@@ -51,6 +52,7 @@ class _MainPostScreenState extends State<MainPostScreen>
   bool hasLeftTop = false;
   bool checkHasInternet = true;
   List<String> currentLocation = ["臺北市", "中正區"];
+  final String listKey = "lastLocKey";
 
   @override
   void initState() {
@@ -105,6 +107,7 @@ class _MainPostScreenState extends State<MainPostScreen>
     setState(() {
       isFirstLoading = true;
     });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     if (needToRelocate) {
       if (widget.notifyData != null) {
         String locString = widget.notifyData!.data["location"];
@@ -112,10 +115,19 @@ class _MainPostScreenState extends State<MainPostScreen>
         currentLocation = locList;
         widget.notifyData = null;
       } else {
-        currentLocation = await MyTools().getCurrentLocation(context);
+        final realLoc = await MyTools().getCurrentLocation(context);
+        if (realLoc.isEmpty) {
+          final lastLocList = prefs.getStringList(listKey) ?? [];
+          if (lastLocList.isNotEmpty) {
+            currentLocation = lastLocList;
+          }
+        } else {
+          currentLocation = realLoc;
+        }
       }
       MainPostScreen.staticCurrentLocation = currentLocation;
     }
+    prefs.setStringList(listKey, currentLocation);
     await fetchPostData();
     if (MyTools.isNeedToEncouragePost((DateTime.fromMillisecondsSinceEpoch(
         (_showedList[0] as PostModel).postDateTimeStamp!))))
@@ -128,7 +140,6 @@ class _MainPostScreenState extends State<MainPostScreen>
   }
 
   Future<void> fetchPostData() async {
-    print("loadData~!!!!!!!!!!");
     List<PostModel> tempPostList = [];
     final originData = collectionState == null
         ? await FirebaseFirestore.instance

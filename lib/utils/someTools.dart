@@ -102,7 +102,7 @@ class MyTools {
     } else {
       MyTools.showSimpleDialog(context, "如想體驗自動定位，煩請再手動開啟位置權限，謝謝您。(將以預設位置顯示)");
     }
-    return ["臺北市", "中正區"];
+    return [];
   }
 
   Future<List<String>> _fetchLocDetail(Location location) async {

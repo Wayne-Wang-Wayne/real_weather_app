@@ -98,6 +98,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (_postText == null || _postText == "") {
       return;
     }
+    if (_postText!.length > 250) {
+      MyTools.showSimpleDialog(context, "請精簡扼要，字數勿超過250字！",
+          wordingFontSize: 20);
+      return;
+    }
     FocusManager.instance.primaryFocus?.unfocus();
     try {
       setState(() {

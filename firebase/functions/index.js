@@ -44,6 +44,9 @@ exports.onCreatePost = functions.firestore
       title: location,
       body: postText
     },
+    android:{
+      priority: "high"
+    },
     topic: locCode,
   };
   admin

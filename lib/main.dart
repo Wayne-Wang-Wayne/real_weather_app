@@ -144,7 +144,15 @@ class _MyAppState extends State<MyApp> {
                     stream: FirebaseAuth.instance.authStateChanges(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
+                        final currentUser = FirebaseAuth.instance.currentUser;
+                        if (currentUser == null) return AuthScreen();
+                        if (ModalRoute.of(context) == null) return MainScreen();
+                        if (ModalRoute.of(context)!.settings.arguments == null)
+                          return MainScreen();
+                        final RemoteMessage notifyData = ModalRoute.of(context)!
+                            .settings
+                            .arguments as RemoteMessage;
+                        return MainScreen(notifyData: notifyData);
                       } else if (snapshot.hasData) {
                         if (ModalRoute.of(context) == null) return MainScreen();
                         if (ModalRoute.of(context)!.settings.arguments == null)

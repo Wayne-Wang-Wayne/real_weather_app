@@ -128,6 +128,7 @@ class _MainPostScreenState extends State<MainPostScreen>
   }
 
   Future<void> fetchPostData() async {
+    print("loadData~!!!!!!!!!!");
     List<PostModel> tempPostList = [];
     final originData = collectionState == null
         ? await FirebaseFirestore.instance

@@ -53,11 +53,12 @@ class _MainPostScreenState extends State<MainPostScreen>
   bool checkHasInternet = true;
   List<String> currentLocation = ["臺北市", "中正區"];
   final String listKey = "lastLocKey";
+  RemoteMessage? currentNotifyData;
 
   @override
   void initState() {
     super.initState();
-
+    currentNotifyData = widget.notifyData;
     controller = ScrollController()..addListener(_scrollListener);
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
@@ -109,11 +110,11 @@ class _MainPostScreenState extends State<MainPostScreen>
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (needToRelocate) {
-      if (widget.notifyData != null) {
-        String locString = widget.notifyData!.data["location"];
+      if (currentNotifyData != null) {
+        String locString = currentNotifyData!.data["location"];
         final locList = locString.split(" ");
         currentLocation = locList;
-        widget.notifyData = null;
+        currentNotifyData = null;
       } else {
         final realLoc = await MyTools().getCurrentLocation(context);
         if (realLoc.isEmpty) {

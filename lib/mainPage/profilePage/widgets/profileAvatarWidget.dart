@@ -52,7 +52,7 @@ class _ProfileAvatarWidgetState extends State<ProfileAvatarWidget> {
   Future<void> _pickPictureFromGallery() async {
     final picker = ImagePicker();
     final imageFile =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 40);
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
     if (imageFile == null) {
       return;
     }

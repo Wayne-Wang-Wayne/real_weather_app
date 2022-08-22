@@ -20,7 +20,7 @@ class _AddPictureWidgetState extends State<AddPictureWidget> {
   Future<void> _takePicture() async {
     final picker = ImagePicker();
     final imageFile =
-        await picker.pickImage(source: ImageSource.camera, imageQuality: 10);
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 30);
     if (imageFile == null) {
       return;
     }
@@ -33,7 +33,7 @@ class _AddPictureWidgetState extends State<AddPictureWidget> {
   Future<void> _pickPictureFromGallery() async {
     final picker = ImagePicker();
     final imageFile =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 40);
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
     if (imageFile == null) {
       return;
     }

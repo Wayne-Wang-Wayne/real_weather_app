@@ -33,6 +33,24 @@ exports.onCreatePost = functions.firestore
   const postText = postData.postText;
   const postId = postData.postId;
   const imageUrl = postData.imageUrl;
+  const rainLevel = postData.rainLevel;
+  let weather = "";
+
+  switch (rainLevel) {
+    case 0: {
+      weather = "太陽";
+      break; 
+    }
+    case 1: {
+      weather = "陰天";
+      break;
+    }
+    case 2: {
+      weather = "下雨";
+      break;
+    }
+  }
+
 
   const message = {
     data: {
@@ -41,7 +59,7 @@ exports.onCreatePost = functions.firestore
       postId: postId
     },
     notification: {
-      title: location,
+      title: `[${weather}] ${location}`,
       body: postText
     },
     android:{

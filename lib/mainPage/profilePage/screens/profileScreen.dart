@@ -52,11 +52,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return Center(
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Text("讀取個人資料發生問題"),
+                SizedBox(
+                  height: 10,
+                ),
                 ElevatedButton(
                     onPressed: () {
                       setState(() {});
                     },
-                    child: Text("重試"))
+                    child: Text("重試")),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      final provider =
+                          Provider.of<SignInProvider>(context, listen: false);
+                      provider.logout();
+                    },
+                    child: Text("登出後重試"))
               ]),
             );
           }

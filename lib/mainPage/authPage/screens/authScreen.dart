@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/utils/someTools.dart';
 
 import '../providers/googleSignInProvider.dart';
 
@@ -52,6 +55,10 @@ class AuthScreen extends StatelessWidget {
                 height: 10,
               ),
               fbSingInButton(),
+              SizedBox(
+                height: 10,
+              ),
+              appleSingInButton(),
               SizedBox(
                 height: 40,
               ),
@@ -122,6 +129,36 @@ class fbSingInButton extends StatelessWidget {
       icon: FaIcon(
         FontAwesomeIcons.facebook,
         color: Colors.blue,
+      ),
+    );
+  }
+}
+
+class appleSingInButton extends StatelessWidget {
+  const appleSingInButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () {
+        if (Platform.isAndroid) {
+          MyTools.showSimpleDialog(context, "Android裝置目前不支援Apple ID登入",
+              wordingFontSize: 17);
+          return;
+        }
+        final provider = Provider.of<SignInProvider>(context, listen: false);
+        provider.signInWithApple(context);
+      },
+      label: Text("使用Apple ID登入"),
+      style: ElevatedButton.styleFrom(
+          primary: Colors.black,
+          onPrimary: Colors.white,
+          minimumSize: Size(double.infinity, 50)),
+      icon: FaIcon(
+        FontAwesomeIcons.apple,
+        color: Colors.white,
       ),
     );
   }

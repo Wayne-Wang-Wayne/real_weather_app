@@ -3,12 +3,14 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:real_weather_shared_app/utils/someTools.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../models/userModel.dart';
 
@@ -58,11 +60,13 @@ class SignInProvider extends ChangeNotifier {
 
   Future<void> addNewUser() async {
     final currentUser = FirebaseAuth.instance.currentUser!;
+    String defaultAvatarLink =
+        "https://firebasestorage.googleapis.com/v0/b/flutter-real-weather-app.appspot.com/o/default_avatar%2Fdefault_avatar.png?alt=media&token=7b15c41a-cde9-488b-832b-add79f81c7a9";
 
     final userModel = UserModel(
         userId: currentUser.uid,
-        userName: currentUser.displayName,
-        userImageUrl: currentUser.photoURL,
+        userName: currentUser.displayName ?? "初心者用戶",
+        userImageUrl: currentUser.photoURL ?? defaultAvatarLink,
         userExp: 0,
         userLevel: 0,
         postTime: 0,
@@ -122,7 +126,7 @@ class SignInProvider extends ChangeNotifier {
             user = await fBLogin(context);
             break;
           case 'apple.com':
-            //user = await appleSignIn(context);
+            await signInWithApple(context);
             break;
           case 'password':
             // since password is managed by user we force have email provider only
@@ -140,7 +144,6 @@ class SignInProvider extends ChangeNotifier {
     }
   }
 
-  // just some extra error covering
   Future linkProvider(BuildContext context, credential) async {
     try {
       await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
@@ -163,5 +166,39 @@ class SignInProvider extends ChangeNotifier {
               .showSnackBar(SnackBar(content: Text('auth.something_happened')));
       }
     }
+  }
+
+  String generateNonce([int length = 32]) {
+    final charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
+  }
+
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  Future<void> signInWithApple(BuildContext context) async {
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
+
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: nonce,
+    );
+
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      rawNonce: rawNonce,
+    );
+
+    await _firebaseCredential(context, oauthCredential);
   }
 }

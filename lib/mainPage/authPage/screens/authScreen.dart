@@ -24,9 +24,7 @@ class AuthScreen extends StatelessWidget {
               SizedBox(
                 height: 120,
               ),
-              FlutterLogo(
-                size: 120,
-              ),
+              Image.asset('assets/images/logo.png'),
               SizedBox(
                 height: 100,
               ),
@@ -62,17 +60,6 @@ class AuthScreen extends StatelessWidget {
               SizedBox(
                 height: 40,
               ),
-              RichText(
-                  text: TextSpan(
-                      text: "已經擁有帳號?",
-                      style: TextStyle(color: Colors.black),
-                      children: [
-                    TextSpan(
-                        text: "登入",
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.black))
-                  ])),
               SizedBox(
                 height: 100,
               )

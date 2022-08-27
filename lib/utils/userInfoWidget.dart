@@ -23,19 +23,20 @@ class UserInfoWidget extends StatelessWidget {
           height: 30,
         ),
         GestureDetector(
-            onTap: () => Navigator.of(context).pushNamed(
-                PictureDetailPage.routeName,
-                arguments: {"pictureUrl": imageUrl}),
+            onTap: () => Navigator.of(context)
+                    .pushNamed(PictureDetailPage.routeName, arguments: {
+                  "pictureUrl":
+                      imageUrl.isEmpty ? MyTools.defaultAvatarLink : imageUrl
+                }),
             child: Container(
               height: 120,
               width: 120,
-              child: imageUrl.isEmpty
-                  ? Image.asset("assets/images/default_avatar.png")
-                  : CircleAvatar(
-                      radius: 30,
-                      backgroundImage: NetworkImage(imageUrl),
-                      backgroundColor: Colors.transparent,
-                    ),
+              child: CircleAvatar(
+                radius: 30,
+                backgroundImage: NetworkImage(
+                    imageUrl.isEmpty ? MyTools.defaultAvatarLink : imageUrl),
+                backgroundColor: Colors.transparent,
+              ),
             )),
         SizedBox(
           height: 10,

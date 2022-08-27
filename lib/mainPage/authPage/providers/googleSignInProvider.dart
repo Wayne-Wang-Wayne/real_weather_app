@@ -60,13 +60,11 @@ class SignInProvider extends ChangeNotifier {
 
   Future<void> addNewUser() async {
     final currentUser = FirebaseAuth.instance.currentUser!;
-    String defaultAvatarLink =
-        "https://firebasestorage.googleapis.com/v0/b/flutter-real-weather-app.appspot.com/o/default_avatar%2Fdefault_avatar.png?alt=media&token=7b15c41a-cde9-488b-832b-add79f81c7a9";
 
     final userModel = UserModel(
         userId: currentUser.uid,
         userName: currentUser.displayName ?? "初心者用戶",
-        userImageUrl: currentUser.photoURL ?? defaultAvatarLink,
+        userImageUrl: currentUser.photoURL ?? MyTools.defaultAvatarLink,
         userExp: 0,
         userLevel: 0,
         postTime: 0,

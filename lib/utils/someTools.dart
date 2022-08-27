@@ -14,6 +14,9 @@ import '../mainPage/models/areaData.dart';
 import '../mainPage/models/postModel.dart';
 
 class MyTools {
+  static String defaultAvatarLink =
+      "https://firebasestorage.googleapis.com/v0/b/flutter-real-weather-app.appspot.com/o/default_avatar%2Fdefault_avatar.png?alt=media&token=7b15c41a-cde9-488b-832b-add79f81c7a9";
+
   static String getReadableTime(int timeStamp) {
     var dt = DateTime.fromMillisecondsSinceEpoch(timeStamp);
     var duration = DateTime.now().difference(dt);

@@ -33,6 +33,8 @@ class PictureDetailPage extends StatelessWidget {
         var mimeType = await ImageDownloader.findMimeType(imageId);
       } on PlatformException catch (error) {
         print(error);
+      } catch (error) {
+        print(error);
       }
     }
 

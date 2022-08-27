@@ -24,10 +24,11 @@ class MessageMainInfoWidget extends StatelessWidget {
               tag: postModel.posterImageUrl! + postModel.postId!,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(40),
-                child: postModel.posterImageUrl!.isEmpty
-                    ? Image.asset("assets/images/default_avatar.png")
-                    : Image.network(postModel.posterImageUrl!,
-                        fit: BoxFit.cover),
+                child: Image.network(
+                    postModel.posterImageUrl!.isEmpty
+                        ? MyTools.defaultAvatarLink
+                        : postModel.posterImageUrl!,
+                    fit: BoxFit.cover),
               ),
             ),
           ),

@@ -19,7 +19,7 @@ class FetchUserBottomSheet extends StatelessWidget {
             fromFirestore: UserModel.fromFirestore,
             toFirestore: (UserModel userModel, options) =>
                 userModel.toFirestore())
-        .doc(FirebaseAuth.instance.currentUser!.uid);
+        .doc(userUid);
     final userModel = await docRef.get().then((value) => value.data());
     return Future.value(userModel);
   }

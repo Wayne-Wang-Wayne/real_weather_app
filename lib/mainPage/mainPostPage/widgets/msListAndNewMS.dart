@@ -77,8 +77,8 @@ class _MsListAndNewMSState extends State<MsListAndNewMS> {
               }
 
               return ListView.builder(
-                itemBuilder: ((context, index) =>
-                    MessageItem(reply: reply[index])),
+                itemBuilder: ((context, index) => MessageItem(
+                    key: ValueKey(Timestamp.now()), reply: reply[index])),
                 itemCount: reply.length,
               );
             },

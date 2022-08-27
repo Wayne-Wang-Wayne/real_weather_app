@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/models/userModel.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/screens/EditNotifyPage.dart';
+import 'package:real_weather_shared_app/mainPage/profilePage/widgets/deleteAccountDialog.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/editUserNameDialog.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/myAchievementWidget.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/widgets/profileAvatarWidget.dart';
@@ -134,7 +135,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       provider.logout();
                     },
                     icon: Icon(Icons.logout),
-                    label: Text("登出"))
+                    label: Text("登出")),
+                SizedBox(
+                  height: 5,
+                ),
+                TextButton.icon(
+                  onPressed: () async {
+                    final hasInternet = await MyTools.hasInternet(context);
+                    if (!hasInternet) return;
+                    _showDeleteAccountDialog();
+                  },
+                  icon: Icon(
+                    Icons.delete_forever,
+                    color: Colors.red,
+                    size: 16,
+                  ),
+                  label: Text(
+                    "刪除帳號",
+                    style: TextStyle(color: Colors.red, fontSize: 13),
+                  ),
+                )
               ],
             ),
           );
@@ -152,6 +172,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (ctx) => EditUserNameDialog(
           refreshProfileScreen: refreshProfilePage, userName: userName),
+    );
+  }
+
+  _showDeleteAccountDialog() async {
+    showDialog<Null>(
+      context: context,
+      builder: (ctx) => DeleteAccountDialog(),
     );
   }
 }

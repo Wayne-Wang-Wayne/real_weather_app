@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -122,7 +123,16 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                 userModel.toFirestore())
         .doc(FirebaseAuth.instance.currentUser!.uid);
     try {
+      UserModel? userModel =
+          await userDocRef.get().then((value) => value.data());
       await userDocRef.delete();
+      try {
+        await FirebaseStorage.instance
+            .refFromURL(userModel!.userImageUrl!)
+            .delete();
+      } catch (error) {
+        print('image not found');
+      }
       Navigator.of(context).pop();
       final provider = Provider.of<SignInProvider>(context, listen: false);
       provider.logout();

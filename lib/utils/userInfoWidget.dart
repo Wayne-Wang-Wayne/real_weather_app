@@ -13,6 +13,9 @@ class UserInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = postModel == null
+        ? userModel!.userImageUrl!
+        : postModel!.posterImageUrl!;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -20,22 +23,19 @@ class UserInfoWidget extends StatelessWidget {
           height: 30,
         ),
         GestureDetector(
-            onTap: () => Navigator.of(context)
-                    .pushNamed(PictureDetailPage.routeName, arguments: {
-                  "pictureUrl": postModel == null
-                      ? userModel!.userImageUrl!
-                      : postModel!.posterImageUrl!
-                }),
+            onTap: () => Navigator.of(context).pushNamed(
+                PictureDetailPage.routeName,
+                arguments: {"pictureUrl": imageUrl}),
             child: Container(
               height: 120,
               width: 120,
-              child: CircleAvatar(
-                radius: 30,
-                backgroundImage: NetworkImage(postModel == null
-                    ? userModel!.userImageUrl!
-                    : postModel!.posterImageUrl!),
-                backgroundColor: Colors.transparent,
-              ),
+              child: imageUrl.isEmpty
+                  ? Image.asset("assets/images/default_avatar.png")
+                  : CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(imageUrl),
+                      backgroundColor: Colors.transparent,
+                    ),
             )),
         SizedBox(
           height: 10,

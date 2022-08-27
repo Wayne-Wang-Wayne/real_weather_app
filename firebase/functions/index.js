@@ -7,7 +7,7 @@ admin.initializeApp();
 exports.removeExpiredPostAndPic = functions.pubsub.schedule("every 240 hours").onRun(async (context) => {
   const db = admin.firestore();
   const now = firestore.Timestamp.now();
-  const ts = now.toMillis() - 1296000000; // 24 hours in milliseconds = 86400000
+  const ts = now.toMillis() - 2592000000; // 24 hours in milliseconds = 86400000
 
   const snap = await db.collection("posts").where("postDateTimeStamp", "<", ts).get();
   let promises = [];

@@ -21,6 +21,8 @@ import 'mainPage/authPage/providers/googleSignInProvider.dart';
 import 'mainPage/authPage/screens/authScreen.dart';
 import 'mainPage/mainPostPage/screens/postMessageScreen.dart';
 import 'mainPage/screens/noInternetScreen.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 
 void main() async {
   CustomImageCache();
@@ -38,6 +40,9 @@ void main() async {
     provisional: false,
     sound: true,
   );
+  if (kDebugMode) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+  } else {}
   runApp(const MyApp());
 }
 

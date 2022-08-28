@@ -31,7 +31,7 @@ class AuthScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "隨時分享天氣實照，天氣如何由自己決定！",
+                  "隨時分享天氣實照，天氣好壞由自己決定！",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),

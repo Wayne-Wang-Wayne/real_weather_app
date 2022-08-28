@@ -51,7 +51,7 @@ class MessageItem extends StatelessWidget {
                       width: 2,
                     ),
                     Image.asset(
-                      MyTools.getMedalPicPath(replyItemModel.replierExp),
+                      MyTools.getMedalPicPathByExp(replyItemModel.replierExp),
                       height: 25,
                       width: 25,
                     ),

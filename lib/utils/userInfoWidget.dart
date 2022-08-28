@@ -53,8 +53,8 @@ class UserInfoWidget extends StatelessWidget {
           children: [
             Image.asset(
               postModel == null
-                  ? MyTools.getMedalPicPath(userModel!.userExp!)
-                  : MyTools.getMedalPicPath(postModel!.posterExp!),
+                  ? MyTools.getMedalPicPathByExp(userModel!.userExp!)
+                  : MyTools.getMedalPicPathByExp(postModel!.posterExp!),
               height: 40,
               width: 40,
             ),

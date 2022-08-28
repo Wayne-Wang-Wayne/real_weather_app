@@ -54,7 +54,7 @@ class PosterInfoWidget extends StatelessWidget {
           Row(
             children: [
               Image.asset(
-                MyTools.getMedalPicPath(postModel.posterExp!),
+                MyTools.getMedalPicPathByExp(postModel.posterExp!),
                 height: 40,
                 width: 40,
               ),

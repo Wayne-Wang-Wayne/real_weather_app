@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/screens/EditNotifyPage.dart';
+import 'package:real_weather_shared_app/mainPage/profilePage/screens/allMedalScreen.dart';
 import 'package:real_weather_shared_app/mainPage/screens/mainScreen.dart';
 import 'package:real_weather_shared_app/utils/CustomImageCache.dart';
 import 'package:real_weather_shared_app/utils/customPageRoute.dart';
@@ -70,6 +71,11 @@ class MyApp extends StatefulWidget {
       case EditNotifyPage.routeName:
         return CustomPageRoute(
             child: EditNotifyPage(),
+            settings: settings,
+            direction: AxisDirection.up);
+      case AllMedalScreen.routeName:
+        return CustomPageRoute(
+            child: AllMedalScreen(),
             settings: settings,
             direction: AxisDirection.up);
       default:

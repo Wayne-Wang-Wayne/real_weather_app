@@ -54,7 +54,7 @@ class MessageMainInfoWidget extends StatelessWidget {
                       width: 2,
                     ),
                     Image.asset(
-                      MyTools.getMedalPicPath(postModel.posterExp!),
+                      MyTools.getMedalPicPathByExp(postModel.posterExp!),
                       height: 30,
                       width: 30,
                     ),

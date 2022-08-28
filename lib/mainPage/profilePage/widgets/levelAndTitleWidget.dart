@@ -15,7 +15,7 @@ class LVAndTitleWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 0),
       child: Column(
         children: [
-          Image.asset(MyTools.getMedalPicPath(endExp)),
+          Image.asset(MyTools.getMedalPicPathByExp(endExp)),
           Text(
             "等級${MyTools.getCurrentLevel(endExp)}",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

@@ -26,12 +26,12 @@ class AuthScreen extends StatelessWidget {
               ),
               Image.asset('assets/images/logo.png'),
               SizedBox(
-                height: 100,
+                height: 60,
               ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Hi! \n歡迎回來！",
+                  "隨時分享天氣實照，天氣如何由自己決定！",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -46,7 +46,7 @@ class AuthScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 60,
+                height: 35,
               ),
               googleSingInButton(),
               SizedBox(

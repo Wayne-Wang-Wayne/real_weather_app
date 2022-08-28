@@ -171,7 +171,7 @@ class MyTools {
     while (endExp - tempExp >= 0) {
       currentLevel++;
       endExp -= tempExp;
-      tempExp += 75;
+      tempExp += 500;
     }
     return currentLevel;
   }

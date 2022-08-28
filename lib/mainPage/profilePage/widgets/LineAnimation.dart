@@ -20,14 +20,14 @@ class _LineState extends State<Line> with TickerProviderStateMixin {
     int tempExp = 0;
     while (startExp - tempExp >= 0) {
       startExp -= tempExp;
-      tempExp += 75;
+      tempExp += 500;
     }
     final startProportion = startExp / tempExp;
     proportionList.add(startProportion);
     tempExp = 0;
     while (finalExp - tempExp >= 0) {
       finalExp -= tempExp;
-      tempExp += 75;
+      tempExp += 500;
     }
     final finalProportion = finalExp / tempExp;
     proportionList.add(finalProportion);

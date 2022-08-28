@@ -18,7 +18,7 @@ class ExpTextWidget extends StatelessWidget {
     int tempExp = 0;
     while (endExp - tempExp >= 0) {
       endExp -= tempExp;
-      tempExp += 75;
+      tempExp += 500;
     }
     return "$endExp/$tempExp";
   }

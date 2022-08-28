@@ -98,6 +98,15 @@ flutter:
   assets:
     - assets/images/default_avatar.png
     - assets/images/logo.png
+    - assets/images/medal_level_one_icon.png
+    - assets/images/medal_level_two_icon.png
+    - assets/images/medal_level_three_icon.png
+    - assets/images/medal_level_four_icon.png
+    - assets/images/medal_level_five_icon.png
+    - assets/images/medal_level_six_icon.png
+    - assets/images/medal_level_seven_icon.png
+    - assets/images/medal_level_eight_icon.png
+    - assets/images/medal_level_nine_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

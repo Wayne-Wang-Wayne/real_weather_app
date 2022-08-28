@@ -28,7 +28,7 @@ class AllMedalScreen extends StatelessWidget {
       body: ListView.builder(
         itemBuilder: (context, index) => index == medalPicPathList.length
             ? Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20, bottom: 20),
                 child: Center(child: Text("更多獎牌將會陸續推出....")),
               )
             : MedalItem(

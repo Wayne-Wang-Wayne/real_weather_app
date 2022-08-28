@@ -26,9 +26,14 @@ class AllMedalScreen extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           )),
       body: ListView.builder(
-        itemBuilder: (context, index) =>
-            MedalItem(medalPicPath: medalPicPathList[index], level: index + 1),
-        itemCount: medalPicPathList.length,
+        itemBuilder: (context, index) => index == medalPicPathList.length
+            ? Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Center(child: Text("更多獎牌將會陸續推出....")),
+              )
+            : MedalItem(
+                medalPicPath: medalPicPathList[index], level: index + 1),
+        itemCount: medalPicPathList.length + 1,
       ),
     );
   }

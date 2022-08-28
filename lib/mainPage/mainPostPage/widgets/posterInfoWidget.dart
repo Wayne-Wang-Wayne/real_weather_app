@@ -53,16 +53,17 @@ class PosterInfoWidget extends StatelessWidget {
           ),
           Row(
             children: [
-              Text(
-                MyTools.getUserTitle(postModel.posterExp!),
-                style: TextStyle(color: Colors.grey),
+              Image.asset(
+                MyTools.getMedalPicPath(postModel.posterExp!),
+                height: 40,
+                width: 40,
               ),
               SizedBox(
                 width: 3,
               ),
               Text(
-                "( Lv. ${MyTools.getCurrentLevel(postModel.posterExp!)} )",
-                style: TextStyle(color: Colors.grey),
+                "( 等級 ${MyTools.getCurrentLevel(postModel.posterExp!)} )",
+                style: TextStyle(color: Colors.grey, fontSize: 16),
               )
             ],
           )

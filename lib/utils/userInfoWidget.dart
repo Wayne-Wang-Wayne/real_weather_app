@@ -51,20 +51,21 @@ class UserInfoWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            Image.asset(
               postModel == null
-                  ? MyTools.getUserTitle(userModel!.userExp!)
-                  : MyTools.getUserTitle(postModel!.posterExp!),
-              style: TextStyle(fontSize: 15, color: Colors.grey),
+                  ? MyTools.getMedalPicPath(userModel!.userExp!)
+                  : MyTools.getMedalPicPath(postModel!.posterExp!),
+              height: 40,
+              width: 40,
             ),
             SizedBox(
               width: 3,
             ),
             Text(
               postModel == null
-                  ? "( Lv. ${MyTools.getCurrentLevel(userModel!.userExp!)} )"
-                  : "( Lv. ${MyTools.getCurrentLevel(postModel!.posterExp!)} )",
-              style: TextStyle(fontSize: 15, color: Colors.grey),
+                  ? "( 等級 ${MyTools.getCurrentLevel(userModel!.userExp!)} )"
+                  : "( 等級 ${MyTools.getCurrentLevel(postModel!.posterExp!)} )",
+              style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
           ],
         ),

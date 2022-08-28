@@ -176,9 +176,49 @@ class MyTools {
     return currentLevel;
   }
 
-  static String getUserTitle(int userExp) {
-    // todo 到時候規則出來要完善邏輯
-    return "天氣專家";
+  static String getMedalPicPath(int userExp) {
+    int tempExp = 0;
+    int currentLevel = 0;
+    while (userExp - tempExp >= 0) {
+      currentLevel++;
+      userExp -= tempExp;
+      tempExp += 500;
+    }
+    String medalPicPath = "";
+    switch (currentLevel) {
+      case 1:
+        medalPicPath = "assets/images/medal_level_one_icon.png";
+        break;
+      case 2:
+        medalPicPath = "assets/images/medal_level_two_icon.png";
+        break;
+      case 3:
+        medalPicPath = "assets/images/medal_level_three_icon.png";
+        break;
+      case 4:
+        medalPicPath = "assets/images/medal_level_four_icon.png";
+        break;
+      case 5:
+        medalPicPath = "assets/images/medal_level_five_icon.png";
+        break;
+      case 6:
+        medalPicPath = "assets/images/medal_level_six_icon.png";
+        break;
+      case 7:
+        medalPicPath = "assets/images/medal_level_seven_icon.png";
+        break;
+      case 8:
+        medalPicPath = "assets/images/medal_level_eight_icon.png";
+        break;
+      case 9:
+        medalPicPath = "assets/images/medal_level_nine_icon.png";
+        break;
+      default:
+        medalPicPath = "assets/images/medal_level_nine_icon.png";
+        break;
+    }
+
+    return medalPicPath;
   }
 
   static Future<void> launchMyUrl(Uri url) async {

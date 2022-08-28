@@ -48,14 +48,19 @@ class MessageMainInfoWidget extends StatelessWidget {
                     Text(
                       postModel.posterName!,
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(
                       width: 2,
                     ),
+                    Image.asset(
+                      MyTools.getMedalPicPath(postModel.posterExp!),
+                      height: 30,
+                      width: 30,
+                    ),
                     Text(
-                      "${MyTools.getUserTitle(postModel.posterExp!)} ( Lv. ${MyTools.getCurrentLevel(postModel.posterExp!)} )",
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                      "( 等級 ${MyTools.getCurrentLevel(postModel.posterExp!)} )",
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
                     )
                   ],
                 ),

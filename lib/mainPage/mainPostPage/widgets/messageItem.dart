@@ -50,9 +50,14 @@ class MessageItem extends StatelessWidget {
                     SizedBox(
                       width: 2,
                     ),
+                    Image.asset(
+                      MyTools.getMedalPicPath(replyItemModel.replierExp),
+                      height: 25,
+                      width: 25,
+                    ),
                     Text(
-                      "${MyTools.getUserTitle(replyItemModel.replierExp)} ( Lv. ${MyTools.getCurrentLevel(replyItemModel.replierExp)} )",
-                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                      "( 等級 ${MyTools.getCurrentLevel(replyItemModel.replierExp)} )",
+                      style: TextStyle(fontSize: 15, color: Colors.grey),
                     )
                   ],
                 ),

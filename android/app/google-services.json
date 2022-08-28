@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:285819753618:android:ccd45dbbc1f27eca44824b",
         "android_client_info": {
-          "package_name": "com.example.real_weather_shared_app"
+          "package_name": "com.wayne.realWeatherSharedApp"
         }
       },
       "oauth_client": [

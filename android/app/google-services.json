@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "285819753618",
+    "firebase_url": "https://flutter-real-weather-app-default-rtdb.firebaseio.com",
     "project_id": "flutter-real-weather-app",
     "storage_bucket": "flutter-real-weather-app.appspot.com"
   },
@@ -9,10 +10,78 @@
       "client_info": {
         "mobilesdk_app_id": "1:285819753618:android:ccd45dbbc1f27eca44824b",
         "android_client_info": {
+          "package_name": "com.example.real_weather_shared_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "285819753618-ohcr3nujnm36rrbgjd1nill24e6tncb6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.real_weather_shared_app",
+            "certificate_hash": "62790cd13f898cfb720035e7dfc4a9c8b8b36c58"
+          }
+        },
+        {
+          "client_id": "285819753618-q0j9qdd5rntovj9devidboa6larimuh4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.real_weather_shared_app",
+            "certificate_hash": "4877e376e823fabdf49a326f30b7102e8e5e5ee7"
+          }
+        },
+        {
+          "client_id": "285819753618-4s44hrlnmf5tpc0qlf4q22gqeh9q1hfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG-hv0dWhBNJWUJxPVSlg4bL8ND6J2wL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "285819753618-4s44hrlnmf5tpc0qlf4q22gqeh9q1hfr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "285819753618-mm4lvgusbinmd9mb50fvk092ls8onrgc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.wayne.realWeatherSharedApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285819753618:android:7375273fda6d4fe544824b",
+        "android_client_info": {
           "package_name": "com.wayne.realWeatherSharedApp"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "285819753618-1edvlmm9juasqqcfg61clbc6sbi355d4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wayne.realWeatherSharedApp",
+            "certificate_hash": "62790cd13f898cfb720035e7dfc4a9c8b8b36c58"
+          }
+        },
+        {
+          "client_id": "285819753618-d7kiaimdggt00f905s3kheg41ftlmut8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wayne.realWeatherSharedApp",
+            "certificate_hash": "4877e376e823fabdf49a326f30b7102e8e5e5ee7"
+          }
+        },
         {
           "client_id": "285819753618-4s44hrlnmf5tpc0qlf4q22gqeh9q1hfr.apps.googleusercontent.com",
           "client_type": 3

@@ -64,7 +64,7 @@ class _EmailSignUpWidgetState extends State<EmailSignUpWidget> {
             ),
             style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 16),
           RichText(
               text: TextSpan(
                   text: "已經擁有帳號？ ",

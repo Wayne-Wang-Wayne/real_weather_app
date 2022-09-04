@@ -64,20 +64,41 @@ class _EmailLoginWidgetState extends State<EmailLoginWidget> {
             ),
             style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
           ),
-          SizedBox(height: 20),
-          RichText(
-              text: TextSpan(
-                  text: "沒有帳號？ ",
-                  style: TextStyle(color: Colors.black),
-                  children: [
-                TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = widget.onClickedSignUp,
-                    text: "去註冊",
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Colors.blue))
-              ]))
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                child: Text(
+                  "忘記密碼",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
+              Container(
+                width: 1,
+                height: 20,
+                color: Colors.black,
+              ),
+              SizedBox(width: 10),
+              RichText(
+                  text: TextSpan(
+                      text: "沒有帳號？",
+                      style: TextStyle(color: Colors.black),
+                      children: [
+                    TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = widget.onClickedSignUp,
+                        text: "去註冊",
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.blue))
+                  ])),
+            ],
+          )
         ],
       ),
     );

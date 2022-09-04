@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/mainPage/authPage/screens/ForgotPasswordPage.dart';
 
 import '../providers/googleSignInProvider.dart';
 
@@ -76,6 +77,9 @@ class _EmailLoginWidgetState extends State<EmailLoginWidget> {
                     color: Colors.blue,
                   ),
                 ),
+                onTap: () {
+                  Navigator.of(context).pushNamed(ForgotPasswordPage.routeName);
+                },
               ),
               SizedBox(width: 10),
               Container(

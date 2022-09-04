@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/mainPage/authPage/screens/ForgotPasswordPage.dart';
 import 'package:real_weather_shared_app/mainPage/createPostPage/screens/createPostScreen.dart';
 import 'package:real_weather_shared_app/mainPage/mainPostPage/providers/mainPostPageProvider.dart';
 import 'package:real_weather_shared_app/mainPage/profilePage/screens/EditNotifyPage.dart';
@@ -76,6 +77,11 @@ class MyApp extends StatefulWidget {
       case AllMedalScreen.routeName:
         return CustomPageRoute(
             child: AllMedalScreen(),
+            settings: settings,
+            direction: AxisDirection.up);
+      case ForgotPasswordPage.routeName:
+        return CustomPageRoute(
+            child: ForgotPasswordPage(),
             settings: settings,
             direction: AxisDirection.up);
       default:

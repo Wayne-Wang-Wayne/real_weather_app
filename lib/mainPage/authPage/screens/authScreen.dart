@@ -5,6 +5,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:real_weather_shared_app/mainPage/authPage/widgets/EmailLoginWidget.dart';
 import 'package:real_weather_shared_app/utils/someTools.dart';
 
 import '../providers/googleSignInProvider.dart';
@@ -45,6 +46,7 @@ class AuthScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
               ),
+              EmailLoginWidget(),
               SizedBox(
                 height: 35,
               ),

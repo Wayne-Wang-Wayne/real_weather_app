@@ -6,6 +6,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
@@ -198,5 +199,69 @@ class SignInProvider extends ChangeNotifier {
     );
 
     await _firebaseCredential(context, oauthCredential);
+  }
+
+  Future<void> signInWithMail(
+      String email, String password, BuildContext context) async {
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    if (!emailValid) {
+      MyTools.showSimpleDialog(context, "信箱格式錯誤");
+      return;
+    }
+    EasyLoading.show(status: "登入中..");
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      final checkUserResult = await checkIsUserAlreadyExisted();
+      if (!checkUserResult!.exists) {
+        await addNewUser();
+      }
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      MyTools.showSimpleDialog(context, getMessageFromErrorCode(e.code));
+    } catch (error) {
+      MyTools.showSimpleDialog(
+          context, getMessageFromErrorCode(error.toString()));
+    }
+    EasyLoading.dismiss();
+  }
+
+  String getMessageFromErrorCode(String errorCode) {
+    switch (errorCode) {
+      case "ERROR_EMAIL_ALREADY_IN_USE":
+      case "account-exists-with-different-credential":
+      case "email-already-in-use":
+        return "帳號已經被使用。";
+        break;
+      case "ERROR_WRONG_PASSWORD":
+      case "wrong-password":
+        return "密碼錯誤。";
+        break;
+      case "ERROR_USER_NOT_FOUND":
+      case "user-not-found":
+        return "找不到此使用者。";
+        break;
+      case "ERROR_USER_DISABLED":
+      case "user-disabled":
+        return "使用者狀態異常。";
+        break;
+      case "ERROR_TOO_MANY_REQUESTS":
+      case "operation-not-allowed":
+        return "太多裝置想同時登入，請稍後再試。";
+        break;
+      case "ERROR_OPERATION_NOT_ALLOWED":
+      case "operation-not-allowed":
+        return "伺服器異常，請稍後再試。";
+        break;
+      case "ERROR_INVALID_EMAIL":
+      case "invalid-email":
+        return "信箱格式錯誤。";
+        break;
+      default:
+        return "登入失敗，請再試一次。";
+        break;
+    }
   }
 }

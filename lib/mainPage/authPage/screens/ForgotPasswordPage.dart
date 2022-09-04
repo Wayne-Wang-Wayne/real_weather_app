@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/googleSignInProvider.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -38,9 +41,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           SizedBox(
             height: 20,
           ),
-          Text(
-            "接收Email確認信以重設密碼",
-            style: TextStyle(fontSize: 25),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: Text(
+              "接收Email確認信以重設密碼",
+              style: TextStyle(fontSize: 25),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: Text(
+              "(如果沒收到，請確認是否跑到垃圾郵件裡)",
+              style: TextStyle(fontSize: 14, color: Colors.grey),
+            ),
           ),
           Container(
             padding: EdgeInsets.all(16),
@@ -55,7 +68,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child: ElevatedButton.icon(
                 style:
                     ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
-                onPressed: () {},
+                onPressed: () {
+                  final provider =
+                      Provider.of<SignInProvider>(context, listen: false);
+                  provider.verifyEMail(emailController.text.trim(), context);
+                },
                 icon: Icon(Icons.email_outlined),
                 label: Text(
                   "發確認信到信箱",

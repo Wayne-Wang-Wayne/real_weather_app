@@ -267,6 +267,29 @@ class SignInProvider extends ChangeNotifier {
     EasyLoading.dismiss();
   }
 
+  Future<void> verifyEMail(String email, BuildContext context) async {
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    if (!emailValid) {
+      MyTools.showSimpleDialog(context, "信箱格式錯誤。", wordingFontSize: 17);
+      return;
+    }
+    EasyLoading.show(status: "發送確認信中..");
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      MyTools.showSimpleDialog(context, "確認信發送成功！", wordingFontSize: 17);
+    } on FirebaseAuthException catch (e) {
+      MyTools.showSimpleDialog(context, getMessageFromErrorCode(e.code),
+          wordingFontSize: 17);
+    } catch (error) {
+      MyTools.showSimpleDialog(
+          context, getMessageFromErrorCode(error.toString()),
+          wordingFontSize: 17);
+    }
+    EasyLoading.dismiss();
+  }
+
   String getMessageFromErrorCode(String errorCode) {
     switch (errorCode) {
       case "ERROR_EMAIL_ALREADY_IN_USE":

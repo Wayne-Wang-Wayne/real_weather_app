@@ -6,16 +6,16 @@ import 'package:provider/provider.dart';
 
 import '../providers/googleSignInProvider.dart';
 
-class EmailLoginWidget extends StatefulWidget {
+class EmailSignUpWidget extends StatefulWidget {
   final VoidCallback onClickedSignUp;
-  const EmailLoginWidget({Key? key, required this.onClickedSignUp})
+  const EmailSignUpWidget({Key? key, required this.onClickedSignUp})
       : super(key: key);
 
   @override
-  State<EmailLoginWidget> createState() => _EmailLoginWidgetState();
+  State<EmailSignUpWidget> createState() => _EmailSignUpWidgetState();
 }
 
-class _EmailLoginWidgetState extends State<EmailLoginWidget> {
+class _EmailSignUpWidgetState extends State<EmailSignUpWidget> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -51,15 +51,15 @@ class _EmailLoginWidgetState extends State<EmailLoginWidget> {
             onPressed: () {
               final provider =
                   Provider.of<SignInProvider>(context, listen: false);
-              provider.signInWithMail(emailController.text.trim(),
+              provider.signUpWithMail(emailController.text.trim(),
                   passwordController.text.trim(), context);
             },
             icon: Icon(
-              Icons.login,
+              Icons.arrow_forward,
               size: 32,
             ),
             label: Text(
-              "登入",
+              "註冊",
               style: TextStyle(fontSize: 24),
             ),
             style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
@@ -67,13 +67,13 @@ class _EmailLoginWidgetState extends State<EmailLoginWidget> {
           SizedBox(height: 20),
           RichText(
               text: TextSpan(
-                  text: "沒有帳號？ ",
+                  text: "已經擁有帳號？ ",
                   style: TextStyle(color: Colors.black),
                   children: [
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = widget.onClickedSignUp,
-                    text: "去註冊",
+                    text: "直接登入",
                     style: TextStyle(
                         decoration: TextDecoration.underline,
                         color: Colors.blue))

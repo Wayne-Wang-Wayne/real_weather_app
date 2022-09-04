@@ -9,10 +9,21 @@ import 'package:real_weather_shared_app/mainPage/authPage/widgets/EmailLoginWidg
 import 'package:real_weather_shared_app/utils/someTools.dart';
 
 import '../providers/googleSignInProvider.dart';
+import '../widgets/EmailSignUpWidget.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
 
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  bool isLogin = true;
+
+  void toggle() => setState(() {
+        isLogin = !isLogin;
+      });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +57,13 @@ class AuthScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
               ),
-              EmailLoginWidget(),
+              isLogin
+                  ? EmailLoginWidget(
+                      onClickedSignUp: toggle,
+                    )
+                  : EmailSignUpWidget(
+                      onClickedSignUp: toggle,
+                    ),
               SizedBox(
                 height: 35,
               ),

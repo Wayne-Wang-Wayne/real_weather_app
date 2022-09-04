@@ -207,7 +207,11 @@ class SignInProvider extends ChangeNotifier {
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
     if (!emailValid) {
-      MyTools.showSimpleDialog(context, "信箱格式錯誤");
+      MyTools.showSimpleDialog(context, "信箱格式錯誤。", wordingFontSize: 17);
+      return;
+    }
+    if (password.isEmpty || password.length < 6) {
+      MyTools.showSimpleDialog(context, "密碼長度需大於六個字元。", wordingFontSize: 17);
       return;
     }
     EasyLoading.show(status: "登入中..");
@@ -220,10 +224,45 @@ class SignInProvider extends ChangeNotifier {
       }
       notifyListeners();
     } on FirebaseAuthException catch (e) {
-      MyTools.showSimpleDialog(context, getMessageFromErrorCode(e.code));
+      MyTools.showSimpleDialog(context, getMessageFromErrorCode(e.code),
+          wordingFontSize: 17);
     } catch (error) {
       MyTools.showSimpleDialog(
-          context, getMessageFromErrorCode(error.toString()));
+          context, getMessageFromErrorCode(error.toString()),
+          wordingFontSize: 17);
+    }
+    EasyLoading.dismiss();
+  }
+
+  Future<void> signUpWithMail(
+      String email, String password, BuildContext context) async {
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    if (!emailValid) {
+      MyTools.showSimpleDialog(context, "信箱格式錯誤。", wordingFontSize: 17);
+      return;
+    }
+    if (password.isEmpty || password.length < 6) {
+      MyTools.showSimpleDialog(context, "密碼長度需大於六個字元。", wordingFontSize: 17);
+      return;
+    }
+    EasyLoading.show(status: "註冊中..");
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      final checkUserResult = await checkIsUserAlreadyExisted();
+      if (!checkUserResult!.exists) {
+        await addNewUser();
+      }
+      notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      MyTools.showSimpleDialog(context, getMessageFromErrorCode(e.code),
+          wordingFontSize: 17);
+    } catch (error) {
+      MyTools.showSimpleDialog(
+          context, getMessageFromErrorCode(error.toString()),
+          wordingFontSize: 17);
     }
     EasyLoading.dismiss();
   }

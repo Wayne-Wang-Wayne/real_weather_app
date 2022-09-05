@@ -29,6 +29,7 @@ class SignInProvider extends ChangeNotifier {
       if (!hasInternet) return;
       final googleUser = await googleSignIn.signIn();
       if (googleUser == null) return;
+      EasyLoading.show(status: "登入中..");
       _user = googleUser;
       final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
@@ -37,6 +38,7 @@ class SignInProvider extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     }
+    EasyLoading.dismiss();
   }
 
   Future logout() async {
@@ -92,6 +94,7 @@ class SignInProvider extends ChangeNotifier {
       final hasInternet = await MyTools.hasInternet(context);
       if (!hasInternet) return;
       final fbLoginResult = await FacebookAuth.instance.login();
+      EasyLoading.show(status: "登入中..");
       final facebookAuthCredential =
           FacebookAuthProvider.credential(fbLoginResult.accessToken!.token);
 
@@ -99,6 +102,7 @@ class SignInProvider extends ChangeNotifier {
     } catch (error) {
       print(e.toString());
     }
+    EasyLoading.dismiss();
   }
 
   _firebaseCredential(BuildContext context, credential) async {
@@ -184,21 +188,25 @@ class SignInProvider extends ChangeNotifier {
   Future<void> signInWithApple(BuildContext context) async {
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
+      EasyLoading.show(status: "登入中..");
 
-    final appleCredential = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-      nonce: nonce,
-    );
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+      );
 
-    final oauthCredential = OAuthProvider("apple.com").credential(
-      idToken: appleCredential.identityToken,
-      rawNonce: rawNonce,
-    );
-
-    await _firebaseCredential(context, oauthCredential);
+      await _firebaseCredential(context, oauthCredential);
+    } catch (error) {
+      EasyLoading.dismiss();
+    }
   }
 
   Future<void> signInWithMail(

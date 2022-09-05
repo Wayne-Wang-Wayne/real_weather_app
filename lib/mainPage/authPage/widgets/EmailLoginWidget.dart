@@ -34,7 +34,6 @@ class _EmailLoginWidgetState extends State<EmailLoginWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 40),
           TextField(
             controller: emailController,
             textInputAction: TextInputAction.next,

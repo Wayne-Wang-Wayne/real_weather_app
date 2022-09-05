@@ -50,32 +50,27 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(32),
+          padding: EdgeInsets.symmetric(horizontal: 32),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 120,
+                height: 50,
+              ),
+              Flexible(
+                child: Container(),
+                fit: FlexFit.loose,
               ),
               Image.asset('assets/images/logo.png'),
               SizedBox(
-                height: 60,
+                height: 20,
               ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "隨時分享天氣實照，天氣好壞由自己決定！",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "登入以繼續",
-                  style: TextStyle(fontSize: 16),
                 ),
               ),
               isLogin
@@ -85,9 +80,6 @@ class _AuthScreenState extends State<AuthScreen> {
                   : EmailSignUpWidget(
                       onClickedSignUp: toggle,
                     ),
-              SizedBox(
-                height: 35,
-              ),
               googleSingInButton(),
               SizedBox(
                 height: 10,
@@ -97,12 +89,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 height: 10,
               ),
               appleSingInButton(),
-              SizedBox(
-                height: 40,
+              Flexible(
+                child: Container(),
+                fit: FlexFit.loose,
               ),
-              SizedBox(
-                height: 100,
-              )
             ],
           ),
         ),

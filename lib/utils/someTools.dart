@@ -144,6 +144,8 @@ class MyTools {
                 }
             }
           });
+          final validAreaData = AreaData().area_data;
+          if (validAreaData[currentLocate[0]] == null) return ["臺北市", "中正區"];
           return currentLocate;
         }
         ;

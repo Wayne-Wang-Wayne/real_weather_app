@@ -150,6 +150,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blueGrey)
                 .copyWith(secondary: Colors.white)),

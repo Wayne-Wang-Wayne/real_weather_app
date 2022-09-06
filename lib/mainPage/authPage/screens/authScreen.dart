@@ -56,7 +56,7 @@ class _AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 50,
+                height: 60,
               ),
               Flexible(
                 child: Container(),

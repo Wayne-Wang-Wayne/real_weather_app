@@ -20,6 +20,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'firebase_options.dart';
 import 'mainPage/authPage/providers/googleSignInProvider.dart';
+import 'mainPage/authPage/screens/UserTermsPage.dart';
 import 'mainPage/authPage/screens/authScreen.dart';
 import 'mainPage/mainPostPage/screens/postMessageScreen.dart';
 import 'mainPage/screens/noInternetScreen.dart';
@@ -82,6 +83,11 @@ class MyApp extends StatefulWidget {
       case ForgotPasswordPage.routeName:
         return CustomPageRoute(
             child: ForgotPasswordPage(),
+            settings: settings,
+            direction: AxisDirection.up);
+      case UserTermsPage.routeName:
+        return CustomPageRoute(
+            child: UserTermsPage(),
             settings: settings,
             direction: AxisDirection.up);
       default:

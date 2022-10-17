@@ -93,7 +93,7 @@ class _AuthScreenState extends State<AuthScreen> {
               SizedBox(
                 height: 0,
               ),
-              TermsAndVersionWisget(),
+              TermsAndVersionWidget(),
               Flexible(
                 child: Container(),
                 fit: FlexFit.loose,

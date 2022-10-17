@@ -11,6 +11,7 @@ import 'package:real_weather_shared_app/utils/someTools.dart';
 
 import '../providers/googleSignInProvider.dart';
 import '../widgets/EmailSignUpWidget.dart';
+import '../widgets/TermsAndVersionWidget.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -56,7 +57,7 @@ class _AuthScreenState extends State<AuthScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                height: 60,
+                height: 50,
               ),
               Flexible(
                 child: Container(),
@@ -89,6 +90,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 height: 10,
               ),
               appleSingInButton(),
+              SizedBox(
+                height: 0,
+              ),
+              TermsAndVersionWisget(),
               Flexible(
                 child: Container(),
                 fit: FlexFit.loose,

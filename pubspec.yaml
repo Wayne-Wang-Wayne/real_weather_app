@@ -70,6 +70,7 @@ dependencies:
   sign_in_with_apple: ^3.0.0
   crypto: ^3.0.1
   firebase_crashlytics: ^2.8.9
+  package_info_plus: ^2.0.0
 
 dev_dependencies:
   flutter_test:
